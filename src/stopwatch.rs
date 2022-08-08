@@ -26,6 +26,7 @@ pub struct Stopwatch {
 impl Stopwatch {
     /// Create a [`Stopwatch`] with the given elapsed time. If `running`, start
     /// the stopwatch.
+    #[inline]
     #[must_use]
     pub fn new(elapsed: Duration, running: bool) -> Self {
         Self {
@@ -82,6 +83,7 @@ impl Stopwatch {
     }
 
     /// Stop and set the total elapsed time to `new`.
+    #[inline]
     pub fn set(&mut self, new: Duration) {
         self.elapsed = new;
         self.start = None;
@@ -125,6 +127,7 @@ impl Stopwatch {
 }
 
 impl Default for Stopwatch {
+    #[inline]
     fn default() -> Self {
         Self::new(Duration::ZERO, false)
     }
