@@ -6,3 +6,4 @@ edition = "2021"
 description = "stopwatch library"
 repository = "https://github.com/ulahello/libsw"
 license = "MIT OR GPL-3.0-or-later"
+keywords = ["stopwatch"]
