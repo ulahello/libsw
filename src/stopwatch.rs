@@ -33,6 +33,18 @@ pub struct Stopwatch {
 impl Stopwatch {
     /// Create a [`Stopwatch`] with the given elapsed time. If `running`, start
     /// the stopwatch.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// # use core::time::Duration;
+    /// # fn main() {
+    /// let sw = Stopwatch::new(Duration::from_secs(1), false);
+    /// assert!(sw.is_stopped());
+    /// assert_eq!(sw.elapsed(), Duration::from_secs(1));
+    /// # }
+    /// ```
     #[inline]
     #[must_use]
     pub fn new(elapsed: Duration, running: bool) -> Self {

@@ -1,6 +1,7 @@
 # changelog
 
 ## [unreleased]
+* added examples to docs
 * improved test consistency
 
 ## [0.2.0] - 2022-08-07
