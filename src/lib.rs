@@ -10,8 +10,14 @@
 //! This is a straightforward stopwatch implementation. It doesn't implement
 //! laps.
 //!
+//! # Panics
+//!
 //! None of the methods in [`Stopwatch`] panic or call functions which are
 //! documented to panic.
+//!
+//! # Safety
+//!
+//! `libsw` contains no unsafe code (`#![forbid(unsafe_code)]`).
 
 mod stopwatch;
 pub use stopwatch::*;
