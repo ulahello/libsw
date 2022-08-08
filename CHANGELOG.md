@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+* added README.md
+* updated crate metadata
 
 ## [0.1.0] - 2022-08-07
 * added Stopwatch
