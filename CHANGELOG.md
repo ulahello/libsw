@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+
+## [0.2.0] - 2022-08-07
 * added Debug impl for Stopwatch
 * improved docs organisation
 
