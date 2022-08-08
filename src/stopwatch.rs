@@ -10,7 +10,7 @@ use std::time::Instant;
 ///
 /// Measures and accumulates time between starts and stops.
 ///
-/// # Notes
+/// # Implementations
 ///
 /// [`Stopwatch`] implements [`Default`], returning a stopped stopwatch with
 /// zero time elapsed.
