@@ -7,10 +7,6 @@ use crate::{Error, Stopwatch};
 use core::time::Duration;
 use std::thread;
 
-// TODO: rewrite so this doesn't depend on a tolerance. depend on guarentee from
-// thread::sleep that it will have slept for at least the given time, maybe
-// more.
-const TOLERANCE: Duration = Duration::from_millis(20);
 const DELAY: Duration = Duration::from_millis(200);
 
 #[test]
@@ -95,25 +91,15 @@ fn add() {
     assert!(sw.is_stopped());
 
     assert!(sw.elapsed() >= DELAY * 3);
-    assert!(sw.elapsed() - (DELAY * 3) < TOLERANCE);
 }
 
 #[test]
 fn sub() {
-    let mut sw = Stopwatch::default();
-
-    sw.start().unwrap();
-    thread::sleep(DELAY);
+    let mut sw = Stopwatch::new(DELAY * 3, false);
 
     sw -= DELAY;
-    assert!(sw.elapsed() < TOLERANCE);
-    assert!(sw.is_running());
-
-    sw.set(DELAY * 4);
+    assert_eq!(sw.elapsed(), DELAY * 2);
     assert!(sw.is_stopped());
-    sw -= DELAY * 3;
-    assert!(sw.elapsed() >= DELAY);
-    assert!(sw.elapsed() - DELAY < TOLERANCE);
 }
 
 #[test]
@@ -136,7 +122,6 @@ fn sane_elapsed_while_stopped() {
     sw.stop().unwrap();
 
     assert!(sw.elapsed() >= DELAY);
-    assert!(sw.elapsed() - DELAY < TOLERANCE);
 }
 
 #[test]
@@ -147,5 +132,4 @@ fn sane_elapsed_while_running() {
     thread::sleep(DELAY);
 
     assert!(sw.elapsed() >= DELAY);
-    assert!(sw.elapsed() - DELAY < TOLERANCE);
 }

@@ -1,6 +1,7 @@
 # changelog
 
 ## [unreleased]
+* improved test consistency
 
 ## [0.2.0] - 2022-08-07
 * added Debug impl for Stopwatch
