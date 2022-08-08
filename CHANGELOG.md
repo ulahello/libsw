@@ -1,6 +1,7 @@
 # changelog
 
 ## [unreleased]
+* added Debug impl for Stopwatch
 
 ## [0.1.1] - 2022-08-07
 * added README.md
@@ -17,4 +18,4 @@
   * added Stopwatch::elapsed
   * added Stopwatch::is_running
   * added Stopwatch::is_stopped
-  * added Add, Sub, AddAssign, and SubAssign impls for Stopwatch
+  * added Clone, Copy, Add, Sub, AddAssign, and SubAssign impls for Stopwatch

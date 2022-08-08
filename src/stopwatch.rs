@@ -17,7 +17,7 @@ use std::time::Instant;
 /// [`AddAssign`](ops::AddAssign), and [`SubAssign`](ops::SubAssign). These
 /// methods will add or subtract the right-hand-side duration from the
 /// stopwatch's elapsed time.
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 pub struct Stopwatch {
     elapsed: Duration,
     start: Option<Instant>,
