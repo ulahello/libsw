@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+
+## [0.1.1] - 2022-08-07
 * added README.md
 * updated crate metadata
 
