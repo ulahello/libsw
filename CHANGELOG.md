@@ -1,6 +1,8 @@
 # changelog
 
-## [0.1.0]
+## [unreleased]
+
+## [0.1.0] - 2022-08-07
 * added Stopwatch
   * added Stopwatch::new
   * added Stopwatch::start
