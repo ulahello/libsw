@@ -23,4 +23,4 @@
   * added Stopwatch::elapsed
   * added Stopwatch::is_running
   * added Stopwatch::is_stopped
-  * added Clone, Copy, Add, Sub, AddAssign, and SubAssign impls for Stopwatch
+  * added Clone, Copy, Default, Add, Sub, AddAssign, and SubAssign impls for Stopwatch
