@@ -10,10 +10,7 @@
 //! This is a straightforward stopwatch implementation. It doesn't implement
 //! laps.
 //!
-//! # Panics
-//!
-//! None of the methods in [`Stopwatch`] panic or call functions which are
-//! documented to panic.
+//! See the [struct documentation](Stopwatch) for details.
 //!
 //! # Safety
 //!

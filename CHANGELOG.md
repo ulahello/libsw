@@ -2,6 +2,7 @@
 
 ## [unreleased]
 * added Debug impl for Stopwatch
+* improved docs organisation
 
 ## [0.1.1] - 2022-08-07
 * added README.md

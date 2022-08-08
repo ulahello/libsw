@@ -10,6 +10,8 @@ use std::time::Instant;
 ///
 /// Measures and accumulates time between starts and stops.
 ///
+/// # Notes
+///
 /// [`Stopwatch`] implements [`Default`], returning a stopped stopwatch with
 /// zero time elapsed.
 ///
@@ -17,6 +19,11 @@ use std::time::Instant;
 /// [`AddAssign`](ops::AddAssign), and [`SubAssign`](ops::SubAssign). These
 /// methods will add or subtract the right-hand-side duration from the
 /// stopwatch's elapsed time.
+///
+/// # Panics
+///
+/// None of the methods in [`Stopwatch`] panic or call functions which are
+/// documented to panic.
 #[derive(Clone, Copy, Debug)]
 pub struct Stopwatch {
     elapsed: Duration,
