@@ -5,8 +5,6 @@
 #![forbid(unsafe_code)]
 #![warn(missing_docs, clippy::pedantic)]
 
-//! Defines an abstraction for stopwatches
-//!
 //! This is a straightforward stopwatch implementation. It doesn't implement
 //! laps.
 //!
