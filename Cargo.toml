@@ -1,0 +1,7 @@
+[package]
+name = "libsw"
+version = "0.1.0"
+authors = ["Ula Shipman <ula.hello@mailbox.org>"]
+edition = "2021"
+description = "stopwatch library"
+license = "MIT OR GPL-3.0-or-later"
