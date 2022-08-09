@@ -18,7 +18,7 @@ pub struct Stopwatch {
 }
 
 impl Stopwatch {
-    /// Create a [`Stopwatch`] with the given elapsed time. If `running`, start
+    /// Returns a [`Stopwatch`] with the given elapsed time. If `running`, start
     /// the stopwatch.
     ///
     /// # Examples
@@ -41,7 +41,7 @@ impl Stopwatch {
         }
     }
 
-    /// Start measuring the time elapsed.
+    /// Starts measuring the time elapsed.
     ///
     /// # Errors
     ///
@@ -55,7 +55,7 @@ impl Stopwatch {
         }
     }
 
-    /// Stop measuring the time elapsed since the last start.
+    /// Stops measuring the time elapsed since the last start.
     ///
     /// # Errors
     ///
@@ -70,9 +70,7 @@ impl Stopwatch {
         }
     }
 
-    /// Toggle whether the stopwatch is running or stopped.
-    ///
-    /// If stopped, then start, and if running, then stop.
+    /// Toggles whether the stopwatch is running or stopped.
     #[inline]
     pub fn toggle(&mut self) {
         if self.is_running() {
@@ -82,20 +80,20 @@ impl Stopwatch {
         }
     }
 
-    /// Stop and reset the elapsed time to zero.
+    /// Stops and resets the elapsed time to zero.
     #[inline]
     pub fn reset(&mut self) {
         *self = Self::default();
     }
 
-    /// Stop and set the total elapsed time to `new`.
+    /// Stops and sets the total elapsed time to `new`.
     #[inline]
     pub fn set(&mut self, new: Duration) {
         self.elapsed = new;
         self.start = None;
     }
 
-    /// Return the total time elapsed.
+    /// Returns the total time elapsed.
     #[must_use]
     pub fn elapsed(&self) -> Duration {
         if let Some(start) = self.start {
@@ -106,21 +104,21 @@ impl Stopwatch {
         }
     }
 
-    /// Return whether the stopwatch is running.
+    /// Returns whether the stopwatch is running.
     #[inline]
     #[must_use]
     pub const fn is_running(&self) -> bool {
         self.start.is_some()
     }
 
-    /// Return whether the stopwatch is stopped.
+    /// Returns whether the stopwatch is stopped.
     #[inline]
     #[must_use]
     pub const fn is_stopped(&self) -> bool {
         self.start.is_none()
     }
 
-    /// Sync changes in the elapsed time, effectively toggling the stopwatch
+    /// Syncs changes in the elapsed time, effectively toggling the stopwatch
     /// twice.
     #[inline]
     fn sync_elapsed(&mut self) {
@@ -133,7 +131,7 @@ impl Stopwatch {
 }
 
 impl Default for Stopwatch {
-    /// Create a stopped [`Stopwatch`] with zero elapsed time.
+    /// Returns a stopped [`Stopwatch`] with zero elapsed time.
     #[inline]
     fn default() -> Self {
         Self::new(Duration::ZERO, false)
@@ -161,7 +159,7 @@ impl ops::Sub<Duration> for Stopwatch {
 }
 
 impl ops::AddAssign<Duration> for Stopwatch {
-    /// Add `rhs` to the total elapsed time.
+    /// Adds `rhs` to the total elapsed time.
     ///
     /// ```
     /// # use libsw::Stopwatch;
@@ -179,7 +177,7 @@ impl ops::AddAssign<Duration> for Stopwatch {
 }
 
 impl ops::SubAssign<Duration> for Stopwatch {
-    /// Subtract `rhs` from the total elapsed time.
+    /// Subtracts `rhs` from the total elapsed time.
     ///
     /// ```
     /// # use libsw::Stopwatch;
