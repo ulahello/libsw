@@ -10,7 +10,7 @@ use std::time::Instant;
 
 /// Stopwatch abstraction
 ///
-/// Measures and accumulates time between starts and stops.
+/// A stopwatch measures and accumulates elapsed time between starts and stops.
 #[derive(Clone, Copy, Debug)]
 pub struct Stopwatch {
     elapsed: Duration,
