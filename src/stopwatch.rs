@@ -11,16 +11,6 @@ use std::time::Instant;
 /// Stopwatch abstraction
 ///
 /// Measures and accumulates time between starts and stops.
-///
-/// # Implementations
-///
-/// [`Stopwatch`] implements [`Default`], returning a stopped stopwatch with
-/// zero time elapsed.
-///
-/// Also, it implements [`Add`](ops::Add), [`Sub`](ops::Sub),
-/// [`AddAssign`](ops::AddAssign), and [`SubAssign`](ops::SubAssign). These
-/// methods will add or subtract the right-hand-side duration from the
-/// stopwatch's elapsed time.
 #[derive(Clone, Copy, Debug)]
 pub struct Stopwatch {
     elapsed: Duration,
@@ -143,6 +133,7 @@ impl Stopwatch {
 }
 
 impl Default for Stopwatch {
+    /// Create a stopped [`Stopwatch`] with zero elapsed time.
     #[inline]
     fn default() -> Self {
         Self::new(Duration::ZERO, false)
@@ -170,6 +161,17 @@ impl ops::Sub<Duration> for Stopwatch {
 }
 
 impl ops::AddAssign<Duration> for Stopwatch {
+    /// Add `rhs` to the total elapsed time.
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// # use core::time::Duration;
+    /// # fn main() {
+    /// let mut sw = Stopwatch::new(Duration::from_secs(1), false);
+    /// sw += Duration::from_secs(1);
+    /// assert_eq!(sw.elapsed(), Duration::from_secs(2));
+    /// # }
+    /// ```
     #[inline]
     fn add_assign(&mut self, rhs: Duration) {
         self.elapsed = self.elapsed.saturating_add(rhs);
@@ -177,6 +179,17 @@ impl ops::AddAssign<Duration> for Stopwatch {
 }
 
 impl ops::SubAssign<Duration> for Stopwatch {
+    /// Subtract `rhs` from the total elapsed time.
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// # use core::time::Duration;
+    /// # fn main() {
+    /// let mut sw = Stopwatch::new(Duration::from_secs(1), false);
+    /// sw -= Duration::from_secs(1);
+    /// assert_eq!(sw.elapsed(), Duration::ZERO);
+    /// # }
+    /// ```
     #[inline]
     fn sub_assign(&mut self, rhs: Duration) {
         self.sync_elapsed();
