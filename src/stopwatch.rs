@@ -86,10 +86,16 @@ impl Stopwatch {
     /// ```
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
+    /// # use std::thread;
     /// # fn main() {
     /// let mut sw = Stopwatch::new(Duration::ZERO, true);
     /// assert!(sw.stop().is_ok());
     /// assert!(sw.stop().is_err());
+    ///
+    /// let then = sw.elapsed();
+    /// thread::sleep(Duration::from_millis(100));
+    /// let now = sw.elapsed();
+    /// assert!(then == now);
     /// # }
     /// ```
     pub fn stop(&mut self) -> Result<(), Error> {
