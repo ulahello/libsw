@@ -132,8 +132,7 @@ impl Stopwatch {
     /// # use core::time::Duration;
     /// # use std::thread;
     /// # fn main() -> Result<(), Error> {
-    /// let mut sw = Stopwatch::new();
-    /// sw.start()?;
+    /// let sw = Stopwatch::new_started();
     /// thread::sleep(Duration::from_millis(100));
     /// assert!(sw.elapsed() >= Duration::from_millis(100));
     /// # Ok(())
@@ -417,8 +416,7 @@ impl ops::SubAssign<Duration> for Stopwatch {
 /// ```
 /// # use libsw::{Error, Stopwatch};
 /// # fn main() -> Result<(), Error> {
-/// let mut sw = Stopwatch::new();
-/// sw.start()?;
+/// let mut sw = Stopwatch::new_started();
 /// assert_eq!(sw.start(), Err(Error::AlreadyStarted));
 /// sw.stop()?;
 /// assert_eq!(sw.stop(), Err(Error::AlreadyStopped));
