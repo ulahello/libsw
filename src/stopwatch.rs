@@ -8,6 +8,8 @@ use core::time::Duration;
 use std::error;
 use std::time::Instant;
 
+// TODO: initializing stopwatches with given start time
+
 /// Stopwatch abstraction
 ///
 /// A `Stopwatch` measures and accumulates elapsed time between starts and
@@ -139,11 +141,32 @@ impl Stopwatch {
     /// # Ok(())
     /// # }
     /// ```
+    #[inline]
     #[must_use]
     pub fn elapsed(&self) -> Duration {
+        self.elapsed_at(Instant::now())
+    }
+
+    /// Returns the total time elapsed, measured at the given [`Instant`].
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// # use core::time::Duration;
+    /// # use std::time::Instant;
+    /// # fn main() {
+    /// let sw_1 = Stopwatch::new_started();
+    /// let sw_2 = sw_1.clone();
+    /// let anchor = Instant::now();
+    /// assert!(sw_1.elapsed_at(anchor) == sw_2.elapsed_at(anchor));
+    /// # }
+    /// ```
+    #[must_use]
+    pub fn elapsed_at(&self, anchor: Instant) -> Duration {
         if let Some(start) = self.start {
             self.elapsed
-                .saturating_add(Instant::now().saturating_duration_since(start))
+                .saturating_add(anchor.saturating_duration_since(start))
         } else {
             self.elapsed
         }
