@@ -96,8 +96,15 @@ impl Stopwatch {
 
     /// Returns a `Stopwatch` from its raw parts.
     ///
-    /// For more details about the internals of a `Stopwatch`, see the [struct
-    /// documentation](Self).
+    /// Internally, a `Stopwatch` combines a saved elapsed time (`elapsed`) and
+    /// an instant which records the latest start time (`start`).
+    ///
+    /// While the start time is [`Some`], the `Stopwatch` is running. When it
+    /// stops, the time which has elapsed since `start` is added to `elapsed`,
+    /// and `start` is set to [`None`].
+    ///
+    /// This function allows for the construction of a `Stopwatch` from these
+    /// two components.
     ///
     /// # Examples
     ///
