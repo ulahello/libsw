@@ -369,6 +369,9 @@ impl ops::Sub<Duration> for Stopwatch {
     }
 }
 
+// TODO: mimic duration add/sub (inherent checked and saturating methods, with
+// ops defined as checked arithmetic which panics if overflow occurs)
+
 impl ops::AddAssign<Duration> for Stopwatch {
     /// Adds `rhs` to the total elapsed time.
     ///
