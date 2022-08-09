@@ -10,6 +10,27 @@
 //!
 //! See the [struct documentation](Stopwatch) for details.
 //!
+//! # Examples
+//!
+//! ```
+//! use libsw::{Error, Stopwatch};
+//!
+//! use core::time::Duration;
+//! use std::thread;
+//!
+//! fn main() -> Result<(), Error> {
+//!     let mut sw = Stopwatch::default();
+//!
+//!     sw.start()?;
+//!     thread::sleep(Duration::from_millis(100));
+//!     sw.stop()?;
+//!
+//!     println!("thread slept for {:?}", sw.elapsed());
+//!
+//!     Ok(())
+//! }
+//! ```
+//!
 //! # Safety
 //!
 //! `libsw` contains no unsafe code (`#![forbid(unsafe_code)]`).
