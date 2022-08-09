@@ -135,3 +135,12 @@ fn sane_elapsed_while_running() {
 
     assert!(sw.elapsed() >= DELAY);
 }
+
+#[test]
+#[should_panic]
+fn sync_before_sub() {
+    let mut sw = Stopwatch::new_started();
+    thread::sleep(DELAY);
+    sw -= DELAY;
+    assert!(sw.elapsed() >= DELAY);
+}
