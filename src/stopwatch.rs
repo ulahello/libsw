@@ -10,7 +10,15 @@ use std::time::Instant;
 
 /// Stopwatch abstraction
 ///
-/// A stopwatch measures and accumulates elapsed time between starts and stops.
+/// A `Stopwatch` measures and accumulates elapsed time between starts and
+/// stops.
+///
+/// Internally, a `Stopwatch` combines a saved elapsed time and an instant which
+/// records the latest start time.
+///
+/// While the start time is [`Some`], the `Stopwatch` is running. When it stops,
+/// the time which has elapsed since the start time is added to the elapsed
+/// time, and the start time is set to [`None`].
 #[derive(Clone, Copy, Debug, Hash)]
 pub struct Stopwatch {
     elapsed: Duration,
@@ -96,15 +104,8 @@ impl Stopwatch {
 
     /// Returns a `Stopwatch` from its raw parts.
     ///
-    /// Internally, a `Stopwatch` combines a saved elapsed time (`elapsed`) and
-    /// an instant which records the latest start time (`start`).
-    ///
-    /// While the start time is [`Some`], the `Stopwatch` is running. When it
-    /// stops, the time which has elapsed since `start` is added to `elapsed`,
-    /// and `start` is set to [`None`].
-    ///
-    /// This function allows for the construction of a `Stopwatch` from these
-    /// two components.
+    /// See the [struct documentation](Self) for details about `Stopwatch`
+    /// internals.
     ///
     /// # Examples
     ///

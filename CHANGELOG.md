@@ -1,6 +1,7 @@
 # changelog
 
 ## [unreleased]
+* improved docs organisation
 
 ## [1.0.0] - 2022-08-09
 * changed `Stopwatch::new`
