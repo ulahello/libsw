@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+* added `Stopwatch::saturating_add`
+* added `Stopwatch::saturating_sub`
 * improved docs organisation
 
 ## [1.0.0] - 2022-08-09

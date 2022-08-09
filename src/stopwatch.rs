@@ -330,6 +330,49 @@ impl Stopwatch {
         old
     }
 
+    /// Adds `dur` to the total elapsed time. If overflow occurred, the total
+    /// elapsed time is set to [`Duration::MAX`].
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// # use core::time::Duration;
+    /// # fn main() {
+    /// let mut sw = Stopwatch::with_elapsed(Duration::from_secs(1));
+    /// sw = sw.saturating_add(Duration::from_secs(1));
+    /// assert_eq!(sw.elapsed(), Duration::from_secs(2));
+    /// sw = sw.saturating_add(Duration::MAX);
+    /// assert_eq!(sw.elapsed(), Duration::MAX);
+    /// # }
+    /// ```
+    #[inline]
+    #[must_use]
+    pub const fn saturating_add(mut self, dur: Duration) -> Self {
+        self.elapsed = self.elapsed.saturating_add(dur);
+        self
+    }
+
+    /// Subtracts `dur` from the total elapsed time. If overflow occurred, the
+    /// total elapsed time is set to [`Duration::ZERO`].
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// # use core::time::Duration;
+    /// # fn main() {
+    /// let mut sw = Stopwatch::with_elapsed(Duration::from_secs(1));
+    /// sw = sw.saturating_sub(Duration::from_secs(1));
+    /// assert_eq!(sw.elapsed(), Duration::ZERO);
+    /// sw = sw.saturating_sub(Duration::from_secs(1));
+    /// assert_eq!(sw.elapsed(), Duration::ZERO);
+    /// # }
+    /// ```
+    #[inline]
+    #[must_use]
+    pub fn saturating_sub(mut self, dur: Duration) -> Self {
+        self.sync_elapsed();
+        self.elapsed = self.elapsed.saturating_sub(dur);
+        self
+    }
+
     /// Syncs changes in the elapsed time, effectively toggling the stopwatch
     /// twice.
     #[inline]
@@ -353,60 +396,34 @@ impl Default for Stopwatch {
 impl ops::Add<Duration> for Stopwatch {
     type Output = Self;
 
+    /// Alias to [`Stopwatch::saturating_add`].
     #[inline]
-    fn add(mut self, rhs: Duration) -> Self::Output {
-        self += rhs;
-        self
+    fn add(self, rhs: Duration) -> Self::Output {
+        self.saturating_add(rhs)
     }
 }
 
 impl ops::Sub<Duration> for Stopwatch {
     type Output = Self;
 
+    /// Alias to [`Stopwatch::saturating_sub`].
     #[inline]
-    fn sub(mut self, rhs: Duration) -> Self::Output {
-        self -= rhs;
-        self
+    fn sub(self, rhs: Duration) -> Self::Output {
+        self.saturating_sub(rhs)
     }
 }
 
-// TODO: mimic duration add/sub (inherent checked and saturating methods, with
-// ops defined as checked arithmetic which panics if overflow occurs)
-
 impl ops::AddAssign<Duration> for Stopwatch {
-    /// Adds `rhs` to the total elapsed time.
-    ///
-    /// ```
-    /// # use libsw::Stopwatch;
-    /// # use core::time::Duration;
-    /// # fn main() {
-    /// let mut sw = Stopwatch::with_elapsed(Duration::from_secs(1));
-    /// sw += Duration::from_secs(1);
-    /// assert_eq!(sw.elapsed(), Duration::from_secs(2));
-    /// # }
-    /// ```
     #[inline]
     fn add_assign(&mut self, rhs: Duration) {
-        self.elapsed = self.elapsed.saturating_add(rhs);
+        *self = *self + rhs;
     }
 }
 
 impl ops::SubAssign<Duration> for Stopwatch {
-    /// Subtracts `rhs` from the total elapsed time.
-    ///
-    /// ```
-    /// # use libsw::Stopwatch;
-    /// # use core::time::Duration;
-    /// # fn main() {
-    /// let mut sw = Stopwatch::with_elapsed(Duration::from_secs(1));
-    /// sw -= Duration::from_secs(1);
-    /// assert_eq!(sw.elapsed(), Duration::ZERO);
-    /// # }
-    /// ```
     #[inline]
     fn sub_assign(&mut self, rhs: Duration) {
-        self.sync_elapsed();
-        self.elapsed = self.elapsed.saturating_sub(rhs);
+        *self = *self - rhs;
     }
 }
 
