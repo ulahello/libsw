@@ -19,7 +19,7 @@
 //! use std::thread;
 //!
 //! fn main() -> Result<(), Error> {
-//!     let mut sw = Stopwatch::default();
+//!     let mut sw = Stopwatch::new();
 //!
 //!     sw.start()?;
 //!     thread::sleep(Duration::from_millis(100));
