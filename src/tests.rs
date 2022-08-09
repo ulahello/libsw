@@ -54,11 +54,8 @@ fn toggle() {
 
 #[test]
 fn reset() {
-    let mut sw = Stopwatch::new();
-
-    sw.start().unwrap();
+    let mut sw = Stopwatch::new_started();
     thread::sleep(DELAY);
-
     sw.reset();
 
     assert!(sw.is_stopped());
@@ -67,9 +64,7 @@ fn reset() {
 
 #[test]
 fn set() {
-    let mut sw = Stopwatch::new();
-
-    sw.start().unwrap();
+    let mut sw = Stopwatch::new_started();
     sw.set(DELAY);
 
     assert!(sw.is_stopped());
@@ -126,9 +121,7 @@ fn double_starts_stops_errs() {
 
 #[test]
 fn sane_elapsed_while_stopped() {
-    let mut sw = Stopwatch::new();
-
-    sw.start().unwrap();
+    let mut sw = Stopwatch::new_started();
     thread::sleep(DELAY);
     sw.stop().unwrap();
 
@@ -137,9 +130,7 @@ fn sane_elapsed_while_stopped() {
 
 #[test]
 fn sane_elapsed_while_running() {
-    let mut sw = Stopwatch::new();
-
-    sw.start().unwrap();
+    let sw = Stopwatch::new_started();
     thread::sleep(DELAY);
 
     assert!(sw.elapsed() >= DELAY);
