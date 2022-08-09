@@ -25,3 +25,5 @@
   * added Stopwatch::is_running
   * added Stopwatch::is_stopped
   * added Clone, Copy, Default, Add, Sub, AddAssign, and SubAssign impls for Stopwatch
+* added Error
+  * added Clone, Copy, Debug, PartialEq, and Eq impls for Error
