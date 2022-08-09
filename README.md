@@ -1,7 +1,5 @@
 # libsw
 
-`libsw` is a straightforward stopwatch implementation.
+`libsw` is a straightforward and safe stopwatch implementation.
 
-It doesn't contain any unsafe code or panics.
-
-See [the documentation](https://docs.rs/libsw).
+See [the documentation](https://docs.rs/libsw) for more details.
