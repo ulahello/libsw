@@ -4,6 +4,7 @@
 * added Display, Error, and Hash impls for Error
 * added examples to docs
 * improved test consistency
+* renamed license files
 
 ## [0.2.0] - 2022-08-07
 * added Debug impl for Stopwatch
