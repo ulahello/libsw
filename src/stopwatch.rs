@@ -307,8 +307,7 @@ impl Stopwatch {
     /// ```
     #[inline]
     pub fn set(&mut self, new: Duration) {
-        self.elapsed = new;
-        self.start = None;
+        *self = Self::with_elapsed(new);
     }
 
     /// Stops and sets the total elapsed time to `new`, returning the previous
