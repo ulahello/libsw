@@ -7,6 +7,7 @@
 * added `Stopwatch::with_elapsed_started`
 * added `Stopwatch::from_raw`
 * added `Stopwatch::replace`
+* added `Hash` impl for `Stopwatch`
 * added `Display`, `Error`, and `Hash` impls for `Error`
 * added examples to docs
 * improved test consistency

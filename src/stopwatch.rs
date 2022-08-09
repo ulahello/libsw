@@ -11,7 +11,7 @@ use std::time::Instant;
 /// Stopwatch abstraction
 ///
 /// A stopwatch measures and accumulates elapsed time between starts and stops.
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, Hash)]
 pub struct Stopwatch {
     elapsed: Duration,
     start: Option<Instant>,
