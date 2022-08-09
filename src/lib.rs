@@ -36,7 +36,7 @@
 //! `libsw` contains no unsafe code (`#![forbid(unsafe_code)]`).
 
 mod stopwatch;
-pub use stopwatch::*;
+pub use stopwatch::{Error, Stopwatch};
 
 #[cfg(test)]
 mod tests;
