@@ -1,7 +1,7 @@
 # changelog
 
 ## [unreleased]
-* added Display and Error impls for Error
+* added Display, Error, and Hash impls for Error
 * added examples to docs
 * improved test consistency
 
