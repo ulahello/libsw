@@ -1,8 +1,7 @@
 # changelog
 
 ## [unreleased]
-* removed `Stopwatch::new`
-* added `Stopwatch::new`
+* changed `Stopwatch::new`
 * added `Stopwatch::new_started`
 * added `Stopwatch::with_elapsed`
 * added `Stopwatch::with_elapsed_started`
