@@ -45,7 +45,8 @@ impl Stopwatch {
     ///
     /// # Errors
     ///
-    /// Returns [`Error::AlreadyStarted`] if the stopwatch is running.
+    /// Returns [`AlreadyStarted`](Error::AlreadyStarted) if the stopwatch is
+    /// running.
     pub fn start(&mut self) -> Result<(), Error> {
         if self.is_running() {
             Err(Error::AlreadyStarted)
@@ -59,7 +60,8 @@ impl Stopwatch {
     ///
     /// # Errors
     ///
-    /// Returns [`Error::AlreadyStopped`] if the stopwatch is not running.
+    /// Returns [`AlreadyStopped`](Error::AlreadyStopped) if the stopwatch is
+    /// not running.
     pub fn stop(&mut self) -> Result<(), Error> {
         if let Some(start) = self.start {
             *self += Instant::now().saturating_duration_since(start);
