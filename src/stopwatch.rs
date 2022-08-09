@@ -41,6 +41,32 @@ impl Stopwatch {
         }
     }
 
+    /// Returns the total time elapsed.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::{Error, Stopwatch};
+    /// # use core::time::Duration;
+    /// # use std::thread;
+    /// # fn main() -> Result<(), Error> {
+    /// let mut sw = Stopwatch::default();
+    /// sw.start()?;
+    /// thread::sleep(Duration::from_millis(100));
+    /// assert!(sw.elapsed() >= Duration::from_millis(100));
+    /// # Ok(())
+    /// # }
+    /// ```
+    #[must_use]
+    pub fn elapsed(&self) -> Duration {
+        if let Some(start) = self.start {
+            self.elapsed
+                .saturating_add(Instant::now().saturating_duration_since(start))
+        } else {
+            self.elapsed
+        }
+    }
+
     /// Starts measuring the time elapsed.
     ///
     /// # Errors
@@ -131,6 +157,41 @@ impl Stopwatch {
         }
     }
 
+    /// Returns `true` if the stopwatch is running.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// # use core::time::Duration;
+    /// # fn main() {
+    /// let sw = Stopwatch::new(Duration::ZERO, true);
+    /// assert!(sw.is_running());
+    /// # }
+    /// ```
+    #[inline]
+    #[must_use]
+    pub const fn is_running(&self) -> bool {
+        self.start.is_some()
+    }
+
+    /// Returns `true` if the stopwatch is stopped.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// # fn main() {
+    /// let sw = Stopwatch::default();
+    /// assert!(sw.is_stopped());
+    /// # }
+    /// ```
+    #[inline]
+    #[must_use]
+    pub const fn is_stopped(&self) -> bool {
+        self.start.is_none()
+    }
+
     /// Stops and resets the elapsed time to zero.
     ///
     /// # Examples
@@ -167,67 +228,6 @@ impl Stopwatch {
     pub fn set(&mut self, new: Duration) {
         self.elapsed = new;
         self.start = None;
-    }
-
-    /// Returns the total time elapsed.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// # use libsw::{Error, Stopwatch};
-    /// # use core::time::Duration;
-    /// # use std::thread;
-    /// # fn main() -> Result<(), Error> {
-    /// let mut sw = Stopwatch::default();
-    /// sw.start()?;
-    /// thread::sleep(Duration::from_millis(100));
-    /// assert!(sw.elapsed() >= Duration::from_millis(100));
-    /// # Ok(())
-    /// # }
-    /// ```
-    #[must_use]
-    pub fn elapsed(&self) -> Duration {
-        if let Some(start) = self.start {
-            self.elapsed
-                .saturating_add(Instant::now().saturating_duration_since(start))
-        } else {
-            self.elapsed
-        }
-    }
-
-    /// Returns `true` if the stopwatch is running.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// # use libsw::Stopwatch;
-    /// # use core::time::Duration;
-    /// # fn main() {
-    /// let sw = Stopwatch::new(Duration::ZERO, true);
-    /// assert!(sw.is_running());
-    /// # }
-    /// ```
-    #[inline]
-    #[must_use]
-    pub const fn is_running(&self) -> bool {
-        self.start.is_some()
-    }
-
-    /// Returns `true` if the stopwatch is stopped.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// # use libsw::Stopwatch;
-    /// # fn main() {
-    /// let sw = Stopwatch::default();
-    /// assert!(sw.is_stopped());
-    /// # }
-    /// ```
-    #[inline]
-    #[must_use]
-    pub const fn is_stopped(&self) -> bool {
-        self.start.is_none()
     }
 
     /// Syncs changes in the elapsed time, effectively toggling the stopwatch
