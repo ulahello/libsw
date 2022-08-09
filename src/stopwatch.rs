@@ -2,8 +2,10 @@
 // copyright (C) 2022  Ula Shipman <ula.hello@mailbox.org>
 // licensed under MIT OR GPL-3.0-or-later
 
+use core::fmt;
 use core::ops;
 use core::time::Duration;
+use std::error;
 use std::time::Instant;
 
 /// Stopwatch abstraction
@@ -195,3 +197,14 @@ pub enum Error {
     /// Called [`Stopwatch::stop`] while stopped
     AlreadyStopped,
 }
+
+impl fmt::Display for Error {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
+        f.write_str(match self {
+            Self::AlreadyStarted => "stopwatch already started",
+            Self::AlreadyStopped => "stopwatch already stopped",
+        })
+    }
+}
+
+impl error::Error for Error {}
