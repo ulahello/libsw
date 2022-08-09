@@ -230,6 +230,27 @@ impl Stopwatch {
         self.start = None;
     }
 
+    /// Stops and sets the total elapsed time to `new`, returning the previous
+    /// elapsed time.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// # use core::time::Duration;
+    /// # fn main() {
+    /// let mut sw = Stopwatch::new(Duration::from_secs(3), false);
+    /// let previous = sw.replace(Duration::from_secs(1));
+    /// assert_eq!(previous, Duration::from_secs(3));
+    /// assert_eq!(sw.elapsed(), Duration::from_secs(1));
+    /// # }
+    /// ```
+    pub fn replace(&mut self, new: Duration) -> Duration {
+        let old = self.elapsed();
+        self.set(new);
+        old
+    }
+
     /// Syncs changes in the elapsed time, effectively toggling the stopwatch
     /// twice.
     #[inline]

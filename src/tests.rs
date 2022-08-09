@@ -77,6 +77,17 @@ fn set() {
 }
 
 #[test]
+fn replace() {
+    let mut sw = Stopwatch::new(DELAY, true);
+
+    let prev = sw.replace(DELAY * 2);
+
+    assert!(sw.is_stopped());
+    assert!(prev >= DELAY);
+    assert_eq!(sw.elapsed(), DELAY * 2);
+}
+
+#[test]
 fn add() {
     let mut sw = Stopwatch::default();
 

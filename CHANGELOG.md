@@ -1,6 +1,7 @@
 # changelog
 
 ## [unreleased]
+* added Stopwatch::replace
 * added Display, Error, and Hash impls for Error
 * added examples to docs
 * improved test consistency
