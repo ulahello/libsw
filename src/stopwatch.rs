@@ -106,14 +106,14 @@ impl Stopwatch {
         }
     }
 
-    /// Returns whether the stopwatch is running.
+    /// Returns `true` if the stopwatch is running.
     #[inline]
     #[must_use]
     pub const fn is_running(&self) -> bool {
         self.start.is_some()
     }
 
-    /// Returns whether the stopwatch is stopped.
+    /// Returns `true` if the stopwatch is stopped.
     #[inline]
     #[must_use]
     pub const fn is_stopped(&self) -> bool {
