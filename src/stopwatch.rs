@@ -18,8 +18,7 @@ pub struct Stopwatch {
 }
 
 impl Stopwatch {
-    /// Returns a [`Stopwatch`] with the given elapsed time. If `running`, start
-    /// the stopwatch.
+    /// Returns a stopped `Stopwatch` with zero elapsed time.
     ///
     /// # Examples
     ///
@@ -27,18 +26,94 @@ impl Stopwatch {
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
     /// # fn main() {
-    /// let sw = Stopwatch::new(Duration::from_secs(1), false);
+    /// let sw = Stopwatch::new();
+    /// assert!(sw.is_stopped());
+    /// assert_eq!(sw.elapsed(), Duration::ZERO);
+    /// # }
+    /// ```
+    #[inline]
+    #[must_use]
+    pub const fn new() -> Self {
+        Self::with_elapsed(Duration::ZERO)
+    }
+
+    /// Returns a running `Stopwatch` initialized with zero elapsed time.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// # use core::time::Duration;
+    /// # fn main() {
+    /// let sw = Stopwatch::new_started();
+    /// // if we measure sw.elapsed(), it very likely is *not* zero, since it's already running.
+    /// assert!(sw.is_running());
+    /// # }
+    /// ```
+    #[inline]
+    #[must_use]
+    pub fn new_started() -> Self {
+        Self::with_elapsed_started(Duration::ZERO)
+    }
+
+    /// Returns a stopped `Stopwatch` with the given elapsed time.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// # use core::time::Duration;
+    /// # fn main() {
+    /// let sw = Stopwatch::with_elapsed(Duration::from_secs(1));
     /// assert!(sw.is_stopped());
     /// assert_eq!(sw.elapsed(), Duration::from_secs(1));
     /// # }
     /// ```
     #[inline]
     #[must_use]
-    pub fn new(elapsed: Duration, running: bool) -> Self {
-        Self {
-            elapsed,
-            start: if running { Some(Instant::now()) } else { None },
-        }
+    pub const fn with_elapsed(elapsed: Duration) -> Self {
+        Self::from_raw(elapsed, None)
+    }
+
+    /// Returns a started `Stopwatch` initialized with the given elapsed time.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// # use core::time::Duration;
+    /// # fn main() {
+    /// let sw = Stopwatch::with_elapsed_started(Duration::from_secs(1));
+    /// assert!(sw.is_running());
+    /// assert!(sw.elapsed() >= Duration::from_secs(1));
+    /// # }
+    /// ```
+    #[inline]
+    #[must_use]
+    pub fn with_elapsed_started(elapsed: Duration) -> Self {
+        Self::from_raw(elapsed, Some(Instant::now()))
+    }
+
+    /// Returns a `Stopwatch` from its raw parts.
+    ///
+    /// For more details about the internals of a `Stopwatch`, see the [struct
+    /// documentation](Self).
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// # use core::time::Duration;
+    /// # fn main() {
+    /// let sw = Stopwatch::from_raw(Duration::from_secs(1), None);
+    /// assert!(sw.is_stopped());
+    /// assert_eq!(sw.elapsed(), Duration::from_secs(1));
+    /// # }
+    /// ```
+    #[inline]
+    #[must_use]
+    pub const fn from_raw(elapsed: Duration, start: Option<Instant>) -> Self {
+        Self { elapsed, start }
     }
 
     /// Returns the total time elapsed.
@@ -50,7 +125,7 @@ impl Stopwatch {
     /// # use core::time::Duration;
     /// # use std::thread;
     /// # fn main() -> Result<(), Error> {
-    /// let mut sw = Stopwatch::default();
+    /// let mut sw = Stopwatch::new();
     /// sw.start()?;
     /// thread::sleep(Duration::from_millis(100));
     /// assert!(sw.elapsed() >= Duration::from_millis(100));
@@ -81,7 +156,7 @@ impl Stopwatch {
     /// # use core::time::Duration;
     /// # use std::thread;
     /// # fn main() {
-    /// let mut sw = Stopwatch::default();
+    /// let mut sw = Stopwatch::new();
     /// assert!(sw.start().is_ok());
     /// assert!(sw.start().is_err());
     ///
@@ -114,7 +189,7 @@ impl Stopwatch {
     /// # use core::time::Duration;
     /// # use std::thread;
     /// # fn main() {
-    /// let mut sw = Stopwatch::new(Duration::ZERO, true);
+    /// let mut sw = Stopwatch::new_started();
     /// assert!(sw.stop().is_ok());
     /// assert!(sw.stop().is_err());
     ///
@@ -141,7 +216,7 @@ impl Stopwatch {
     /// ```
     /// # use libsw::Stopwatch;
     /// # fn main() {
-    /// let mut sw = Stopwatch::default();
+    /// let mut sw = Stopwatch::new();
     /// sw.toggle();
     /// assert!(sw.is_running());
     /// sw.toggle();
@@ -165,7 +240,7 @@ impl Stopwatch {
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
     /// # fn main() {
-    /// let sw = Stopwatch::new(Duration::ZERO, true);
+    /// let sw = Stopwatch::new_started();
     /// assert!(sw.is_running());
     /// # }
     /// ```
@@ -182,7 +257,7 @@ impl Stopwatch {
     /// ```
     /// # use libsw::Stopwatch;
     /// # fn main() {
-    /// let sw = Stopwatch::default();
+    /// let sw = Stopwatch::new();
     /// assert!(sw.is_stopped());
     /// # }
     /// ```
@@ -200,7 +275,7 @@ impl Stopwatch {
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
     /// # fn main() {
-    /// let mut sw = Stopwatch::new(Duration::from_secs(1), true);
+    /// let mut sw = Stopwatch::with_elapsed_started(Duration::from_secs(1));
     /// sw.reset();
     /// assert_eq!(sw.elapsed(), Duration::ZERO);
     /// assert!(sw.is_stopped());
@@ -208,7 +283,7 @@ impl Stopwatch {
     /// ```
     #[inline]
     pub fn reset(&mut self) {
-        *self = Self::default();
+        *self = Self::new();
     }
 
     /// Stops and sets the total elapsed time to `new`.
@@ -219,7 +294,7 @@ impl Stopwatch {
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
     /// # fn main() {
-    /// let mut sw = Stopwatch::default();
+    /// let mut sw = Stopwatch::new();
     /// sw.set(Duration::from_secs(1));
     /// assert_eq!(sw.elapsed(), Duration::from_secs(1));
     /// # }
@@ -239,7 +314,7 @@ impl Stopwatch {
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
     /// # fn main() {
-    /// let mut sw = Stopwatch::new(Duration::from_secs(3), false);
+    /// let mut sw = Stopwatch::with_elapsed(Duration::from_secs(3));
     /// let previous = sw.replace(Duration::from_secs(1));
     /// assert_eq!(previous, Duration::from_secs(3));
     /// assert_eq!(sw.elapsed(), Duration::from_secs(1));
@@ -264,10 +339,10 @@ impl Stopwatch {
 }
 
 impl Default for Stopwatch {
-    /// Returns a stopped [`Stopwatch`] with zero elapsed time.
+    /// Returns the default `Stopwatch`. Same as calling [`Stopwatch::new`].
     #[inline]
     fn default() -> Self {
-        Self::new(Duration::ZERO, false)
+        Self::new()
     }
 }
 
@@ -298,7 +373,7 @@ impl ops::AddAssign<Duration> for Stopwatch {
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
     /// # fn main() {
-    /// let mut sw = Stopwatch::new(Duration::from_secs(1), false);
+    /// let mut sw = Stopwatch::with_elapsed(Duration::from_secs(1));
     /// sw += Duration::from_secs(1);
     /// assert_eq!(sw.elapsed(), Duration::from_secs(2));
     /// # }
@@ -316,7 +391,7 @@ impl ops::SubAssign<Duration> for Stopwatch {
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
     /// # fn main() {
-    /// let mut sw = Stopwatch::new(Duration::from_secs(1), false);
+    /// let mut sw = Stopwatch::with_elapsed(Duration::from_secs(1));
     /// sw -= Duration::from_secs(1);
     /// assert_eq!(sw.elapsed(), Duration::ZERO);
     /// # }
@@ -335,7 +410,7 @@ impl ops::SubAssign<Duration> for Stopwatch {
 /// ```
 /// # use libsw::{Error, Stopwatch};
 /// # fn main() -> Result<(), Error> {
-/// let mut sw = Stopwatch::default();
+/// let mut sw = Stopwatch::new();
 /// sw.start()?;
 /// assert_eq!(sw.start(), Err(Error::AlreadyStarted));
 /// sw.stop()?;

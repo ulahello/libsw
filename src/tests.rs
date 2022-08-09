@@ -18,7 +18,7 @@ fn default() {
 
 #[test]
 fn is_running() {
-    let mut sw = Stopwatch::default();
+    let mut sw = Stopwatch::new();
     assert!(!sw.is_running());
 
     sw.start().unwrap();
@@ -30,7 +30,7 @@ fn is_running() {
 
 #[test]
 fn is_stopped() {
-    let mut sw = Stopwatch::default();
+    let mut sw = Stopwatch::new();
     assert!(sw.is_stopped());
 
     sw.start().unwrap();
@@ -42,7 +42,7 @@ fn is_stopped() {
 
 #[test]
 fn toggle() {
-    let mut sw = Stopwatch::default();
+    let mut sw = Stopwatch::new();
     assert!(sw.is_stopped());
 
     sw.toggle();
@@ -54,7 +54,7 @@ fn toggle() {
 
 #[test]
 fn reset() {
-    let mut sw = Stopwatch::default();
+    let mut sw = Stopwatch::new();
 
     sw.start().unwrap();
     thread::sleep(DELAY);
@@ -67,7 +67,7 @@ fn reset() {
 
 #[test]
 fn set() {
-    let mut sw = Stopwatch::default();
+    let mut sw = Stopwatch::new();
 
     sw.start().unwrap();
     sw.set(DELAY);
@@ -78,7 +78,7 @@ fn set() {
 
 #[test]
 fn replace() {
-    let mut sw = Stopwatch::new(DELAY, true);
+    let mut sw = Stopwatch::with_elapsed_started(DELAY);
 
     let prev = sw.replace(DELAY * 2);
 
@@ -89,7 +89,7 @@ fn replace() {
 
 #[test]
 fn add() {
-    let mut sw = Stopwatch::default();
+    let mut sw = Stopwatch::new();
 
     sw += DELAY;
 
@@ -106,7 +106,7 @@ fn add() {
 
 #[test]
 fn sub() {
-    let mut sw = Stopwatch::new(DELAY * 3, false);
+    let mut sw = Stopwatch::with_elapsed(DELAY * 3);
 
     sw -= DELAY;
     assert_eq!(sw.elapsed(), DELAY * 2);
@@ -115,7 +115,7 @@ fn sub() {
 
 #[test]
 fn double_starts_stops_errs() {
-    let mut sw = Stopwatch::default();
+    let mut sw = Stopwatch::new();
 
     assert_eq!(sw.start(), Ok(()));
     assert_eq!(sw.start(), Err(Error::AlreadyStarted));
@@ -126,7 +126,7 @@ fn double_starts_stops_errs() {
 
 #[test]
 fn sane_elapsed_while_stopped() {
-    let mut sw = Stopwatch::default();
+    let mut sw = Stopwatch::new();
 
     sw.start().unwrap();
     thread::sleep(DELAY);
@@ -137,7 +137,7 @@ fn sane_elapsed_while_stopped() {
 
 #[test]
 fn sane_elapsed_while_running() {
-    let mut sw = Stopwatch::default();
+    let mut sw = Stopwatch::new();
 
     sw.start().unwrap();
     thread::sleep(DELAY);
