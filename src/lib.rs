@@ -5,8 +5,7 @@
 #![forbid(unsafe_code)]
 #![warn(missing_docs, clippy::pedantic)]
 
-//! This is a straightforward stopwatch implementation. It doesn't implement
-//! laps.
+//! `libsw` is a comprehensive stopwatch implementation.
 //!
 //! See the [struct documentation](Stopwatch) for details.
 //!
