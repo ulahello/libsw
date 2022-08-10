@@ -10,8 +10,6 @@ use core::time::Duration;
 use std::error;
 use std::time::Instant;
 
-/// Stopwatch abstraction
-///
 /// A `Stopwatch` measures and accumulates elapsed time between starts and
 /// stops.
 ///
