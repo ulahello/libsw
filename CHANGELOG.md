@@ -4,7 +4,7 @@
 * added `Guard`
   * added `Stopwatch::guard`
   * added `Stopwatch::guard_at`
-  * added `Drop` impl for `Guard`
+  * added `Debug` and `Drop` impl for `Guard`
 
 ## [1.2.0] - 2022-08-09
 * added `Stopwatch::elapsed_at`
