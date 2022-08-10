@@ -8,8 +8,6 @@ use core::time::Duration;
 use std::error;
 use std::time::Instant;
 
-// TODO: initializing stopwatches with given start time
-
 /// Stopwatch abstraction
 ///
 /// A `Stopwatch` measures and accumulates elapsed time between starts and
@@ -53,7 +51,6 @@ impl Stopwatch {
     ///
     /// ```
     /// # use libsw::Stopwatch;
-    /// # use core::time::Duration;
     /// # fn main() {
     /// let sw = Stopwatch::new_started();
     /// // if we measure sw.elapsed(), it very likely is *not* zero, since it's already running.
@@ -153,7 +150,6 @@ impl Stopwatch {
     ///
     /// ```
     /// # use libsw::Stopwatch;
-    /// # use core::time::Duration;
     /// # use std::time::Instant;
     /// # fn main() {
     /// let sw_1 = Stopwatch::new_started();
@@ -196,13 +192,9 @@ impl Stopwatch {
     /// assert!(then != now);
     /// # }
     /// ```
+    #[inline]
     pub fn start(&mut self) -> Result<(), Error> {
-        if self.is_running() {
-            Err(Error::AlreadyStarted)
-        } else {
-            self.start = Some(Instant::now());
-            Ok(())
-        }
+        self.start_at(Instant::now())
     }
 
     /// Stops measuring the time elapsed since the last start.
@@ -229,9 +221,80 @@ impl Stopwatch {
     /// assert!(then == now);
     /// # }
     /// ```
+    #[inline]
     pub fn stop(&mut self) -> Result<(), Error> {
+        self.stop_at(Instant::now())
+    }
+
+    /// Starts measuring the time elapsed at the given [`Instant`].
+    ///
+    /// # Errors
+    ///
+    /// Returns [`AlreadyStarted`](Error::AlreadyStarted) if the stopwatch is
+    /// running.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::{Error, Stopwatch};
+    /// # use core::time::Duration;
+    /// # use std::thread;
+    /// # use std::time::Instant;
+    /// # fn main() -> Result<(), Error> {
+    /// let mut sw_1 = Stopwatch::new();
+    /// let mut sw_2 = Stopwatch::new();
+    ///
+    /// let start = Instant::now();
+    /// // off to the races! at the same time!
+    /// sw_1.start_at(start)?;
+    /// sw_2.start_at(start)?;
+    ///
+    /// thread::sleep(Duration::from_millis(100));
+    /// let anchor = Instant::now();
+    ///
+    /// assert_eq!(sw_1.elapsed_at(anchor), sw_2.elapsed_at(anchor)); // 'twas a tie
+    /// assert!(sw_1.elapsed_at(anchor) >= Duration::from_millis(100));
+    /// # Ok(())
+    /// # }
+    /// ```
+    pub fn start_at(&mut self, anchor: Instant) -> Result<(), Error> {
+        if self.is_running() {
+            Err(Error::AlreadyStarted)
+        } else {
+            self.start = Some(anchor);
+            Ok(())
+        }
+    }
+
+    /// Stops measuring the time elapsed since the last start, at the given
+    /// [`Instant`]. If `anchor` is earlier than the last start, there is no
+    /// effect on the elapsed time.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`AlreadyStopped`](Error::AlreadyStopped) if the stopwatch is
+    /// not running.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::{Error, Stopwatch};
+    /// # use core::time::Duration;
+    /// # use std::thread;
+    /// # use std::time::Instant;
+    /// # fn main() -> Result<(), Error> {
+    /// let mut sw_1 = Stopwatch::new_started();
+    /// let mut sw_2 = sw_1.clone();
+    /// let stop = Instant::now();
+    /// sw_1.stop_at(stop)?;
+    /// sw_2.stop_at(stop)?;
+    /// assert_eq!(sw_1.elapsed(), sw_2.elapsed());
+    /// # Ok(())
+    /// # }
+    /// ```
+    pub fn stop_at(&mut self, anchor: Instant) -> Result<(), Error> {
         if let Some(start) = self.start {
-            *self += Instant::now().saturating_duration_since(start);
+            *self += anchor.saturating_duration_since(start);
             self.start = None;
             Ok(())
         } else {
@@ -266,7 +329,6 @@ impl Stopwatch {
     ///
     /// ```
     /// # use libsw::Stopwatch;
-    /// # use core::time::Duration;
     /// # fn main() {
     /// let sw = Stopwatch::new_started();
     /// assert!(sw.is_running());

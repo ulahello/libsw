@@ -2,6 +2,8 @@
 
 ## [unreleased]
 * added `Stopwatch::elapsed_at`
+* added `Stopwatch::start_at`
+* added `Stopwatch::stop_at`
 
 ## [1.1.0] - 2022-08-09
 * added `Stopwatch::saturating_add`
