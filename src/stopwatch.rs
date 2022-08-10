@@ -2,6 +2,8 @@
 // copyright (C) 2022  Ula Shipman <ula.hello@mailbox.org>
 // licensed under MIT OR GPL-3.0-or-later
 
+use crate::Guard;
+
 use core::fmt;
 use core::ops;
 use core::time::Duration;
@@ -325,6 +327,37 @@ impl Stopwatch {
         }
     }
 
+    /// Starts the `Stopwatch`, returning a [`Guard`] which when dropped, will
+    /// stop the `Stopwatch`.
+    ///
+    /// For examples on how to use [`Guard`]s, see the [struct
+    /// documentation](Guard).
+    ///
+    /// # Errors
+    ///
+    /// Returns [`AlreadyStarted`](Error::AlreadyStarted) if the stopwatch is
+    /// running.
+    pub fn guard(&mut self) -> Result<Guard<'_>, Error> {
+        self.start()?;
+        Ok(Guard { inner: self })
+    }
+
+    /// Starts the `Stopwatch` at the given [`Instant`], returning a [`Guard`]
+    /// which when dropped, will stop the `Stopwatch`.
+    ///
+    /// For details about `anchor`, see [`start_at`](Self::start_at). For
+    /// examples on how to use [`Guard`]s, see the [struct
+    /// documentation](Guard).
+    ///
+    /// # Errors
+    ///
+    /// Returns [`AlreadyStarted`](Error::AlreadyStarted) if the stopwatch is
+    /// running.
+    pub fn guard_at(&mut self, anchor: Instant) -> Result<Guard<'_>, Error> {
+        self.start_at(anchor)?;
+        Ok(Guard { inner: self })
+    }
+
     /// Returns `true` if the stopwatch is running.
     ///
     /// # Examples
@@ -530,9 +563,9 @@ impl ops::SubAssign<Duration> for Stopwatch {
 /// ```
 #[derive(Clone, Copy, Debug, Hash, PartialEq, Eq)]
 pub enum Error {
-    /// Called [`Stopwatch::start`] while running
+    /// Tried to start the stopwatch while it was already running
     AlreadyStarted,
-    /// Called [`Stopwatch::stop`] while stopped
+    /// Tried to stop the stopwatch when it was already stopped
     AlreadyStopped,
 }
 
