@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+
+## [1.3.0] - 2022-08-10
 * added `Guard`
   * added `Stopwatch::guard`
   * added `Stopwatch::guard_at`
