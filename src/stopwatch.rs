@@ -13,6 +13,8 @@ use std::time::Instant;
 /// A `Stopwatch` measures and accumulates elapsed time between starts and
 /// stops.
 ///
+/// # Implementation details
+///
 /// Internally, a `Stopwatch` combines a saved elapsed time and an instant which
 /// records the latest start time.
 ///
