@@ -328,7 +328,7 @@ impl Stopwatch {
     /// Starts the `Stopwatch`, returning a [`Guard`] which when dropped, will
     /// stop the `Stopwatch`.
     ///
-    /// For examples on how to use [`Guard`]s, see the [struct
+    /// For examples on how to use `Guard`s, see the [struct
     /// documentation](Guard).
     ///
     /// # Errors
@@ -344,7 +344,7 @@ impl Stopwatch {
     /// which when dropped, will stop the `Stopwatch`.
     ///
     /// For details about `anchor`, see [`start_at`](Self::start_at). For
-    /// examples on how to use [`Guard`]s, see the [struct
+    /// examples on how to use `Guard`s, see the [struct
     /// documentation](Guard).
     ///
     /// # Errors
