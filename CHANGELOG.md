@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+
+## [1.2.0] - 2022-08-09
 * added `Stopwatch::elapsed_at`
 * added `Stopwatch::start_at`
 * added `Stopwatch::stop_at`
