@@ -21,6 +21,9 @@ use std::time::Instant;
 /// While the start time is [`Some`], the `Stopwatch` is running. When it stops,
 /// the time which has elapsed since the start time is added to the elapsed
 /// time, and the start time is set to [`None`].
+///
+/// The function [`from_raw`](Self::from_raw) allows you to construct a
+/// `Stopwatch` from these components.
 #[derive(Clone, Copy, Debug, Hash)]
 pub struct Stopwatch {
     elapsed: Duration,
