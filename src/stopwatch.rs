@@ -84,7 +84,7 @@ impl Stopwatch {
         Self::from_raw(elapsed, None)
     }
 
-    /// Returns a started `Stopwatch` initialized with the given elapsed time.
+    /// Returns a running `Stopwatch` initialized with the given elapsed time.
     ///
     /// # Examples
     ///
