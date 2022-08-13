@@ -548,7 +548,7 @@ impl ops::SubAssign<Duration> for Stopwatch {
     }
 }
 
-/// Errors associated with [`Stopwatch`]
+/// Errors associated with a [`Stopwatch`].
 ///
 /// # Examples
 ///
