@@ -7,7 +7,7 @@ use crate::{Error, Stopwatch};
 use core::time::Duration;
 use std::thread;
 
-const DELAY: Duration = Duration::from_millis(200);
+const DELAY: Duration = Duration::from_millis(100);
 
 #[test]
 fn default() {
