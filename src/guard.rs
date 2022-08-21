@@ -10,8 +10,8 @@ use std::time::Instant;
 /// A running, guarded, [`Stopwatch`]. When dropped, the `Stopwatch` will
 /// automatically stop.
 ///
-/// `Guard`s are returned by the `Stopwatch` methods
-/// [`guard`](Stopwatch::guard) and [`guard_at`](Stopwatch::guard_at).
+/// `Guard`s are returned by the `Stopwatch` methods [`guard`](Stopwatch::guard)
+/// and [`guard_at`](Stopwatch::guard_at).
 ///
 /// # Examples
 ///
