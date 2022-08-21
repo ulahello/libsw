@@ -3,6 +3,7 @@
 ## [unreleased]
 * added `Guard::elapsed`
 * added `Guard::elapsed_at`
+* minor docs improvements
 
 ## [1.3.0] - 2022-08-10
 * added `Guard`
