@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+
+## [1.4.0] - 2022-08-20
 * added `Guard::elapsed`
 * added `Guard::elapsed_at`
 * minor docs improvements
