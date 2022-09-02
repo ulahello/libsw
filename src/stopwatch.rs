@@ -325,7 +325,7 @@ impl Stopwatch {
     #[inline]
     pub fn toggle(&mut self) {
         if self.stop().is_err() {
-            self.start = Some(Instant::now());
+            let _ = self.start();
         }
     }
 
