@@ -569,7 +569,6 @@ impl PartialEq for Stopwatch {
 impl Eq for Stopwatch {}
 
 impl Hash for Stopwatch {
-    // TODO: uncertain whether this is vulnerable to prefix collisions
     fn hash<H: Hasher>(&self, state: &mut H) {
         let mut self_ = *self;
         let err = self_.normalize_start();
