@@ -3,6 +3,7 @@
 ## [unreleased]
 * added `PartialEq` and `Eq` impl for `Stopwatch`
 * updated documentation for `Stopwatch::from_raw`
+* minor docs improvements
 
 ## [1.4.0] - 2022-08-20
 * added `Guard::elapsed`
