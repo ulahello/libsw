@@ -298,7 +298,7 @@ impl Stopwatch {
     /// let stop = Instant::now();
     /// sw_1.stop_at(stop)?;
     /// sw_2.stop_at(stop)?;
-    /// assert_eq!(sw_1.elapsed(), sw_2.elapsed());
+    /// assert_eq!(sw_1, sw_2);
     /// # Ok(())
     /// # }
     /// ```
