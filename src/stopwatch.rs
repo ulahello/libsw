@@ -5,6 +5,7 @@
 use crate::Guard;
 
 use core::fmt;
+use core::hash::{Hash, Hasher};
 use core::ops;
 use core::time::Duration;
 use std::error;
@@ -24,7 +25,7 @@ use std::time::Instant;
 ///
 /// The function [`from_raw`](Self::from_raw) allows you to construct a
 /// `Stopwatch` from these components.
-#[derive(Clone, Copy, Debug, Hash)]
+#[derive(Clone, Copy, Debug)]
 pub struct Stopwatch {
     elapsed: Duration,
     start: Option<Instant>,
@@ -121,6 +122,27 @@ impl Stopwatch {
     /// assert!(sw.is_stopped());
     /// assert_eq!(sw.elapsed(), Duration::from_secs(1));
     /// # }
+    /// ```
+    ///
+    /// # Notes
+    ///
+    /// It is possible to craft two stopwatches whose internal components
+    /// differ, but are equal according to [`PartialEq`], [`Eq`], and [`Hash`].
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// # use core::time::Duration;
+    /// # use std::time::Instant;
+    /// let mut elapsed = Duration::from_secs(10);
+    /// let mut start = Instant::now();
+    /// let sw_1 = Stopwatch::from_raw(elapsed, Some(start));
+    ///
+    /// elapsed -= Duration::from_secs(1);
+    /// start = start.checked_sub(Duration::from_secs(1)).unwrap();
+    /// let sw_2 = Stopwatch::from_raw(elapsed, Some(start));
+    ///
+    /// // different components, but they are equal!
+    /// assert_eq!(sw_1, sw_2);
     /// ```
     #[inline]
     #[must_use]
@@ -504,6 +526,22 @@ impl Stopwatch {
             self.start = Some(now);
         }
     }
+
+    /// "Transfers" `elapsed` to `start`, such that [`Self::elapsed`] is
+    /// unchanged, and the new `elapsed` is zero. Returns `false` if the new
+    /// start time cannot be represented.
+    #[inline]
+    fn normalize_start(&mut self) -> bool {
+        if let Some(ref mut instant) = self.start {
+            if let Some(new) = instant.checked_sub(self.elapsed) {
+                self.start = Some(new);
+                self.elapsed = Duration::ZERO;
+            } else {
+                return false;
+            }
+        }
+        true
+    }
 }
 
 impl Default for Stopwatch {
@@ -545,6 +583,34 @@ impl ops::SubAssign<Duration> for Stopwatch {
     #[inline]
     fn sub_assign(&mut self, rhs: Duration) {
         *self = *self - rhs;
+    }
+}
+
+impl PartialEq for Stopwatch {
+    /// Tests for equality between `self` and `rhs`.
+    ///
+    /// Stopwatches are equal if whether they are running is equal and their
+    /// elapsed time is equal.
+    fn eq(&self, rhs: &Self) -> bool {
+        let mut self_ = *self;
+        let mut rhs_ = *rhs;
+        let self_err = self_.normalize_start();
+        let rhs_err = rhs_.normalize_start();
+
+        self_.start == rhs_.start && self_.elapsed == rhs_.elapsed && self_err == rhs_err
+    }
+}
+
+impl Eq for Stopwatch {}
+
+impl Hash for Stopwatch {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        let mut self_ = *self;
+        let err = self_.normalize_start();
+
+        self_.start.hash(state);
+        self_.elapsed.hash(state);
+        err.hash(state);
     }
 }
 

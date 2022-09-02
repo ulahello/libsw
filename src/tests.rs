@@ -4,8 +4,11 @@
 
 use crate::{Error, Stopwatch};
 
+use core::hash::{Hash, Hasher};
 use core::time::Duration;
+use std::collections::hash_map::DefaultHasher;
 use std::thread;
+use std::time::Instant;
 
 const DELAY: Duration = Duration::from_millis(100);
 
@@ -143,4 +146,116 @@ fn sync_before_sub() {
     thread::sleep(DELAY);
     sw -= DELAY;
     assert!(sw.elapsed() >= DELAY);
+}
+
+#[test]
+fn eq_properties() {
+    for [a, b, c] in mixed_stopwatches() {
+        dbg!(a, b, c);
+
+        // reflexive
+        assert!(a == a);
+        assert!(b == b);
+
+        // symmetric
+        assert_eq!(a == b, b == a);
+
+        // transitive
+        if (a == b) && (b == c) {
+            assert_eq!(a, c);
+        }
+    }
+}
+
+#[test]
+fn eq_running() {
+    // whatever is compared shouldn't depend on the time of observation
+    let sw_1 = Stopwatch::new_started();
+    let sw_2 = sw_1.clone();
+    assert_eq!(sw_1, sw_2);
+}
+
+#[test]
+fn eq_correct() {
+    assert_ne!(Stopwatch::new(), Stopwatch::new_started(),);
+    assert_ne!(
+        Stopwatch::with_elapsed(Duration::from_secs(1)),
+        Stopwatch::with_elapsed(Duration::from_secs(2)),
+    );
+}
+
+#[test]
+fn partial_eq() {
+    for [a, b, _] in mixed_stopwatches() {
+        assert_eq!(a == b, !(a != b));
+    }
+}
+
+#[test]
+fn hash_and_eq() {
+    for [sw_1, sw_2, _] in mixed_stopwatches() {
+        let mut hasher_1 = DefaultHasher::new();
+        let mut hasher_2 = DefaultHasher::new();
+
+        sw_1.hash(&mut hasher_1);
+        sw_2.hash(&mut hasher_2);
+
+        // > When implementing both Hash and Eq, it is important that the following property holds:
+        // > k1 == k2 -> hash(k1) == hash(k2)
+        assert_eq!(sw_1 == sw_2, hasher_1.finish() == hasher_2.finish());
+    }
+}
+
+#[test]
+fn hash_running() {
+    let sw_1 = Stopwatch::new_started();
+    let sw_2 = sw_1.clone();
+
+    let mut hasher_1 = DefaultHasher::new();
+    let mut hasher_2 = DefaultHasher::new();
+
+    sw_1.hash(&mut hasher_1);
+    sw_2.hash(&mut hasher_2);
+
+    // whatever is hashed shouldn't depend on the time of observation
+    assert_eq!(hasher_1.finish(), hasher_2.finish());
+}
+
+fn mixed_stopwatches() -> [[Stopwatch; 3]; 8] {
+    let crafted_1;
+    let crafted_2;
+    {
+        let mut elapsed = Duration::from_secs(10);
+        let mut start = Instant::now();
+        crafted_1 = Stopwatch::from_raw(elapsed, Some(start));
+
+        elapsed -= Duration::from_secs(1);
+        start = start.checked_sub(Duration::from_secs(1)).unwrap();
+        crafted_2 = Stopwatch::from_raw(elapsed, Some(start));
+    }
+
+    let started = Stopwatch::new_started();
+    let started_elapsed = Stopwatch::with_elapsed_started(Duration::from_secs(1));
+    [
+        [Stopwatch::new(), Stopwatch::new(), Stopwatch::new()],
+        [started, started, started],
+        [started, Stopwatch::new(), Stopwatch::new()],
+        [
+            Stopwatch::with_elapsed(Duration::from_secs(1)),
+            Stopwatch::with_elapsed(Duration::from_secs(1)),
+            Stopwatch::with_elapsed(Duration::from_secs(1)),
+        ],
+        [started_elapsed, started_elapsed, started_elapsed],
+        [
+            started_elapsed,
+            Stopwatch::with_elapsed(Duration::from_secs(1)),
+            Stopwatch::with_elapsed(Duration::from_secs(1)),
+        ],
+        [
+            Stopwatch::with_elapsed(Duration::from_secs(1)),
+            Stopwatch::with_elapsed(Duration::from_secs(2)),
+            Stopwatch::with_elapsed(Duration::from_secs(3)),
+        ],
+        [crafted_1, crafted_2, Stopwatch::default()],
+    ]
 }
