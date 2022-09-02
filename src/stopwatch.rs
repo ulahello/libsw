@@ -56,7 +56,6 @@ impl Stopwatch {
     /// ```
     /// # use libsw::Stopwatch;
     /// let sw = Stopwatch::new_started();
-    /// // if we measure sw.elapsed(), it very likely is *not* zero, since it's already running.
     /// assert!(sw.is_running());
     /// ```
     #[inline]
