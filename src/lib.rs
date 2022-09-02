@@ -34,11 +34,13 @@
 //!
 //! `libsw` contains no unsafe code (`#![forbid(unsafe_code)]`).
 
+mod error;
 mod guard;
 mod stopwatch;
 
+pub use error::{Error, Result};
 pub use guard::Guard;
-pub use stopwatch::{Error, Result, Stopwatch};
+pub use stopwatch::Stopwatch;
 
 #[cfg(test)]
 mod tests;
