@@ -16,10 +16,10 @@ use std::time::Instant;
 /// # Examples
 ///
 /// ```
-/// # use libsw::{Error, Stopwatch};
+/// # use libsw::{Result, Stopwatch};
 /// # use core::time::Duration;
 /// # use std::thread;
-/// # fn main() -> Result<(), Error> {
+/// # fn main() -> Result<()> {
 /// let mut sw = Stopwatch::new();
 /// {
 ///     let _guard = sw.guard()?;
@@ -44,10 +44,10 @@ impl<'a> Guard<'a> {
     /// # Examples
     ///
     /// ```
-    /// # use libsw::{Error, Stopwatch};
+    /// # use libsw::{Result, Stopwatch};
     /// # use core::time::Duration;
     /// # use std::thread;
-    /// # fn main() -> Result<(), Error> {
+    /// # fn main() -> Result<()> {
     /// let mut sw = Stopwatch::new();
     /// let guard = sw.guard()?;
     /// thread::sleep(Duration::from_millis(100));
@@ -66,9 +66,9 @@ impl<'a> Guard<'a> {
     /// # Examples
     ///
     /// ```
-    /// # use libsw::{Error, Stopwatch};
+    /// # use libsw::{Result, Stopwatch};
     /// # use std::time::Instant;
-    /// # fn main() -> Result<(), Error> {
+    /// # fn main() -> Result<()> {
     /// let mut sw_1 = Stopwatch::new();
     /// let mut sw_2 = Stopwatch::new();
     ///
