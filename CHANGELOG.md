@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+
+## [1.5.0] - 2022-09-02
 * added `PartialEq` and `Eq` impls for `Stopwatch`
 * added `Result<T>` type, an alias for `Result<T, Error>`
 * changed implementation of `Hash` for `Stopwatch`
