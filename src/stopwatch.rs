@@ -399,8 +399,7 @@ impl Stopwatch {
     /// # use core::time::Duration;
     /// let mut sw = Stopwatch::with_elapsed_started(Duration::from_secs(1));
     /// sw.reset();
-    /// assert_eq!(sw.elapsed(), Duration::ZERO);
-    /// assert!(sw.is_stopped());
+    /// assert_eq!(sw, Stopwatch::new());
     /// ```
     #[inline]
     pub fn reset(&mut self) {
