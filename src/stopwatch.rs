@@ -39,11 +39,9 @@ impl Stopwatch {
     /// ```
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
-    /// # fn main() {
     /// let sw = Stopwatch::new();
     /// assert!(sw.is_stopped());
     /// assert_eq!(sw.elapsed(), Duration::ZERO);
-    /// # }
     /// ```
     #[inline]
     #[must_use]
@@ -57,11 +55,9 @@ impl Stopwatch {
     ///
     /// ```
     /// # use libsw::Stopwatch;
-    /// # fn main() {
     /// let sw = Stopwatch::new_started();
     /// // if we measure sw.elapsed(), it very likely is *not* zero, since it's already running.
     /// assert!(sw.is_running());
-    /// # }
     /// ```
     #[inline]
     #[must_use]
@@ -76,11 +72,9 @@ impl Stopwatch {
     /// ```
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
-    /// # fn main() {
     /// let sw = Stopwatch::with_elapsed(Duration::from_secs(1));
     /// assert!(sw.is_stopped());
     /// assert_eq!(sw.elapsed(), Duration::from_secs(1));
-    /// # }
     /// ```
     #[inline]
     #[must_use]
@@ -95,11 +89,9 @@ impl Stopwatch {
     /// ```
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
-    /// # fn main() {
     /// let sw = Stopwatch::with_elapsed_started(Duration::from_secs(1));
     /// assert!(sw.is_running());
     /// assert!(sw.elapsed() >= Duration::from_secs(1));
-    /// # }
     /// ```
     #[inline]
     #[must_use]
@@ -117,11 +109,9 @@ impl Stopwatch {
     /// ```
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
-    /// # fn main() {
     /// let sw = Stopwatch::from_raw(Duration::from_secs(1), None);
     /// assert!(sw.is_stopped());
     /// assert_eq!(sw.elapsed(), Duration::from_secs(1));
-    /// # }
     /// ```
     ///
     /// # Notes
@@ -178,12 +168,10 @@ impl Stopwatch {
     /// ```
     /// # use libsw::Stopwatch;
     /// # use std::time::Instant;
-    /// # fn main() {
     /// let sw_1 = Stopwatch::new_started();
     /// let sw_2 = sw_1.clone();
     /// let anchor = Instant::now();
     /// assert!(sw_1.elapsed_at(anchor) == sw_2.elapsed_at(anchor));
-    /// # }
     /// ```
     #[must_use]
     pub fn elapsed_at(&self, anchor: Instant) -> Duration {
@@ -208,7 +196,6 @@ impl Stopwatch {
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
     /// # use std::thread;
-    /// # fn main() {
     /// let mut sw = Stopwatch::new();
     /// assert!(sw.start().is_ok());
     /// assert!(sw.start().is_err());
@@ -217,7 +204,6 @@ impl Stopwatch {
     /// thread::sleep(Duration::from_millis(100));
     /// let now = sw.elapsed();
     /// assert!(then != now);
-    /// # }
     /// ```
     #[inline]
     pub fn start(&mut self) -> Result<(), Error> {
@@ -237,7 +223,6 @@ impl Stopwatch {
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
     /// # use std::thread;
-    /// # fn main() {
     /// let mut sw = Stopwatch::new_started();
     /// assert!(sw.stop().is_ok());
     /// assert!(sw.stop().is_err());
@@ -246,7 +231,6 @@ impl Stopwatch {
     /// thread::sleep(Duration::from_millis(100));
     /// let now = sw.elapsed();
     /// assert!(then == now);
-    /// # }
     /// ```
     #[inline]
     pub fn stop(&mut self) -> Result<(), Error> {
@@ -335,13 +319,11 @@ impl Stopwatch {
     ///
     /// ```
     /// # use libsw::Stopwatch;
-    /// # fn main() {
     /// let mut sw = Stopwatch::new();
     /// sw.toggle();
     /// assert!(sw.is_running());
     /// sw.toggle();
     /// assert!(sw.is_stopped());
-    /// # }
     /// ```
     #[inline]
     pub fn toggle(&mut self) {
@@ -387,10 +369,8 @@ impl Stopwatch {
     ///
     /// ```
     /// # use libsw::Stopwatch;
-    /// # fn main() {
     /// let sw = Stopwatch::new_started();
     /// assert!(sw.is_running());
-    /// # }
     /// ```
     #[inline]
     #[must_use]
@@ -404,10 +384,8 @@ impl Stopwatch {
     ///
     /// ```
     /// # use libsw::Stopwatch;
-    /// # fn main() {
     /// let sw = Stopwatch::new();
     /// assert!(sw.is_stopped());
-    /// # }
     /// ```
     #[inline]
     #[must_use]
@@ -422,12 +400,10 @@ impl Stopwatch {
     /// ```
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
-    /// # fn main() {
     /// let mut sw = Stopwatch::with_elapsed_started(Duration::from_secs(1));
     /// sw.reset();
     /// assert_eq!(sw.elapsed(), Duration::ZERO);
     /// assert!(sw.is_stopped());
-    /// # }
     /// ```
     #[inline]
     pub fn reset(&mut self) {
@@ -441,11 +417,9 @@ impl Stopwatch {
     /// ```
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
-    /// # fn main() {
     /// let mut sw = Stopwatch::new();
     /// sw.set(Duration::from_secs(1));
     /// assert_eq!(sw.elapsed(), Duration::from_secs(1));
-    /// # }
     /// ```
     #[inline]
     pub fn set(&mut self, new: Duration) {
@@ -460,12 +434,10 @@ impl Stopwatch {
     /// ```
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
-    /// # fn main() {
     /// let mut sw = Stopwatch::with_elapsed(Duration::from_secs(3));
     /// let previous = sw.replace(Duration::from_secs(1));
     /// assert_eq!(previous, Duration::from_secs(3));
     /// assert_eq!(sw.elapsed(), Duration::from_secs(1));
-    /// # }
     /// ```
     pub fn replace(&mut self, new: Duration) -> Duration {
         let old = self.elapsed();
@@ -479,13 +451,11 @@ impl Stopwatch {
     /// ```
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
-    /// # fn main() {
     /// let mut sw = Stopwatch::with_elapsed(Duration::from_secs(1));
     /// sw = sw.saturating_add(Duration::from_secs(1));
     /// assert_eq!(sw.elapsed(), Duration::from_secs(2));
     /// sw = sw.saturating_add(Duration::MAX);
     /// assert_eq!(sw.elapsed(), Duration::MAX);
-    /// # }
     /// ```
     #[inline]
     #[must_use]
@@ -500,13 +470,11 @@ impl Stopwatch {
     /// ```
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
-    /// # fn main() {
     /// let mut sw = Stopwatch::with_elapsed(Duration::from_secs(1));
     /// sw = sw.saturating_sub(Duration::from_secs(1));
     /// assert_eq!(sw.elapsed(), Duration::ZERO);
     /// sw = sw.saturating_sub(Duration::from_secs(1));
     /// assert_eq!(sw.elapsed(), Duration::ZERO);
-    /// # }
     /// ```
     #[inline]
     #[must_use]
