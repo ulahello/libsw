@@ -12,12 +12,12 @@
 //! # Examples
 //!
 //! ```
-//! use libsw::{Result, Stopwatch};
+//! use libsw::Stopwatch;
 //!
 //! use core::time::Duration;
 //! use std::thread;
 //!
-//! fn main() -> Result<()> {
+//! fn main() -> libsw::Result<()> {
 //!     let mut sw = Stopwatch::new();
 //!
 //!     sw.start()?;

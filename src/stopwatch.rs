@@ -2,7 +2,7 @@
 // copyright (C) 2022  Ula Shipman <ula.hello@mailbox.org>
 // licensed under MIT OR GPL-3.0-or-later
 
-use crate::{Error, Guard, Result};
+use crate::{Error, Guard};
 
 use core::hash::{Hash, Hasher};
 use core::ops;
@@ -142,10 +142,10 @@ impl Stopwatch {
     /// # Examples
     ///
     /// ```
-    /// # use libsw::{Result, Stopwatch};
+    /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
     /// # use std::thread;
-    /// # fn main() -> Result<()> {
+    /// # fn main() -> libsw::Result<()> {
     /// let sw = Stopwatch::new_started();
     /// thread::sleep(Duration::from_millis(100));
     /// assert!(sw.elapsed() >= Duration::from_millis(100));
@@ -203,7 +203,7 @@ impl Stopwatch {
     /// assert!(then != now);
     /// ```
     #[inline]
-    pub fn start(&mut self) -> Result<()> {
+    pub fn start(&mut self) -> crate::Result<()> {
         self.start_at(Instant::now())
     }
 
@@ -230,7 +230,7 @@ impl Stopwatch {
     /// assert!(then == now);
     /// ```
     #[inline]
-    pub fn stop(&mut self) -> Result<()> {
+    pub fn stop(&mut self) -> crate::Result<()> {
         self.stop_at(Instant::now())
     }
 
@@ -244,11 +244,11 @@ impl Stopwatch {
     /// # Examples
     ///
     /// ```
-    /// # use libsw::{Result, Stopwatch};
+    /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
     /// # use std::thread;
     /// # use std::time::Instant;
-    /// # fn main() -> Result<()> {
+    /// # fn main() -> libsw::Result<()> {
     /// let mut sw_1 = Stopwatch::new();
     /// let mut sw_2 = Stopwatch::new();
     ///
@@ -265,7 +265,7 @@ impl Stopwatch {
     /// # Ok(())
     /// # }
     /// ```
-    pub fn start_at(&mut self, anchor: Instant) -> Result<()> {
+    pub fn start_at(&mut self, anchor: Instant) -> crate::Result<()> {
         if self.is_running() {
             Err(Error::AlreadyStarted)
         } else {
@@ -286,11 +286,11 @@ impl Stopwatch {
     /// # Examples
     ///
     /// ```
-    /// # use libsw::{Result, Stopwatch};
+    /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
     /// # use std::thread;
     /// # use std::time::Instant;
-    /// # fn main() -> Result<()> {
+    /// # fn main() -> libsw::Result<()> {
     /// let mut sw_1 = Stopwatch::new_started();
     /// let mut sw_2 = sw_1.clone();
     /// let stop = Instant::now();
@@ -300,7 +300,7 @@ impl Stopwatch {
     /// # Ok(())
     /// # }
     /// ```
-    pub fn stop_at(&mut self, anchor: Instant) -> Result<()> {
+    pub fn stop_at(&mut self, anchor: Instant) -> crate::Result<()> {
         if let Some(start) = self.start {
             *self += anchor.saturating_duration_since(start);
             self.start = None;
@@ -339,7 +339,7 @@ impl Stopwatch {
     ///
     /// Returns [`AlreadyStarted`](Error::AlreadyStarted) if the stopwatch is
     /// running.
-    pub fn guard(&mut self) -> Result<Guard<'_>> {
+    pub fn guard(&mut self) -> crate::Result<Guard<'_>> {
         self.start()?;
         Ok(Guard { inner: self })
     }
@@ -355,7 +355,7 @@ impl Stopwatch {
     ///
     /// Returns [`AlreadyStarted`](Error::AlreadyStarted) if the stopwatch is
     /// running.
-    pub fn guard_at(&mut self, anchor: Instant) -> Result<Guard<'_>> {
+    pub fn guard_at(&mut self, anchor: Instant) -> crate::Result<Guard<'_>> {
         self.start_at(anchor)?;
         Ok(Guard { inner: self })
     }
