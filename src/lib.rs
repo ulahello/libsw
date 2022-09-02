@@ -12,12 +12,12 @@
 //! # Examples
 //!
 //! ```
-//! use libsw::{Error, Stopwatch};
+//! use libsw::{Result, Stopwatch};
 //!
 //! use core::time::Duration;
 //! use std::thread;
 //!
-//! fn main() -> Result<(), Error> {
+//! fn main() -> Result<()> {
 //!     let mut sw = Stopwatch::new();
 //!
 //!     sw.start()?;
@@ -38,7 +38,7 @@ mod guard;
 mod stopwatch;
 
 pub use guard::Guard;
-pub use stopwatch::{Error, Stopwatch};
+pub use stopwatch::{Error, Result, Stopwatch};
 
 #[cfg(test)]
 mod tests;
