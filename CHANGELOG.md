@@ -1,7 +1,7 @@
 # changelog
 
 ## [unreleased]
-* added `PartialEq` and `Eq` impl for `Stopwatch`
+* added `PartialEq` and `Eq` impls for `Stopwatch`
 * added `Result<T>` type, an alias for `Result<T, Error>`
 * updated documentation for `Stopwatch::from_raw`
 * minor docs improvements
