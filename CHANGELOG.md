@@ -3,6 +3,7 @@
 ## [unreleased]
 * added `PartialEq` and `Eq` impls for `Stopwatch`
 * added `Result<T>` type, an alias for `Result<T, Error>`
+* changed implementation of `Hash` for `Stopwatch`
 * updated documentation for `Stopwatch::from_raw`
 * minor docs improvements
 
