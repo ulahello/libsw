@@ -33,8 +33,8 @@ pub enum Error {
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> std::result::Result<(), fmt::Error> {
         f.write_str(match self {
-            Self::AlreadyStarted => "stopwatch already started",
-            Self::AlreadyStopped => "stopwatch already stopped",
+            Self::AlreadyStarted => "stopwatch started while already started",
+            Self::AlreadyStopped => "stopwatch stopped while already stopped",
         })
     }
 }
