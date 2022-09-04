@@ -387,7 +387,7 @@ impl Stopwatch {
     #[inline]
     #[must_use]
     pub const fn is_stopped(&self) -> bool {
-        self.start.is_none()
+        !self.is_running()
     }
 
     /// Stops and resets the elapsed time to zero.
