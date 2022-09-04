@@ -3,7 +3,7 @@
 // licensed under MIT OR GPL-3.0-or-later
 
 #![forbid(unsafe_code)]
-#![warn(missing_docs, clippy::pedantic)]
+#![warn(missing_docs, clippy::pedantic, clippy::nursery, clippy::cargo)]
 
 //! `libsw` is a comprehensive stopwatch implementation.
 //!

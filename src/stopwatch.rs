@@ -172,12 +172,10 @@ impl Stopwatch {
     /// ```
     #[must_use]
     pub fn elapsed_at(&self, anchor: Instant) -> Duration {
-        if let Some(start) = self.start {
+        self.start.map_or(self.elapsed, |start| {
             self.elapsed
                 .saturating_add(anchor.saturating_duration_since(start))
-        } else {
-            self.elapsed
-        }
+        })
     }
 
     /// Starts measuring the time elapsed.
