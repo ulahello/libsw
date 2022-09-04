@@ -339,9 +339,9 @@ impl Stopwatch {
     ///
     /// Returns [`AlreadyStarted`](Error::AlreadyStarted) if the stopwatch is
     /// running.
+    #[inline]
     pub fn guard(&mut self) -> crate::Result<Guard<'_>> {
-        self.start()?;
-        Ok(Guard { inner: self })
+        self.guard_at(Instant::now())
     }
 
     /// Starts the `Stopwatch` at the given [`Instant`], returning a [`Guard`]
