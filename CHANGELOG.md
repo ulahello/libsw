@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+
+## [1.7.0] - 2022-09-04
 * added `Guard::new`
 * improved clarity of error messages
 * cleaned up implementation of `Stopwatch::guard` and `Stopwatch::is_stopped`
