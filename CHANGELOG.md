@@ -4,6 +4,7 @@
 * added `Guard::new`
 * improved clarity of error messages
 * cleaned up implementation of `Stopwatch::guard` and `Stopwatch::is_stopped`
+* specified MSRV (minimum supported Rust version)
 
 ## [1.6.0] - 2022-09-03
 * added `PartialEq`, `Eq`, and `Hash` impls for `Guard`

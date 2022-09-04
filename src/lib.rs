@@ -7,6 +7,8 @@
 
 //! `libsw` is a comprehensive stopwatch implementation.
 //!
+//! The minimum supported version of Rust is `1.58.1`.
+//!
 //! See the [struct documentation](Stopwatch) for details.
 //!
 //! # Examples
