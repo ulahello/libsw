@@ -32,7 +32,7 @@ use std::time::Instant;
 /// # Ok(())
 /// # }
 /// ```
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct Guard<'a> {
     // invariant: sw must be running
     pub(crate) inner: &'a mut Stopwatch,
@@ -76,8 +76,7 @@ impl<'a> Guard<'a> {
     /// let guard_1 = sw_1.guard_at(start)?;
     /// let guard_2 = sw_2.guard_at(start)?;
     ///
-    /// let anchor = Instant::now();
-    /// assert!(guard_1.elapsed_at(anchor) == guard_2.elapsed_at(anchor));
+    /// assert!(guard_1 == guard_2);
     /// # Ok(())
     /// # }
     /// ```

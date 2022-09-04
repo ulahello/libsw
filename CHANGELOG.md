@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+* added `PartialEq` and `Eq` impls for `Guard`
+* minor docs improvements
 
 ## [1.5.0] - 2022-09-02
 * added `PartialEq` and `Eq` impls for `Stopwatch`
