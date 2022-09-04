@@ -35,10 +35,34 @@ use std::time::Instant;
 #[derive(Debug, PartialEq, Eq, Hash)]
 pub struct Guard<'a> {
     // invariant: sw must be running
-    pub(crate) inner: &'a mut Stopwatch,
+    inner: &'a mut Stopwatch,
 }
 
 impl<'a> Guard<'a> {
+    // TODO: v2 breaking change: have this return result instead, add relevant
+    // Error variant
+    /// Returns a `Guard` to a running [`Stopwatch`]. If the stopwatch is
+    /// stopped, returns [`None`].
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::{Guard, Stopwatch};
+    /// # fn main() -> libsw::Result<()> {
+    /// let mut sw = Stopwatch::new();
+    /// assert!(Guard::new(&mut sw).is_none());
+    ///
+    /// sw.start()?;
+    /// assert!(Guard::new(&mut sw).is_some());
+    /// assert!(sw.is_stopped());
+    /// # Ok(())
+    /// # }
+    /// ```
+    #[inline]
+    pub fn new(sw: &'a mut Stopwatch) -> Option<Self> {
+        sw.is_running().then(|| Self { inner: sw })
+    }
+
     /// Returns the total time elapsed.
     ///
     /// # Examples

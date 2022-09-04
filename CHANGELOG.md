@@ -1,6 +1,7 @@
 # changelog
 
 ## [unreleased]
+* added `Guard::new`
 
 ## [1.6.0] - 2022-09-03
 * added `PartialEq`, `Eq`, and `Hash` impls for `Guard`

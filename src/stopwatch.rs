@@ -353,9 +353,10 @@ impl Stopwatch {
     ///
     /// Returns [`AlreadyStarted`](Error::AlreadyStarted) if the stopwatch is
     /// running.
+    #[allow(clippy::missing_panics_doc)]
     pub fn guard_at(&mut self, anchor: Instant) -> crate::Result<Guard<'_>> {
         self.start_at(anchor)?;
-        Ok(Guard { inner: self })
+        Ok(Guard::new(self).unwrap())
     }
 
     /// Returns `true` if the stopwatch is running.
