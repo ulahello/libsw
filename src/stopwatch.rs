@@ -435,6 +435,7 @@ impl Stopwatch {
     /// assert_eq!(previous, Duration::from_secs(3));
     /// assert_eq!(sw.elapsed(), Duration::from_secs(1));
     /// ```
+    #[inline]
     pub fn replace(&mut self, new: Duration) -> Duration {
         let old = self.elapsed();
         self.set(new);
@@ -472,7 +473,6 @@ impl Stopwatch {
     /// sw = sw.saturating_sub(Duration::from_secs(1));
     /// assert_eq!(sw.elapsed(), Duration::ZERO);
     /// ```
-    #[inline]
     #[must_use]
     pub fn saturating_sub(mut self, dur: Duration) -> Self {
         self.sync_elapsed();
@@ -482,7 +482,7 @@ impl Stopwatch {
 
     /// Syncs changes in the elapsed time, effectively toggling the stopwatch
     /// twice.
-    #[inline]
+    #[inline] // fn is private; called once in Self::saturating_sub
     fn sync_elapsed(&mut self) {
         if let Some(start) = self.start {
             let now = Instant::now();
@@ -494,7 +494,6 @@ impl Stopwatch {
     /// "Transfers" `elapsed` to `start`, such that [`Self::elapsed`] is
     /// unchanged, and the new `elapsed` is zero. Returns `false` if the new
     /// start time cannot be represented.
-    #[inline]
     fn normalize_start(&mut self) -> bool {
         if let Some(ref mut instant) = self.start {
             if let Some(new) = instant.checked_sub(self.elapsed) {

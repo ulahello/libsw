@@ -90,6 +90,7 @@ impl<'a> Guard<'a> {
 impl<'a> Drop for Guard<'a> {
     /// Releases the guard, calling [`stop`](Stopwatch::stop) on the guarded
     /// [`Stopwatch`].
+    #[inline]
     fn drop(&mut self) {
         debug_assert!(self.inner.is_running());
         let _ = self.inner.stop();
