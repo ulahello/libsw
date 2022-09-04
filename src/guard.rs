@@ -32,7 +32,7 @@ use std::time::Instant;
 /// # Ok(())
 /// # }
 /// ```
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Hash)]
 pub struct Guard<'a> {
     // invariant: sw must be running
     pub(crate) inner: &'a mut Stopwatch,
