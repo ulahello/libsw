@@ -322,8 +322,32 @@ impl Stopwatch {
     /// ```
     #[inline]
     pub fn toggle(&mut self) {
-        if self.stop().is_err() {
-            let _ = self.start();
+        self.toggle_at(Instant::now());
+    }
+
+    /// Toggles whether the stopwatch is running or stopped, at the given
+    /// [`Instant`].
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// # use std::time::Instant;
+    /// let mut left = Stopwatch::new();
+    /// let mut right = Stopwatch::new_started();
+    ///
+    /// // perfect swap of left and right running
+    /// let now = Instant::now();
+    /// left.toggle_at(now);
+    /// right.toggle_at(now);
+    ///
+    /// assert!(left.is_running());
+    /// assert!(right.is_stopped());
+    /// ```
+    #[inline]
+    pub fn toggle_at(&mut self, anchor: Instant) {
+        if self.stop_at(anchor).is_err() {
+            let _ = self.start_at(anchor);
         }
     }
 

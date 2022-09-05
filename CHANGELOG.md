@@ -1,6 +1,7 @@
 # changelog
 
 ## [unreleased]
+* added `Stopwatch::toggle_at`
 
 ## [1.7.0] - 2022-09-04
 * added `Guard::new`
