@@ -63,7 +63,7 @@ impl<'a> Guard<'a> {
         sw.is_running().then(|| Self { inner: sw })
     }
 
-    /// Returns the total time elapsed.
+    /// Returns the total time elapsed of the guarded [`Stopwatch`].
     ///
     /// # Examples
     ///
