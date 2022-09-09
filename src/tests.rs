@@ -149,6 +149,33 @@ fn sync_before_sub() {
 }
 
 #[test]
+fn elapsed_at_saturates() {
+    let sw = Stopwatch::with_elapsed_started(DELAY);
+    assert_eq!(sw.elapsed_at(Instant::now() - (DELAY * 2)), DELAY);
+}
+
+#[test]
+fn start_in_future() {
+    let mut sw = Stopwatch::new();
+    sw.start_at(Instant::now() + (DELAY * 2)).unwrap();
+
+    thread::sleep(DELAY);
+    sw.stop().unwrap();
+    assert_eq!(sw.elapsed(), Duration::ZERO);
+}
+
+#[test]
+fn stop_before_last_start() {
+    let mut sw = Stopwatch::with_elapsed(DELAY);
+    let start = Instant::now();
+    let old_elapsed = sw.elapsed();
+    sw.start_at(start).unwrap();
+    thread::sleep(DELAY);
+    sw.stop_at(start - DELAY).unwrap();
+    assert_eq!(old_elapsed, sw.elapsed());
+}
+
+#[test]
 fn eq_properties() {
     for [a, b, c] in mixed_stopwatches() {
         dbg!(a, b, c);

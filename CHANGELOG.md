@@ -1,6 +1,10 @@
 # changelog
 
 ## [unreleased]
+* added documentation notes on functions which take an anchor
+  * `Stopwatch::elapsed_at`
+  * `Stopwatch::start_at`
+  * `Stopwatch::toggle_at`
 
 ## [1.8.0] - 2022-09-05
 * added `Stopwatch::toggle_at`

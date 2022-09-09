@@ -160,6 +160,10 @@ impl Stopwatch {
 
     /// Returns the total time elapsed, measured at the given [`Instant`].
     ///
+    /// # Notes
+    ///
+    /// `anchor` saturates to the last instant the `Stopwatch` was started.
+    ///
     /// # Examples
     ///
     /// ```
@@ -234,6 +238,11 @@ impl Stopwatch {
 
     /// Starts measuring the time elapsed at the given [`Instant`].
     ///
+    /// # Notes
+    ///
+    /// If `anchor` is in the future, [`elapsed`] will return [`Duration::ZERO`]
+    /// until the current time catches up to it.
+    ///
     /// # Errors
     ///
     /// Returns [`AlreadyStarted`](Error::AlreadyStarted) if the stopwatch is
@@ -273,8 +282,12 @@ impl Stopwatch {
     }
 
     /// Stops measuring the time elapsed since the last start, at the given
-    /// [`Instant`]. If `anchor` is earlier than the last start, there is no
-    /// effect on the elapsed time.
+    /// [`Instant`].
+    ///
+    /// # Notes
+    ///
+    /// If `anchor` is earlier than the last start, there is no effect on the
+    /// elapsed time.
     ///
     /// # Errors
     ///
@@ -328,6 +341,11 @@ impl Stopwatch {
     /// Toggles whether the stopwatch is running or stopped, at the given
     /// [`Instant`].
     ///
+    /// # Notes
+    ///
+    /// See [`start_at`](Self::start_at) and [`stop_at`](Self::stop_at) for
+    /// notes about the chronology of `anchor`.
+    ///
     /// # Examples
     ///
     /// ```
@@ -368,6 +386,8 @@ impl Stopwatch {
 
     /// Starts the `Stopwatch` at the given [`Instant`], returning a [`Guard`]
     /// which when dropped, will stop the `Stopwatch`.
+    ///
+    /// # Notes
     ///
     /// For details about `anchor`, see [`start_at`](Self::start_at). For
     /// examples on how to use `Guard`s, see the [struct
