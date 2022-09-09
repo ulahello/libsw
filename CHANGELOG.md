@@ -1,6 +1,7 @@
 # changelog
 
 ## [unreleased]
+* updated crate description
 * added documentation notes on functions which take an anchor
   * `Stopwatch::elapsed_at`
   * `Stopwatch::start_at`
