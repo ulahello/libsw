@@ -240,8 +240,8 @@ impl Stopwatch {
     ///
     /// # Notes
     ///
-    /// If `anchor` is in the future, [`elapsed`] will return [`Duration::ZERO`]
-    /// until the current time catches up to it.
+    /// If `anchor` is in the future, [`elapsed`](Self::elapsed) will return
+    /// [`Duration::ZERO`] until the current time catches up to it.
     ///
     /// # Errors
     ///
