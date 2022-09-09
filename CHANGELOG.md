@@ -6,6 +6,7 @@
   * `Stopwatch::elapsed_at`
   * `Stopwatch::start_at`
   * `Stopwatch::toggle_at`
+  * `Guard::elapsed_at`
 
 ## [1.8.0] - 2022-09-05
 * added `Stopwatch::toggle_at`
