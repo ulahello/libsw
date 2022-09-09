@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+
+## [1.8.1] - 2022-09-08
 * updated crate description
 * added documentation notes on functions which take an anchor
   * `Stopwatch::elapsed_at`
