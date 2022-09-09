@@ -85,7 +85,13 @@ impl<'a> Guard<'a> {
         self.inner.elapsed()
     }
 
-    /// Returns the total time elapsed, measured at the given [`Instant`].
+    /// Returns the total time elapsed of the guarded [`Stopwatch`], measured at
+    /// the given [`Instant`].
+    ///
+    /// # Notes
+    ///
+    /// This calls [`Stopwatch::elapsed_at`] on the guarded stopwatch, so you
+    /// can expect the same behavior.
     ///
     /// # Examples
     ///
