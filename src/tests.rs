@@ -15,8 +15,7 @@ const DELAY: Duration = Duration::from_millis(100);
 #[test]
 fn default() {
     let sw = Stopwatch::default();
-    assert_eq!(sw.elapsed(), Duration::ZERO);
-    assert!(sw.is_stopped());
+    assert_eq!(sw, Stopwatch::new());
 }
 
 #[test]
@@ -59,25 +58,22 @@ fn toggle() {
 fn reset() {
     let mut sw = Stopwatch::new_started();
     thread::sleep(DELAY);
+    sw.stop().unwrap();
+    sw.start().unwrap();
     sw.reset();
-
-    assert!(sw.is_stopped());
-    assert_eq!(sw.elapsed(), Duration::ZERO)
+    assert_eq!(sw, Stopwatch::new())
 }
 
 #[test]
 fn set() {
     let mut sw = Stopwatch::new_started();
     sw.set(DELAY);
-
-    assert!(sw.is_stopped());
-    assert_eq!(sw.elapsed(), DELAY);
+    assert_eq!(sw, Stopwatch::with_elapsed(DELAY));
 }
 
 #[test]
 fn replace() {
     let mut sw = Stopwatch::with_elapsed_started(DELAY);
-
     let prev = sw.replace(DELAY * 2);
 
     assert!(sw.is_stopped());
@@ -90,25 +86,20 @@ fn add() {
     let mut sw = Stopwatch::new();
 
     sw += DELAY;
-
     sw.start().unwrap();
     sw += DELAY;
-    assert!(sw.is_running());
-
     sw.stop().unwrap();
     sw += DELAY;
-    assert!(sw.is_stopped());
 
     assert!(sw.elapsed() >= DELAY * 3);
 }
 
 #[test]
 fn sub() {
-    let mut sw = Stopwatch::with_elapsed(DELAY * 3);
-
-    sw -= DELAY;
-    assert_eq!(sw.elapsed(), DELAY * 2);
-    assert!(sw.is_stopped());
+    assert_eq!(
+        Stopwatch::with_elapsed(DELAY * 3) - DELAY,
+        Stopwatch::with_elapsed(DELAY * 2)
+    );
 }
 
 #[test]
@@ -260,6 +251,7 @@ fn mixed_stopwatches() -> [[Stopwatch; 3]; 8] {
         start = start.checked_sub(Duration::from_secs(1)).unwrap();
         crafted_2 = Stopwatch::from_raw(elapsed, Some(start));
     }
+    assert_eq!(crafted_1, crafted_2);
 
     let started = Stopwatch::new_started();
     let started_elapsed = Stopwatch::with_elapsed_started(Duration::from_secs(1));
