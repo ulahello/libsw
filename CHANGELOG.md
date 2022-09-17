@@ -1,6 +1,7 @@
 # changelog
 
 ## [unreleased]
+* mark `Guard` with `#[must_use]`
 
 ## [1.8.1] - 2022-09-08
 * updated crate description
