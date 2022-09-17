@@ -186,8 +186,7 @@ impl Stopwatch {
     ///
     /// # Errors
     ///
-    /// Returns [`AlreadyStarted`](Error::AlreadyStarted) if the stopwatch is
-    /// running.
+    /// Returns [`SwStart`](Error::SwStart) if the stopwatch is running.
     ///
     /// # Examples
     ///
@@ -213,8 +212,7 @@ impl Stopwatch {
     ///
     /// # Errors
     ///
-    /// Returns [`AlreadyStopped`](Error::AlreadyStopped) if the stopwatch is
-    /// not running.
+    /// Returns [`SwStop`](Error::SwStop) if the stopwatch is already stopped.
     ///
     /// # Examples
     ///
@@ -238,15 +236,14 @@ impl Stopwatch {
 
     /// Starts measuring the time elapsed at the given [`Instant`].
     ///
+    /// # Errors
+    ///
+    /// Returns [`SwStart`](Error::SwStart) if the stopwatch is running.
+    ///
     /// # Notes
     ///
     /// If `anchor` is in the future, [`elapsed`](Self::elapsed) will return
     /// [`Duration::ZERO`] until the current time catches up to it.
-    ///
-    /// # Errors
-    ///
-    /// Returns [`AlreadyStarted`](Error::AlreadyStarted) if the stopwatch is
-    /// running.
     ///
     /// # Examples
     ///
@@ -274,7 +271,7 @@ impl Stopwatch {
     /// ```
     pub fn start_at(&mut self, anchor: Instant) -> crate::Result<()> {
         if self.is_running() {
-            Err(Error::AlreadyStarted)
+            Err(Error::SwStart)
         } else {
             self.start = Some(anchor);
             Ok(())
@@ -284,15 +281,14 @@ impl Stopwatch {
     /// Stops measuring the time elapsed since the last start, at the given
     /// [`Instant`].
     ///
+    /// # Errors
+    ///
+    /// Returns [`SwStop`](Error::SwStop) if the stopwatch is already stopped.
+    ///
     /// # Notes
     ///
     /// If `anchor` is earlier than the last start, there is no effect on the
     /// elapsed time.
-    ///
-    /// # Errors
-    ///
-    /// Returns [`AlreadyStopped`](Error::AlreadyStopped) if the stopwatch is
-    /// not running.
     ///
     /// # Examples
     ///
@@ -317,7 +313,7 @@ impl Stopwatch {
             self.start = None;
             Ok(())
         } else {
-            Err(Error::AlreadyStopped)
+            Err(Error::SwStop)
         }
     }
 
@@ -377,8 +373,7 @@ impl Stopwatch {
     ///
     /// # Errors
     ///
-    /// Returns [`AlreadyStarted`](Error::AlreadyStarted) if the stopwatch is
-    /// running.
+    /// Returns [`SwGuard`](Error::SwGuard) if the stopwatch is running.
     #[inline]
     pub fn guard(&mut self) -> crate::Result<Guard<'_>> {
         self.guard_at(Instant::now())
@@ -387,19 +382,17 @@ impl Stopwatch {
     /// Starts the `Stopwatch` at the given [`Instant`], returning a [`Guard`]
     /// which when dropped, will stop the `Stopwatch`.
     ///
+    /// # Errors
+    ///
+    /// Returns [`SwGuard`](Error::SwGuard) if the stopwatch is running.
+    ///
     /// # Notes
     ///
     /// For details about `anchor`, see [`start_at`](Self::start_at). For
-    /// examples on how to use `Guard`s, see the [struct
-    /// documentation](Guard).
-    ///
-    /// # Errors
-    ///
-    /// Returns [`AlreadyStarted`](Error::AlreadyStarted) if the stopwatch is
-    /// running.
+    /// examples on how to use `Guard`s, see the [struct documentation](Guard).
     #[allow(clippy::missing_panics_doc)]
     pub fn guard_at(&mut self, anchor: Instant) -> crate::Result<Guard<'_>> {
-        self.start_at(anchor)?;
+        self.start_at(anchor).map_err(|_| Error::SwGuard)?;
         Ok(Guard::new(self).unwrap())
     }
 

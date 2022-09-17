@@ -107,10 +107,10 @@ fn double_starts_stops_errs() {
     let mut sw = Stopwatch::new();
 
     assert_eq!(sw.start(), Ok(()));
-    assert_eq!(sw.start(), Err(Error::AlreadyStarted));
+    assert_eq!(sw.start(), Err(Error::SwStart));
 
     assert_eq!(sw.stop(), Ok(()));
-    assert_eq!(sw.stop(), Err(Error::AlreadyStopped));
+    assert_eq!(sw.stop(), Err(Error::SwStop));
 }
 
 #[test]

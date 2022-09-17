@@ -2,7 +2,7 @@
 // copyright (C) 2022  Ula Shipman <ula.hello@mailbox.org>
 // licensed under MIT OR GPL-3.0-or-later
 
-use crate::Stopwatch;
+use crate::{Error, Stopwatch};
 
 use core::time::Duration;
 use std::time::Instant;
@@ -40,28 +40,31 @@ pub struct Guard<'a> {
 }
 
 impl<'a> Guard<'a> {
-    // TODO: v2 breaking change: have this return result instead, add relevant
-    // Error variant
-    /// Returns a `Guard` to a running [`Stopwatch`]. If the stopwatch is
-    /// stopped, returns [`None`].
+    /// Returns a `Guard` to a running [`Stopwatch`].
+    ///
+    /// # Errors
+    ///
+    /// If the stopwatch is stopped, returns [`GuardNew`](Error::GuardNew).
     ///
     /// # Examples
     ///
     /// ```
-    /// # use libsw::{Guard, Stopwatch};
+    /// # use libsw::{Error, Guard, Stopwatch};
     /// # fn main() -> libsw::Result<()> {
     /// let mut sw = Stopwatch::new();
-    /// assert!(Guard::new(&mut sw).is_none());
+    /// assert_eq!(Guard::new(&mut sw), Err(Error::GuardNew));
     ///
     /// sw.start()?;
-    /// assert!(Guard::new(&mut sw).is_some());
+    /// assert!(Guard::new(&mut sw).is_ok());
     /// assert!(sw.is_stopped());
     /// # Ok(())
     /// # }
     /// ```
     #[inline]
-    pub fn new(sw: &'a mut Stopwatch) -> Option<Self> {
-        sw.is_running().then(|| Self { inner: sw })
+    pub fn new(sw: &'a mut Stopwatch) -> crate::Result<Self> {
+        sw.is_running()
+            .then(|| Self { inner: sw })
+            .ok_or(Error::GuardNew)
     }
 
     /// Returns the total time elapsed of the guarded [`Stopwatch`].
