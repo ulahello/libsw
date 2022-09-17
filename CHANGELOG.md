@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+
+## [1.8.2] - 2022-09-17
 * mark `Guard` with `#[must_use]`
 
 ## [1.8.1] - 2022-09-08
