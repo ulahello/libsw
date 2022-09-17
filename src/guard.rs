@@ -32,6 +32,7 @@ use std::time::Instant;
 /// # Ok(())
 /// # }
 /// ```
+#[must_use]
 #[derive(Debug, PartialEq, Eq, Hash)]
 pub struct Guard<'a> {
     // invariant: sw must be running
