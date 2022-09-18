@@ -270,12 +270,9 @@ impl Stopwatch {
     /// # }
     /// ```
     pub fn start_at(&mut self, anchor: Instant) -> crate::Result<()> {
-        if self.is_running() {
-            Err(Error::SwStart)
-        } else {
-            self.start = Some(anchor);
-            Ok(())
-        }
+        self.is_stopped()
+            .then(|| self.start = Some(anchor))
+            .ok_or(Error::SwStart)
     }
 
     /// Stops measuring the time elapsed since the last start, at the given
@@ -308,13 +305,10 @@ impl Stopwatch {
     /// # }
     /// ```
     pub fn stop_at(&mut self, anchor: Instant) -> crate::Result<()> {
-        if let Some(start) = self.start {
-            *self += anchor.saturating_duration_since(start);
-            self.start = None;
-            Ok(())
-        } else {
-            Err(Error::SwStop)
-        }
+        self.start
+            .take()
+            .map(|start| *self += anchor.saturating_duration_since(start))
+            .ok_or(Error::SwStop)
     }
 
     /// Toggles whether the stopwatch is running or stopped.
