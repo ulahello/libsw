@@ -352,7 +352,6 @@ impl Stopwatch {
     /// assert!(left.is_running());
     /// assert!(right.is_stopped());
     /// ```
-    #[inline]
     pub fn toggle_at(&mut self, anchor: Instant) {
         if self.stop_at(anchor).is_err() {
             let _ = self.start_at(anchor);

@@ -60,7 +60,6 @@ impl<'a> Guard<'a> {
     /// # Ok(())
     /// # }
     /// ```
-    #[inline]
     pub fn new(sw: &'a mut Stopwatch) -> crate::Result<Self> {
         sw.is_running()
             .then(|| Self { inner: sw })
