@@ -86,12 +86,12 @@ impl Stopwatch {
 
     /// Returns a `Stopwatch` from its raw parts.
     ///
-    /// Internally, a `Stopwatch` combines a saved elapsed time and an instant which
-    /// records the latest start time.
+    /// Internally, a `Stopwatch` combines a saved elapsed time and an instant
+    /// which records the latest start time.
     ///
-    /// While the start time is [`Some`], the `Stopwatch` is running. When it stops,
-    /// the time which has elapsed since the start time is added to the elapsed
-    /// time, and the start time is set to [`None`].
+    /// While the start time is [`Some`], the `Stopwatch` is running. When it
+    /// stops, the time which has elapsed since the start time is added to the
+    /// elapsed time, and the start time is set to [`None`].
     ///
     /// # Examples
     ///
