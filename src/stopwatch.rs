@@ -11,18 +11,6 @@ use std::time::Instant;
 
 /// A `Stopwatch` measures and accumulates elapsed time between starts and
 /// stops.
-///
-/// # Implementation details
-///
-/// Internally, a `Stopwatch` combines a saved elapsed time and an instant which
-/// records the latest start time.
-///
-/// While the start time is [`Some`], the `Stopwatch` is running. When it stops,
-/// the time which has elapsed since the start time is added to the elapsed
-/// time, and the start time is set to [`None`].
-///
-/// The function [`from_raw`](Self::from_raw) allows you to construct a
-/// `Stopwatch` from these components.
 #[derive(Clone, Copy, Debug)]
 pub struct Stopwatch {
     elapsed: Duration,
@@ -98,8 +86,12 @@ impl Stopwatch {
 
     /// Returns a `Stopwatch` from its raw parts.
     ///
-    /// See the [struct documentation](Self) for details about `Stopwatch`
-    /// internals.
+    /// Internally, a `Stopwatch` combines a saved elapsed time and an instant which
+    /// records the latest start time.
+    ///
+    /// While the start time is [`Some`], the `Stopwatch` is running. When it stops,
+    /// the time which has elapsed since the start time is added to the elapsed
+    /// time, and the start time is set to [`None`].
     ///
     /// # Examples
     ///
