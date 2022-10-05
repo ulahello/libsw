@@ -195,7 +195,7 @@ fn eq_running() {
 
 #[test]
 fn eq_correct() {
-    assert_ne!(Stopwatch::new(), Stopwatch::new_started(),);
+    assert_ne!(Stopwatch::new(), Stopwatch::new_started());
     assert_ne!(
         Stopwatch::with_elapsed(Duration::from_secs(1)),
         Stopwatch::with_elapsed(Duration::from_secs(2)),
