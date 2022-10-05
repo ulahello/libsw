@@ -513,18 +513,18 @@ impl Stopwatch {
     }
 
     /// "Transfers" `elapsed` to `start`, such that [`Self::elapsed`] is
-    /// unchanged, and the new `elapsed` is zero. Returns `false` if the new
+    /// unchanged, and the new `elapsed` is zero. Returns an error if the new
     /// start time cannot be represented.
-    fn normalize_start(&mut self) -> bool {
+    fn normalize_start(&mut self) -> Result<(), ()> {
         if let Some(ref mut instant) = self.start {
             if let Some(new) = instant.checked_sub(self.elapsed) {
                 self.start = Some(new);
                 self.elapsed = Duration::ZERO;
             } else {
-                return false;
+                return Err(());
             }
         }
-        true
+        Ok(())
     }
 }
 
