@@ -378,7 +378,9 @@ impl Stopwatch {
     #[allow(clippy::missing_panics_doc)]
     pub fn guard_at(&mut self, anchor: Instant) -> crate::Result<Guard<'_>> {
         self.start_at(anchor).map_err(|_| Error::SwGuard)?;
-        Ok(Guard::new(self).unwrap())
+        let guard = Guard::new(self);
+        debug_assert!(guard.is_ok());
+        guard
     }
 
     /// Returns `true` if the stopwatch is running.
