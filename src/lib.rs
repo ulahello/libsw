@@ -1,6 +1,6 @@
 // libsw: stopwatch library
-// copyright (C) 2022  Ula Shipman <ula.hello@mailbox.org>
-// licensed under MIT OR GPL-3.0-or-later
+// copyright (C) 2022 Ula Shipman <ula.hello@mailbox.org>
+// licensed under MIT OR Apache-2.0
 
 #![forbid(unsafe_code)]
 #![warn(missing_docs, clippy::pedantic, clippy::nursery, clippy::cargo)]

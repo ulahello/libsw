@@ -8,6 +8,6 @@ description = "Comprehensive stopwatch library"
 documentation = "https://docs.rs/libsw"
 homepage = "https://crates.io/crates/libsw"
 repository = "https://github.com/ulahello/libsw"
-license = "MIT OR GPL-3.0-or-later"
+license = "MIT OR Apache-2.0"
 keywords = ["stopwatch"]
 categories = ["date-and-time"]
