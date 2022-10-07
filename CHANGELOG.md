@@ -11,6 +11,7 @@
 * changed `Stopwatch::guard` and `Stopwatch::guard_at` to return `Error::SwGuard`
 * shortened impl of `Stopwatch::start_at` and `Stopwatch::stop_at`
 * replaced unreachable unwrap in `Stopwatch::guard_at` with debug assertion
+* relicensed under `MIT OR Apache-2.0`
 
 ## [1.8.2] - 2022-09-17
 * mark `Guard` with `#[must_use]`
