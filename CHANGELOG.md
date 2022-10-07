@@ -9,7 +9,7 @@
   * added `Error::expects_running`
   * added `Error::expects_stopped`
   * changed `Display` impl
-* **BREAKING:** changed `Stopwatch::guard` and `Stopwatch::guard_at` to return `Error::SwGuard`
+* changed `Stopwatch::guard` and `Stopwatch::guard_at` to return `Error::SwGuard`
 * shortened impl of `Stopwatch::start_at` and `Stopwatch::stop_at`
 * replaced unreachable unwrap in `Stopwatch::guard_at` with debug assertion
 * re-licensed under `MIT OR Apache-2.0`
