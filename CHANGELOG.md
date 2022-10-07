@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+
+## [2.0.0] - 2022-10-07
 ### changed
 * **BREAKING:** changed `Guard::new` to return `libsw::Result<Guard>`
 * **BREAKING:** changed `Error`
