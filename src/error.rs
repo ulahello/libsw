@@ -25,16 +25,23 @@ pub type Result<T> = std::result::Result<T, Error>;
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, Hash, PartialEq, Eq)]
 pub enum Error {
-    /// Error originates from [`Stopwatch::start`](crate::Stopwatch::start) or
-    /// [`Stopwatch::start_at`](crate::Stopwatch::start_at).
+    /// Returned by [`Stopwatch::start`](crate::Stopwatch::start) and
+    /// [`Stopwatch::start_at`](crate::Stopwatch::start_at). Expects a stopped
+    /// stopwatch.
     SwStart,
-    /// Error originates from [`Stopwatch::stop`](crate::Stopwatch::stop) or
-    /// [`Stopwatch::stop_at`](crate::Stopwatch::stop_at).
+
+    /// Returned by [`Stopwatch::stop`](crate::Stopwatch::stop) and
+    /// [`Stopwatch::stop_at`](crate::Stopwatch::stop_at). Expects a running
+    /// stopwatch.
     SwStop,
-    /// Error originates from [`Stopwatch::guard`](crate::Stopwatch::guard) or
-    /// [`Stopwatch::guard_at`](crate::Stopwatch::guard_at).
+
+    /// Returned by [`Stopwatch::guard`](crate::Stopwatch::guard) or
+    /// [`Stopwatch::guard_at`](crate::Stopwatch::guard_at). Expects a stopped
+    /// stopwatch.
     SwGuard,
-    /// Error originates from [`Guard::new`](crate::Guard::new).
+
+    /// Returned by [`Guard::new`](crate::Guard::new). Expects a running
+    /// stopwatch.
     GuardNew,
 }
 
