@@ -375,7 +375,6 @@ impl Stopwatch {
     ///
     /// For details about `anchor`, see [`start_at`](Self::start_at). For
     /// examples on how to use `Guard`s, see the [struct documentation](Guard).
-    #[allow(clippy::missing_panics_doc)]
     pub fn guard_at(&mut self, anchor: Instant) -> crate::Result<Guard<'_>> {
         self.start_at(anchor).map_err(|_| Error::SwGuard)?;
         let guard = Guard::new(self);
