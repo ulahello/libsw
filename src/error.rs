@@ -6,7 +6,7 @@ use core::fmt;
 use std::error;
 
 /// Alias for `Result<T, Error>`.
-pub type Result<T> = std::result::Result<T, Error>;
+pub type Result<T> = core::result::Result<T, Error>;
 
 /// Errors associated with a [`Stopwatch`](crate::Stopwatch).
 ///
