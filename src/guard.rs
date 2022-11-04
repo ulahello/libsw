@@ -120,7 +120,7 @@ impl<'a> Guard<'a> {
     }
 }
 
-impl<'a> Drop for Guard<'a> {
+impl Drop for Guard<'_> {
     /// Releases the guard, calling [`stop`](Stopwatch::stop) on the guarded
     /// [`Stopwatch`].
     #[inline]
