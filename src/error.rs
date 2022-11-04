@@ -84,6 +84,8 @@ impl Error {
 
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> std::result::Result<(), fmt::Error> {
+        #[allow(clippy::inline_always)]
+        #[inline(always)]
         const fn state_to_str(running: bool) -> &'static str {
             if running {
                 "running"
