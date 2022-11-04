@@ -32,7 +32,7 @@ use std::time::Instant;
 /// # Ok(())
 /// # }
 /// ```
-#[must_use]
+#[must_use = "if unused the inner Stopwatch will immediately stop again"]
 #[derive(Debug, PartialEq, Eq, Hash)]
 pub struct Guard<'a> {
     // invariant: sw must be running
