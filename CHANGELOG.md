@@ -1,8 +1,10 @@
 # changelog
 
 ## [unreleased]
-## changed
+### changed
 * added `#[must_use]` message for `Guard`
+* inline function called in `Display` impl for `Error`
+* removed unused lints
 
 ## [2.0.0] - 2022-10-07
 ### changed
