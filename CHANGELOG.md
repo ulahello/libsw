@@ -6,6 +6,9 @@
 * inline function called in `Display` impl for `Error`
 * removed unused lints
 
+### fixed
+* docs: fixed `Error` description, which implied it's exclusive to `Stopwatch`
+
 ## [2.0.0] - 2022-10-07
 ### changed
 * **BREAKING:** changed `Guard::new` to return `libsw::Result<Guard>`
