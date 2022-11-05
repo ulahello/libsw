@@ -8,7 +8,7 @@ use std::error;
 /// Alias for `Result<T, Error>`.
 pub type Result<T> = core::result::Result<T, Error>;
 
-/// Errors associated with a [`Stopwatch`](crate::Stopwatch).
+/// Enumeration over possible errors.
 ///
 /// # Examples
 ///
