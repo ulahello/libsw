@@ -150,7 +150,8 @@ impl Stopwatch {
         self.elapsed_at(Instant::now())
     }
 
-    /// Returns the total time elapsed, measured at the given [`Instant`].
+    /// Returns the total time elapsed, measured as if the current time were
+    /// `anchor`.
     ///
     /// # Notes
     ///
@@ -226,7 +227,7 @@ impl Stopwatch {
         self.stop_at(Instant::now())
     }
 
-    /// Starts measuring the time elapsed at the given [`Instant`].
+    /// Starts measuring the time elapsed as if the current time were `anchor`.
     ///
     /// # Errors
     ///
@@ -267,8 +268,8 @@ impl Stopwatch {
             .ok_or(Error::SwStart)
     }
 
-    /// Stops measuring the time elapsed since the last start, at the given
-    /// [`Instant`].
+    /// Stops measuring the time elapsed since the last start as if the current
+    /// time were `anchor`.
     ///
     /// # Errors
     ///
@@ -320,8 +321,8 @@ impl Stopwatch {
         self.toggle_at(Instant::now());
     }
 
-    /// Toggles whether the stopwatch is running or stopped, at the given
-    /// [`Instant`].
+    /// Toggles whether the stopwatch is running or stopped, as if the current
+    /// time were `anchor`.
     ///
     /// # Notes
     ///
@@ -364,8 +365,8 @@ impl Stopwatch {
         self.guard_at(Instant::now())
     }
 
-    /// Starts the `Stopwatch` at the given [`Instant`], returning a [`Guard`]
-    /// which when dropped, will stop the `Stopwatch`.
+    /// Starts the `Stopwatch` as if the current time were `anchor`, returning a
+    /// [`Guard`], which when dropped, will stop the `Stopwatch`.
     ///
     /// # Errors
     ///
