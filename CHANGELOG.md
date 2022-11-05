@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+
+## [2.0.1] - 2022-11-04
 ### changed
 * added `#[must_use]` message for `Guard`
 * inlined function called in `Display` impl for `Error`
