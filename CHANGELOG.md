@@ -3,7 +3,7 @@
 ## [unreleased]
 ### changed
 * added `#[must_use]` message for `Guard`
-* inline function called in `Display` impl for `Error`
+* inlined function called in `Display` impl for `Error`
 * removed unused lints
 
 ### fixed
