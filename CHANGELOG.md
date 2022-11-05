@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+### changed
+* expanded on main-page crate documentation
 
 ## [2.0.1] - 2022-11-04
 ### changed

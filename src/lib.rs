@@ -11,22 +11,67 @@
 //!
 //! # Examples
 //!
+//! The following (contrived) example shows the basic features of the crate. You
+//! are encouraged to read the examples provided for methods of [`Stopwatch`]
+//! and [`Guard`] for more complex use cases.
+//!
+//! If you want to do benchmarking, please use something like
+//! [Criterion](https://docs.rs/criterion).
+//!
 //! ```
-//! use libsw::Stopwatch;
+//! use libsw::{Guard, Stopwatch};
 //!
 //! use core::time::Duration;
 //! use std::thread;
 //!
-//! fn main() -> libsw::Result<()> {
+//! fn main() {
+//!     if let Err(err) = try_main() {
+//!         // libsw::Error implements display, this
+//!         // will explain the error
+//!         eprintln!("error: {err}");
+//!     }
+//! }
+//!
+//! fn try_main() -> libsw::Result<()> {
 //!     let mut sw = Stopwatch::new();
 //!
+//!     // time how long `expensive` takes
 //!     sw.start()?;
-//!     thread::sleep(Duration::from_millis(100));
+//!     let x = expensive();
 //!     sw.stop()?;
 //!
-//!     println!("thread slept for {:?}", sw.elapsed());
+//!     println!(
+//!         "expensive function returned {x} after {:?}",
+//!         sw.elapsed()
+//!     );
+//!
+//!     sw.reset();
+//!
+//!     // another way to do this is with guards. the
+//!     // guard will keep `sw` running until it's
+//!     // dropped.
+//!     let y = expensive_timed(sw.guard()?);
+//!     println!(
+//!         "same function returned {y} after {:?}",
+//!         sw.elapsed()
+//!     );
+//!
+//!     sw.stop()?; // uh-oh, this will fail! the
+//!                 // stopwatch is already stopped.
 //!
 //!     Ok(())
+//! }
+//!
+//! fn expensive() -> u32 {
+//!     thread::sleep(Duration::from_millis(100));
+//!     1
+//! }
+//!
+//! fn expensive_timed(_guard: Guard<'_>) -> u32 {
+//!     // guard is dropped when the function returns,
+//!     // automatically stopping the guarded
+//!     // stopwatch
+//!     expensive()
 //! }
 //! ```
 //!
