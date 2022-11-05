@@ -7,8 +7,6 @@
 
 //! `libsw` is a comprehensive stopwatch implementation.
 //!
-//! The minimum supported version of Rust is `1.58.1`.
-//!
 //! # Examples
 //!
 //! The following (contrived) example shows the basic features of the crate. You
@@ -74,6 +72,10 @@
 //!     expensive()
 //! }
 //! ```
+//!
+//! # Compiler support
+//!
+//! The minimum supported version of Rust is `1.58.1`.
 //!
 //! # Safety
 //!
