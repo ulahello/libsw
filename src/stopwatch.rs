@@ -129,6 +129,36 @@ impl Stopwatch {
         Self { elapsed, start }
     }
 
+    /// Returns `true` if the stopwatch is running.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// let sw = Stopwatch::new_started();
+    /// assert!(sw.is_running());
+    /// ```
+    #[inline]
+    #[must_use]
+    pub const fn is_running(&self) -> bool {
+        self.start.is_some()
+    }
+
+    /// Returns `true` if the stopwatch is stopped.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// let sw = Stopwatch::new();
+    /// assert!(sw.is_stopped());
+    /// ```
+    #[inline]
+    #[must_use]
+    pub const fn is_stopped(&self) -> bool {
+        !self.is_running()
+    }
+
     /// Returns the total time elapsed.
     ///
     /// # Examples
@@ -201,32 +231,6 @@ impl Stopwatch {
         self.start_at(Instant::now())
     }
 
-    /// Stops measuring the time elapsed since the last start.
-    ///
-    /// # Errors
-    ///
-    /// Returns [`SwStop`](Error::SwStop) if the stopwatch is already stopped.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// # use libsw::Stopwatch;
-    /// # use core::time::Duration;
-    /// # use std::thread;
-    /// let mut sw = Stopwatch::new_started();
-    /// assert!(sw.stop().is_ok());
-    /// assert!(sw.stop().is_err());
-    ///
-    /// let then = sw.elapsed();
-    /// thread::sleep(Duration::from_millis(100));
-    /// let now = sw.elapsed();
-    /// assert!(then == now);
-    /// ```
-    #[inline]
-    pub fn stop(&mut self) -> crate::Result<()> {
-        self.stop_at(Instant::now())
-    }
-
     /// Starts measuring the time elapsed as if the current time were `anchor`.
     ///
     /// # Errors
@@ -266,6 +270,32 @@ impl Stopwatch {
         self.is_stopped()
             .then(|| self.start = Some(anchor))
             .ok_or(Error::SwStart)
+    }
+
+    /// Stops measuring the time elapsed since the last start.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`SwStop`](Error::SwStop) if the stopwatch is already stopped.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// # use core::time::Duration;
+    /// # use std::thread;
+    /// let mut sw = Stopwatch::new_started();
+    /// assert!(sw.stop().is_ok());
+    /// assert!(sw.stop().is_err());
+    ///
+    /// let then = sw.elapsed();
+    /// thread::sleep(Duration::from_millis(100));
+    /// let now = sw.elapsed();
+    /// assert!(then == now);
+    /// ```
+    #[inline]
+    pub fn stop(&mut self) -> crate::Result<()> {
+        self.stop_at(Instant::now())
     }
 
     /// Stops measuring the time elapsed since the last start as if the current
@@ -381,36 +411,6 @@ impl Stopwatch {
         let guard = Guard::new(self);
         debug_assert!(guard.is_ok());
         guard
-    }
-
-    /// Returns `true` if the stopwatch is running.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// # use libsw::Stopwatch;
-    /// let sw = Stopwatch::new_started();
-    /// assert!(sw.is_running());
-    /// ```
-    #[inline]
-    #[must_use]
-    pub const fn is_running(&self) -> bool {
-        self.start.is_some()
-    }
-
-    /// Returns `true` if the stopwatch is stopped.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// # use libsw::Stopwatch;
-    /// let sw = Stopwatch::new();
-    /// assert!(sw.is_stopped());
-    /// ```
-    #[inline]
-    #[must_use]
-    pub const fn is_stopped(&self) -> bool {
-        !self.is_running()
     }
 
     /// Stops and resets the elapsed time to zero.
