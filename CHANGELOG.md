@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+
+## [2.0.2] - 2022-11-19
 ### changed
 * expanded on main-page crate documentation
 * clarified `*_at` method docs
