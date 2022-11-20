@@ -5,6 +5,7 @@
 * expanded on main-page crate documentation
 * clarified `*_at` method docs
   * previously they may have implied that they block until the current time is `anchor`, when they actually just pretend it is
+* re-ordered definitions of `Stopwatch` methods
 
 ## [2.0.1] - 2022-11-04
 ### changed
