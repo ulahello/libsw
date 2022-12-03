@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+### added
+* added `Stopwatch::checked_add` and `Stopwatch::checked_sub`
 
 ## [2.0.2] - 2022-11-19
 ### changed

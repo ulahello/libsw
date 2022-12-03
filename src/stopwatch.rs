@@ -503,9 +503,64 @@ impl Stopwatch {
         self
     }
 
+    /// Adds `dur` to the total elapsed time. If overflow occurred, returns
+    /// [`None`].
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// # use core::time::Duration;
+    /// let mut sw = Stopwatch::new();
+    /// sw = sw.checked_add(Duration::from_secs(1)).unwrap();
+    /// assert_eq!(sw.elapsed(), Duration::from_secs(1));
+    /// assert_eq!(sw.checked_add(Duration::MAX), None);
+    /// ```
+    #[must_use]
+    pub const fn checked_add(mut self, dur: Duration) -> Option<Self> {
+        match self.elapsed.checked_add(dur) {
+            Some(new) => {
+                self.elapsed = new;
+                Some(self)
+            }
+            None => None,
+        }
+    }
+
+    /// Subtracts `dur` from the total elapsed time. If overflow occurred,
+    /// returns [`None`].
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// # use core::time::Duration;
+    /// let mut sw = Stopwatch::new();
+    /// assert_eq!(sw.checked_sub(Duration::from_secs(1)), None);
+    /// sw += Duration::from_secs(1);
+    /// assert_eq!(
+    ///     sw.checked_sub(Duration::from_secs(1)),
+    ///     Some(Stopwatch::with_elapsed(Duration::ZERO)),
+    /// );
+    /// ```
+    #[must_use]
+    pub fn checked_sub(mut self, dur: Duration) -> Option<Self> {
+        self.sync_elapsed();
+        self.elapsed.checked_sub(dur).map(|new| {
+            self.elapsed = new;
+            self
+        })
+    }
+
+    // TODO: consider adding checked_stop and checked_elapsed to allow users to
+    // check for overflow instead of silently saturating
+    //
+    // fn checked_stop(&mut self) -> crate::Result<Option<()>>;
+    // fn checked_elapsed(&self) -> Option<Duration>;
+
     /// Syncs changes in the elapsed time, effectively toggling the stopwatch
     /// twice.
-    #[inline] // fn is private; called once in Self::saturating_sub
+    #[inline] // fn is private; called in Self::saturating_sub and Self::checked_sub
     fn sync_elapsed(&mut self) {
         if let Some(start) = self.start {
             let now = Instant::now();

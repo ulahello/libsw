@@ -103,6 +103,52 @@ fn sub() {
 }
 
 #[test]
+fn checked_add() {
+    let mut sw = Stopwatch::new();
+
+    sw = sw.checked_add(DELAY).unwrap();
+    sw.start().unwrap();
+    sw = sw.checked_add(DELAY).unwrap();
+    sw.stop().unwrap();
+    sw = sw.checked_add(DELAY).unwrap();
+
+    assert!(sw.elapsed() >= DELAY * 3);
+}
+
+#[test]
+fn checked_sub() {
+    assert_eq!(
+        Stopwatch::with_elapsed(DELAY * 3)
+            .checked_sub(DELAY)
+            .unwrap(),
+        Stopwatch::with_elapsed(DELAY * 2)
+    );
+}
+
+#[test]
+fn checked_add_overflow() {
+    assert_eq!(
+        Stopwatch::new().checked_add(Duration::MAX).unwrap(),
+        Stopwatch::with_elapsed(Duration::MAX),
+    );
+    assert_eq!(
+        Stopwatch::with_elapsed(DELAY).checked_add(Duration::MAX),
+        None,
+    );
+}
+
+#[test]
+fn checked_sub_overflow() {
+    assert_eq!(
+        Stopwatch::with_elapsed(Duration::MAX)
+            .checked_sub(Duration::MAX)
+            .unwrap(),
+        Stopwatch::new(),
+    );
+    assert_eq!(Stopwatch::with_elapsed(DELAY).checked_sub(DELAY * 2), None);
+}
+
+#[test]
 fn double_starts_stops_errs() {
     let mut sw = Stopwatch::new();
 
@@ -132,10 +178,23 @@ fn sane_elapsed_while_running() {
 
 #[test]
 #[should_panic]
-fn sync_before_sub() {
+fn sync_before_sub_saturating() {
     let mut sw = Stopwatch::new_started();
     thread::sleep(DELAY);
     sw -= DELAY;
+    assert!(sw.elapsed() >= DELAY);
+}
+
+#[test]
+#[should_panic]
+fn sync_before_sub_checked() {
+    let mut sw = Stopwatch::new_started();
+    thread::sleep(DELAY);
+    sw = match sw.checked_sub(DELAY) {
+        Some(new) => new,
+        // test is expected to panic so return abnormally to indicate failure
+        None => return,
+    };
     assert!(sw.elapsed() >= DELAY);
 }
 
