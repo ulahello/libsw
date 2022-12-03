@@ -588,11 +588,10 @@ impl Stopwatch {
         })
     }
 
-    // TODO: consider adding checked_stop and checked_elapsed to allow users to
-    // check for overflow instead of silently saturating
+    // TODO: consider adding checked_stop to allow users to check for overflow
+    // instead of silently saturating
     //
     // fn checked_stop(&mut self) -> crate::Result<Option<()>>;
-    // fn checked_elapsed(&self) -> Option<Duration>;
 
     /// Syncs changes in the elapsed time, effectively toggling the stopwatch
     /// twice.
