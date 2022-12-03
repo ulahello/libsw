@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+
+## [2.1.0] - 2022-12-03
 ### added
 * added `Stopwatch::checked_add` and `Stopwatch::checked_sub`
 * added `Stopwatch::checked_elapsed` and `Stopwatch::checked_elapsed_at`
