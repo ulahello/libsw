@@ -424,10 +424,7 @@ impl Stopwatch {
         self.start
             .map(|start| {
                 self.checked_add(anchor.saturating_duration_since(start))
-                    .map(|new| {
-                        *self = new;
-                        self.start = None;
-                    })
+                    .map(|new| self.set(new.elapsed))
             })
             .ok_or(Error::SwStop)
     }
