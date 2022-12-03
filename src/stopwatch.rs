@@ -159,7 +159,8 @@ impl Stopwatch {
         !self.is_running()
     }
 
-    /// Returns the total time elapsed.
+    /// Returns the total time elapsed. If overflow occurs, the elapsed time is
+    /// saturated to [`Duration::MAX`].
     ///
     /// # Examples
     ///
@@ -181,7 +182,8 @@ impl Stopwatch {
     }
 
     /// Returns the total time elapsed, measured as if the current time were
-    /// `anchor`.
+    /// `anchor`. If overflow occurs, the elapsed time is saturated to
+    /// [`Duration::MAX`].
     ///
     /// # Notes
     ///
@@ -197,11 +199,45 @@ impl Stopwatch {
     /// let anchor = Instant::now();
     /// assert!(sw_1.elapsed_at(anchor) == sw_2.elapsed_at(anchor));
     /// ```
+    #[inline]
     #[must_use]
     pub fn elapsed_at(&self, anchor: Instant) -> Duration {
-        self.start.map_or(self.elapsed, |start| {
+        self.checked_elapsed_at(anchor).unwrap_or(Duration::MAX)
+    }
+
+    /// Computes the total time elapsed. If overflow occurred, returns [`None`].
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// # use core::time::Duration;
+    /// # use std::thread;
+    /// # fn main() -> libsw::Result<()> {
+    /// let mut sw = Stopwatch::new_started();
+    /// thread::sleep(Duration::from_millis(100));
+    /// assert!(sw.checked_elapsed().unwrap() >= Duration::from_millis(100));
+    /// sw += Duration::MAX;
+    /// assert!(sw.checked_elapsed().is_none());
+    /// # Ok(())
+    /// # }
+    /// ```
+    #[inline]
+    #[must_use]
+    pub fn checked_elapsed(&self) -> Option<Duration> {
+        self.checked_elapsed_at(Instant::now())
+    }
+
+    /// Computes the total time elapsed, measured as if the current time were
+    /// `anchor`. If overflow occurred, returns [`None`].
+    ///
+    /// See the documentation for [`checked_elapsed`](Self::checked_elapsed) for
+    /// a related example.
+    #[must_use]
+    pub fn checked_elapsed_at(&self, anchor: Instant) -> Option<Duration> {
+        self.start.map_or(Some(self.elapsed), |start| {
             self.elapsed
-                .saturating_add(anchor.saturating_duration_since(start))
+                .checked_add(anchor.saturating_duration_since(start))
         })
     }
 
