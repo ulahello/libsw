@@ -267,6 +267,63 @@ impl Stopwatch {
         self.start_at(Instant::now())
     }
 
+    /// Stops measuring the time elapsed since the last start.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`SwStop`](Error::SwStop) if the stopwatch is already stopped.
+    ///
+    /// # Notes
+    ///
+    /// Overflows of the new elapsed time are saturated to [`Duration::MAX`].
+    /// Use [`Stopwatch::checked_stop`] to explicitly check for overflow.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// # use core::time::Duration;
+    /// # use std::thread;
+    /// let mut sw = Stopwatch::new_started();
+    /// assert!(sw.stop().is_ok());
+    /// assert!(sw.stop().is_err());
+    ///
+    /// let then = sw.elapsed();
+    /// thread::sleep(Duration::from_millis(100));
+    /// let now = sw.elapsed();
+    /// assert!(then == now);
+    /// ```
+    #[inline]
+    pub fn stop(&mut self) -> crate::Result<()> {
+        self.stop_at(Instant::now())
+    }
+
+    /// Tries to stop the stopwatch. If the new elapsed time overflows, returns
+    /// [`None`] without mutating the stopwatch.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`SwStop`](Error::SwStop) if the stopwatch is already stopped.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// # use core::time::Duration;
+    /// # fn main() -> libsw::Result<()> {
+    /// let mut sw = Stopwatch::new_started();
+    /// assert!(sw.checked_stop()?.is_some());
+    /// sw.set(Duration::MAX);
+    /// sw.start()?;
+    /// assert!(sw.checked_stop()?.is_none());
+    /// # Ok(())
+    /// # }
+    /// ```
+    #[inline]
+    pub fn checked_stop(&mut self) -> crate::Result<Option<()>> {
+        self.checked_stop_at(Instant::now())
+    }
+
     /// Starts measuring the time elapsed as if the current time were `anchor`.
     ///
     /// # Errors
@@ -308,32 +365,6 @@ impl Stopwatch {
             .ok_or(Error::SwStart)
     }
 
-    /// Stops measuring the time elapsed since the last start.
-    ///
-    /// # Errors
-    ///
-    /// Returns [`SwStop`](Error::SwStop) if the stopwatch is already stopped.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// # use libsw::Stopwatch;
-    /// # use core::time::Duration;
-    /// # use std::thread;
-    /// let mut sw = Stopwatch::new_started();
-    /// assert!(sw.stop().is_ok());
-    /// assert!(sw.stop().is_err());
-    ///
-    /// let then = sw.elapsed();
-    /// thread::sleep(Duration::from_millis(100));
-    /// let now = sw.elapsed();
-    /// assert!(then == now);
-    /// ```
-    #[inline]
-    pub fn stop(&mut self) -> crate::Result<()> {
-        self.stop_at(Instant::now())
-    }
-
     /// Stops measuring the time elapsed since the last start as if the current
     /// time were `anchor`.
     ///
@@ -343,8 +374,11 @@ impl Stopwatch {
     ///
     /// # Notes
     ///
-    /// If `anchor` is earlier than the last start, there is no effect on the
+    /// - If `anchor` is earlier than the last start, there is no effect on the
     /// elapsed time.
+    ///
+    /// - Overflows of the new elapsed time are saturated to [`Duration::MAX`].
+    /// Use [`Stopwatch::checked_stop_at`] to explicitly check for overflow.
     ///
     /// # Examples
     ///
@@ -367,6 +401,34 @@ impl Stopwatch {
         self.start
             .take()
             .map(|start| *self += anchor.saturating_duration_since(start))
+            .ok_or(Error::SwStop)
+    }
+
+    /// Tries to stop the stopwatch, as if the current time were `anchor`. If
+    /// the new elapsed time overflows, returns [`None`] without mutating the
+    /// stopwatch.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`SwStop`](Error::SwStop) if the stopwatch is already stopped.
+    ///
+    /// # Notes
+    ///
+    /// If `anchor` is earlier than the last start, there is no effect on the
+    /// elapsed time.
+    ///
+    /// # Examples
+    ///
+    /// See [`Stopwatch::checked_stop`] for a comparable example usage.
+    pub fn checked_stop_at(&mut self, anchor: Instant) -> crate::Result<Option<()>> {
+        self.start
+            .map(|start| {
+                self.checked_add(anchor.saturating_duration_since(start))
+                    .map(|new| {
+                        *self = new;
+                        self.start = None;
+                    })
+            })
             .ok_or(Error::SwStop)
     }
 
@@ -587,11 +649,6 @@ impl Stopwatch {
             self
         })
     }
-
-    // TODO: consider adding checked_stop to allow users to check for overflow
-    // instead of silently saturating
-    //
-    // fn checked_stop(&mut self) -> crate::Result<Option<()>>;
 
     /// Syncs changes in the elapsed time, effectively toggling the stopwatch
     /// twice.

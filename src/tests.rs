@@ -233,6 +233,23 @@ fn stop_before_last_start() {
 }
 
 #[test]
+fn checked_stop_overflows() {
+    let mut sw = Stopwatch::with_elapsed_started(Duration::MAX);
+    thread::sleep(DELAY);
+    assert!(sw.checked_elapsed().is_none());
+    assert!(sw.checked_stop().unwrap().is_none());
+    assert!(sw.is_running());
+}
+
+#[test]
+fn checked_stop_stops() {
+    let mut sw = Stopwatch::new_started();
+    assert!(sw.is_running());
+    sw.checked_stop().unwrap().unwrap();
+    assert!(sw.is_stopped());
+}
+
+#[test]
 fn eq_properties() {
     for [a, b, c] in mixed_stopwatches() {
         dbg!(a, b, c);
