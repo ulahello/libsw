@@ -205,6 +205,13 @@ fn elapsed_at_saturates() {
 }
 
 #[test]
+fn checked_elapsed_at_overflows() {
+    assert!(Stopwatch::with_elapsed_started(Duration::MAX)
+        .checked_elapsed()
+        .is_none());
+}
+
+#[test]
 fn start_in_future() {
     let mut sw = Stopwatch::new();
     sw.start_at(Instant::now() + (DELAY * 2)).unwrap();
