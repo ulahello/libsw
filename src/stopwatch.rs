@@ -419,7 +419,7 @@ impl Stopwatch {
     ///
     /// # Examples
     ///
-    /// See [`Stopwatch::checked_stop`] for a comparable example usage.
+    /// See [`Stopwatch::checked_stop`] for comparable example usage.
     pub fn checked_stop_at(&mut self, anchor: Instant) -> crate::Result<Option<()>> {
         self.start
             .map(|start| {
