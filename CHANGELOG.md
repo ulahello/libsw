@@ -4,6 +4,7 @@
 ### added
 * added `Stopwatch::checked_add` and `Stopwatch::checked_sub`
 * added `Stopwatch::checked_elapsed` and `Stopwatch::checked_elapsed_at`
+* added `Stopwatch::checked_stop` and `Stopwatch::checked_stop_at`
 
 ## [2.0.2] - 2022-11-19
 ### changed
