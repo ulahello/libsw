@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+### changed
+* changed `#[must_use]` message for `Guard`
 
 ## [2.1.0] - 2022-12-03
 ### added
