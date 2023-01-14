@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+
+## [2.2.0] - 2023-01-13
 ### added
 * added `Stopwatch::set_in_place`
 
