@@ -72,6 +72,22 @@ fn set() {
 }
 
 #[test]
+fn set_in_place() -> crate::Result<()> {
+    let mut sw = Stopwatch::new_started();
+    sw.set_in_place(DELAY);
+    assert!(sw.is_running());
+    assert!(sw.elapsed() >= DELAY);
+
+    thread::sleep(DELAY);
+
+    sw.set_in_place(DELAY);
+    assert!(sw.is_running());
+    assert!(sw.elapsed() < DELAY * 2);
+
+    Ok(())
+}
+
+#[test]
 fn replace() {
     let mut sw = Stopwatch::with_elapsed_started(DELAY);
     let prev = sw.replace(DELAY * 2);

@@ -1,6 +1,9 @@
 # changelog
 
 ## [unreleased]
+### added
+* added `Stopwatch::set_in_place`
+
 ### changed
 * clarified documentation for `Stopwatch::from_raw` and `<Stopwatch as PartialEq>::eq`
 * optimized `Stopwatch` `PartialEq` and `Hash` impls
