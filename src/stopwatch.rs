@@ -115,10 +115,10 @@ impl Stopwatch {
     /// let mut elapsed = Duration::from_secs(10);
     /// let mut start = Instant::now();
     /// let sw_1 = Stopwatch::from_raw(elapsed, Some(start));
-    ///
-    /// elapsed -= Duration::from_secs(1);
-    /// start = start.checked_sub(Duration::from_secs(1)).unwrap();
-    /// let sw_2 = Stopwatch::from_raw(elapsed, Some(start));
+    /// let sw_2 = Stopwatch::from_raw(
+    ///     elapsed - Duration::from_secs(1),     // now `elapsed()` is 1s less
+    ///     Some(start - Duration::from_secs(1)), // now with start pushed back, `elapsed()` is equal
+    /// );
     ///
     /// // different components, but they are equal!
     /// assert_eq!(sw_1, sw_2);
