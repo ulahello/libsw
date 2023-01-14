@@ -104,11 +104,7 @@ impl fmt::Display for Error {
         let state = state_to_str(!self.expects_running());
         let expected_state = state_to_str(self.expects_running());
 
-        write!(
-            f,
-            "{} while {}, but expected {}",
-            verb, state, expected_state,
-        )
+        write!(f, "{verb} while {state}, but expected {expected_state}")
     }
 }
 
