@@ -727,7 +727,9 @@ impl PartialEq for Stopwatch {
         let self_err = self_.normalize_start();
         let rhs_err = rhs_.normalize_start();
 
-        self_.start == rhs_.start && self_.elapsed == rhs_.elapsed && self_err == rhs_err
+        self_.is_running() == rhs_.is_running()
+            && self_.elapsed == rhs_.elapsed
+            && self_err == rhs_err
     }
 }
 
@@ -738,7 +740,7 @@ impl Hash for Stopwatch {
         let mut self_ = *self;
         let err = self_.normalize_start();
 
-        self_.start.hash(state);
+        self_.is_running().hash(state);
         self_.elapsed.hash(state);
         err.hash(state);
     }
