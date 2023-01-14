@@ -1,6 +1,9 @@
 # changelog
 
 ## [unreleased]
+### changed
+* clarified documentation for `Stopwatch::from_raw` and `<Stopwatch as PartialEq>::eq`
+* optimized `Stopwatch` `PartialEq` and `Hash` impls
 
 ## [2.1.1] - 2022-12-18
 ### changed
