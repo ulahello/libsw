@@ -277,12 +277,21 @@ fn eq_running() {
 }
 
 #[test]
-fn eq_correct() {
+fn eq_correct() -> crate::Result<()> {
     assert_ne!(Stopwatch::new(), Stopwatch::new_started());
     assert_ne!(
         Stopwatch::with_elapsed(Duration::from_secs(1)),
         Stopwatch::with_elapsed(Duration::from_secs(2)),
     );
+
+    let mut sw_1 = Stopwatch::new();
+    let mut sw_2 = Stopwatch::new();
+    let start = Instant::now();
+    sw_1.start_at(start)?;
+    sw_2.start_at(start)?;
+    assert_eq!(sw_1, sw_2);
+
+    Ok(())
 }
 
 #[test]
