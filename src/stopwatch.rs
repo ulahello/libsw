@@ -719,8 +719,8 @@ impl ops::SubAssign<Duration> for Stopwatch {
 impl PartialEq for Stopwatch {
     /// Tests for equality between `self` and `rhs`.
     ///
-    /// Stopwatches are equal if whether they are running is equal and their
-    /// elapsed time is equal.
+    /// Stopwatches are equal if whether they are running and their elapsed time
+    /// are equal.
     fn eq(&self, rhs: &Self) -> bool {
         let mut self_ = *self;
         let mut rhs_ = *rhs;
