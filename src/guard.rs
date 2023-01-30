@@ -2,6 +2,22 @@
 // copyright (C) 2022-2023 Ula Shipman <ula.hello@mailbox.org>
 // licensed under MIT OR Apache-2.0
 
+/* TODO: this is very basic and that limits how useful it is.
+# it'd be nice if:
+## guards could overlap and mask/invert eachother
+
+```text
+sw: ....!!!...........!!..!!!......
+guard1: ^ created           ^ dropped
+guard2:    ^ created  ^ dropped
+guard3:                 ^ created
+                         ^ dropped
+```
+
+## users could configure callbacks
+- called on drop
+*/
+
 use crate::{Error, Stopwatch};
 
 use core::time::Duration;
