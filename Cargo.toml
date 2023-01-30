@@ -18,4 +18,5 @@ tokio = { version = "1.24.2", features = ["time"], optional = true }
 [features]
 default = ["std"]
 std = []
+std_instant = ["std"]
 tokio = ["dep:tokio", "std"]
