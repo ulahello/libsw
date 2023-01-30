@@ -96,7 +96,7 @@
 //!
 //! # Compiler support
 //!
-//! The minimum supported version of Rust is `1.58.1`.
+//! The minimum supported version of Rust is `1.61.0`.
 //!
 //! # Safety
 //!

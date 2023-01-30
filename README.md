@@ -6,7 +6,7 @@
 
 `libsw` is a comprehensive and safe stopwatch implementation.
 
-The minimum supported version of Rust is `1.58.1`.
+The minimum supported version of Rust is `1.61.0`.
 
 ## License
 
