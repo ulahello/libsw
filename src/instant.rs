@@ -1,8 +1,5 @@
 use core::time::Duration;
 
-// TODO: make sure tests & crate-wide docs are correct before merging. its
-// always funky when u change a fundamental assumption of the crate.
-
 // TODO: consider loosening `Copy` requirement
 /// A trait outlining the behavior of a timekeeping type.
 ///
