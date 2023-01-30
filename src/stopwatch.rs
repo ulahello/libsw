@@ -591,6 +591,11 @@ impl Stopwatch {
         let was_running = self.is_running();
         self.set(new);
         if was_running {
+            // TODO: implicit Instant::now(), meaning theres an alternate
+            // universe where i've added
+            // `fn set_in_place_at(&mut self, new: Duration, anchor: Instant)`
+            // and a corresponding `reset_in_place_at`. this could exist??
+            // but idk the use case.
             let result = self.start();
             debug_assert!(result.is_ok());
         }
