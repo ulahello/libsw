@@ -21,7 +21,7 @@
   * `Stopwatch::replace_place_at`
 
 ### changed
-* bumped msrv to `1.61.0`
+* **BREAKING:** bumped MSRV to `1.61.0`
 
 ## [2.2.0] - 2023-01-13
 ### added
