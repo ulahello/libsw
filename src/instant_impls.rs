@@ -1,7 +1,8 @@
-// TODO: std::time::SystemTime support?
-
 #[cfg(feature = "std_instant")]
 mod std_instant;
+
+#[cfg(feature = "std_systemtime")]
+mod std_systemtime;
 
 #[cfg(feature = "tokio")]
 mod tokio;

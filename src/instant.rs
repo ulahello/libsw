@@ -14,10 +14,11 @@ use core::time::Duration;
 /// `libsw` provides `Instant` implementations for a number of timekeeping
 /// types.
 ///
-/// | Implementor            | Feature flag  |
-/// | ---------------------- | ------------- |
-/// | `std::time::Instant`   | `std_instant` |
-/// | `tokio::time::Instant` | `tokio`       |
+/// | Implementor             | Feature flag     |
+/// | ---                     | ---              |
+/// | `std::time::Instant`    | `std_instant`    |
+/// | `std::time::SystemTime` | `std_systemtime` |
+/// | `tokio::time::Instant`  | `tokio`          |
 pub trait Instant: Copy {
     /// Returns the current instant in time.
     fn now() -> Self
