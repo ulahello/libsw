@@ -6,6 +6,10 @@
 * added `Stopwatch::set_in_place_at`
 * added `Stopwatch::reset_in_place`
 * added `Stopwatch::replace_at`
+* added documentation notes about the chronology of `anchor` to the following methods:
+  * `Stopwatch::checked_elapsed_at`
+  * `Stopwatch::set_in_place_at`
+  * `Stopwatch::replace_place_at`
 
 ## [2.2.0] - 2023-01-13
 ### added

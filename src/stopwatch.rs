@@ -253,6 +253,10 @@ impl Stopwatch {
     /// Computes the total time elapsed, measured as if the current time were
     /// `anchor`. If overflow occurred, returns [`None`].
     ///
+    /// # Notes
+    ///
+    /// `anchor` saturates to the last instant the `Stopwatch` was started.
+    ///
     /// # Examples
     ///
     /// See the documentation for [`checked_elapsed`](Self::checked_elapsed) for
@@ -625,6 +629,11 @@ impl Stopwatch {
     /// Sets the total elapsed time to `new` as if the current time were
     /// `anchor`, and without affecting whether the stopwatch is running.
     ///
+    /// # Notes
+    ///
+    /// See [`start_at`](Self::start_at) for notes about the chronology of
+    /// `anchor`.
+    ///
     /// # Examples
     ///
     /// See the documentation for [`set_in_place`](Self::set_in_place) for
@@ -658,6 +667,11 @@ impl Stopwatch {
 
     /// Stops and sets the total elapsed time to `new`, returning the previous
     /// elapsed time as if the current time were `anchor`.
+    ///
+    /// # Notes
+    ///
+    /// See [`elapsed_at`](Self::elapsed_at) for notes about the chronology of
+    /// `anchor`.
     ///
     /// # Examples
     ///
