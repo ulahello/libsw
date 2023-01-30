@@ -3,11 +3,11 @@
 ## [unreleased]
 ### added
 * added `Instant` trait
-  * added feature flag `nightly`: Depends on the standard library. Implements `std::error::Error` for `Error`.
-  * added feature flag `std`: Implements `core::error::Error` for `Error` if std is not enabled. Requires a nightly compiler.
-  * added feature flag `std_instant`: Implements `Instant` for `std::time::Instant`.
-  * added feature flag `std_systemtime`: Implements `Instant` for `std::time::SystemTime`.
-  * added feature flag `tokio`: Implements `Instant` for `tokio::time::Instant`.
+* added feature flag `nightly`: Depends on the standard library. Implements `std::error::Error` for `Error`.
+* added feature flag `std`: Implements `core::error::Error` for `Error` if std is not enabled. Requires a nightly compiler.
+* added feature flag `std_instant`: Implements `Instant` for `std::time::Instant`.
+* added feature flag `std_systemtime`: Implements `Instant` for `std::time::SystemTime`.
+* added feature flag `tokio`: Implements `Instant` for `tokio::time::Instant`.
 * added module `stopwatch` and moved `libsw::Stopwatch` to it
 * added `libsw::Stopwatch` type alias to `stopwatch::Stopwatch` with default `Instant` implementation
 * added `Stopwatch::new_started_at`
