@@ -74,6 +74,19 @@
 //! }
 //! ```
 //!
+//! # `no_std` support
+//!
+//! The `std` feature flag determines whether `#[no_std]` is set. It is enabled
+//! by default, but you can disable it by disabling the default features.
+//!
+//! In `Cargo.toml`,
+//!
+//! ```toml
+//! [dependencies]
+//! # replace '...' with the appropriate version
+//! libsw = { version = ..., default-features = false }
+//! ```
+//!
 //! # Compiler support
 //!
 //! The minimum supported version of Rust is `1.58.1`.
