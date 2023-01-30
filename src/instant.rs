@@ -1,3 +1,4 @@
+use core::fmt::Debug;
 use core::time::Duration;
 
 /// A trait outlining the behavior of a timekeeping type.
@@ -15,7 +16,7 @@ use core::time::Duration;
 /// | `std::time::Instant`    | `std_instant`    |
 /// | `std::time::SystemTime` | `std_systemtime` |
 /// | `tokio::time::Instant`  | `tokio`          |
-pub trait Instant: Copy {
+pub trait Instant: Copy + Debug {
     /// Returns the current instant in time.
     fn now() -> Self
     where
