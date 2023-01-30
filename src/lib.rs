@@ -2,6 +2,7 @@
 // copyright (C) 2022-2023 Ula Shipman <ula.hello@mailbox.org>
 // licensed under MIT OR Apache-2.0
 
+#![cfg_attr(not(feature = "std"), no_std)]
 #![forbid(unsafe_code)]
 #![warn(missing_docs, clippy::pedantic, clippy::nursery, clippy::cargo)]
 
@@ -84,6 +85,7 @@
 mod error;
 mod guard;
 mod instant;
+mod instant_impls;
 mod stopwatch;
 
 pub use error::{Error, Result};

@@ -3,12 +3,13 @@
 // licensed under MIT OR Apache-2.0
 
 use core::fmt;
-use std::error;
 
 /// Alias for `Result<T, Error>`.
 pub type Result<T> = core::result::Result<T, Error>;
 
 /// Enumeration over possible errors.
+///
+/// When the `std` feature is enabled, `Error` implements `std::error::Error`.
 ///
 /// # Examples
 ///
@@ -83,7 +84,7 @@ impl Error {
 }
 
 impl fmt::Display for Error {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> std::result::Result<(), fmt::Error> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         #[inline]
         const fn state_to_str(running: bool) -> &'static str {
             if running {
@@ -107,4 +108,7 @@ impl fmt::Display for Error {
     }
 }
 
-impl error::Error for Error {}
+// TODO: those willing to use nightly should be able to use this impl without
+// std via error_in_core
+#[cfg(feature = "std")]
+impl std::error::Error for Error {}

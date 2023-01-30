@@ -11,3 +11,7 @@ repository = "https://github.com/ulahello/libsw"
 license = "MIT OR Apache-2.0"
 keywords = ["stopwatch"]
 categories = ["date-and-time"]
+
+[features]
+default = ["std"]
+std = []
