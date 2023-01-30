@@ -7,6 +7,7 @@ impl Instant for tokio::time::Instant {
     where
         Self: Sized,
     {
+        // NOTE: tokio::time::pause can freeze time
         Self::now()
     }
 
