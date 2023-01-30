@@ -131,7 +131,7 @@ pub use error::{Error, Result};
 pub use guard::Guard;
 pub use instant::Instant;
 
-/// Alias for the [`Stopwatch`](crate::stopwatch::Stopwatch) with the default
+/// Alias for a [`Stopwatch`](crate::stopwatch::Stopwatch) using the default
 /// [`Instant`] implementation.
 ///
 /// This type alias exists as a limitation of default type paremeters. See this
