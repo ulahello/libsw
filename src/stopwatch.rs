@@ -2,10 +2,6 @@
 // copyright (C) 2022-2023 Ula Shipman <ula.hello@mailbox.org>
 // licensed under MIT OR Apache-2.0
 
-//! This module contains the `Stopwatch` struct, **not** the type alias.
-//!
-//! Use this if you need control over which [`Instant`] implementation is used.
-
 // TODO: track caller for better error messages in debug mode?
 
 use crate::{Error, Guard, Instant};
@@ -14,18 +10,18 @@ use core::hash::{Hash, Hasher};
 use core::ops;
 use core::time::Duration;
 
-/// A `Stopwatch` measures and accumulates elapsed time between starts and
-/// stops.
+/// A stopwatch measures and accumulates elapsed time between starts and stops.
 ///
 /// Stopwatches work with any type that implements [`Instant`].
+#[allow(clippy::module_name_repetitions)]
 #[derive(Clone, Copy, Debug, Eq)]
-pub struct Stopwatch<I: Instant> {
+pub struct StopwatchImpl<I: Instant> {
     elapsed: Duration,
     start: Option<I>,
 }
 
-impl<I: Instant> Stopwatch<I> {
-    /// Returns a stopped `Stopwatch` with zero elapsed time.
+impl<I: Instant> StopwatchImpl<I> {
+    /// Returns a stopped stopwatch with zero elapsed time.
     ///
     /// # Examples
     ///
@@ -42,7 +38,7 @@ impl<I: Instant> Stopwatch<I> {
         Self::with_elapsed(Duration::ZERO)
     }
 
-    /// Returns a running `Stopwatch` initialized with zero elapsed time.
+    /// Returns a running stopwatch initialized with zero elapsed time.
     ///
     /// # Examples
     ///
@@ -57,7 +53,7 @@ impl<I: Instant> Stopwatch<I> {
         Self::with_elapsed_started(Duration::ZERO)
     }
 
-    /// Returns a `Stopwatch` initialized with zero elapsed time, started at the
+    /// Returns a stopwatch initialized with zero elapsed time, started at the
     /// given instant.
     ///
     /// # Examples
@@ -77,7 +73,7 @@ impl<I: Instant> Stopwatch<I> {
         Self::from_raw(Duration::ZERO, Some(start))
     }
 
-    /// Returns a stopped `Stopwatch` with the given elapsed time.
+    /// Returns a stopped stopwatch with the given elapsed time.
     ///
     /// # Examples
     ///
@@ -94,7 +90,7 @@ impl<I: Instant> Stopwatch<I> {
         Self::from_raw(elapsed, None)
     }
 
-    /// Returns a running `Stopwatch` initialized with the given elapsed time.
+    /// Returns a running stopwatch initialized with the given elapsed time.
     ///
     /// # Examples
     ///
@@ -111,12 +107,12 @@ impl<I: Instant> Stopwatch<I> {
         Self::from_raw(elapsed, Some(I::now()))
     }
 
-    /// Returns a `Stopwatch` from its raw parts.
+    /// Returns a stopwatch from its raw parts.
     ///
-    /// Internally, a `Stopwatch` combines a saved elapsed time and an instant
-    /// which records the latest start time.
+    /// Internally, a `StopwatchImpl` combines a saved elapsed time and an
+    /// instant which records the latest start time.
     ///
-    /// While the start time is [`Some`], the `Stopwatch` is running. When it
+    /// While the start time is [`Some`], the stopwatch is running. When it
     /// stops, the time which has elapsed since the start time is added to the
     /// elapsed time, and the start time is set to [`None`].
     ///
@@ -214,7 +210,7 @@ impl<I: Instant> Stopwatch<I> {
     ///
     /// # Notes
     ///
-    /// `anchor` saturates to the last instant the `Stopwatch` was started.
+    /// `anchor` saturates to the last instant the stopwatch was started.
     ///
     /// # Examples
     ///
@@ -260,7 +256,7 @@ impl<I: Instant> Stopwatch<I> {
     ///
     /// # Notes
     ///
-    /// `anchor` saturates to the last instant the `Stopwatch` was started.
+    /// `anchor` saturates to the last instant the stopwatch was started.
     ///
     /// # Examples
     ///
@@ -309,7 +305,7 @@ impl<I: Instant> Stopwatch<I> {
     /// # Notes
     ///
     /// Overflows of the new elapsed time are saturated to [`Duration::MAX`].
-    /// Use [`Stopwatch::checked_stop`] to explicitly check for overflow.
+    /// Use [`StopwatchImpl::checked_stop`] to explicitly check for overflow.
     ///
     /// # Examples
     ///
@@ -385,7 +381,7 @@ impl<I: Instant> Stopwatch<I> {
     /// elapsed time.
     ///
     /// - Overflows of the new elapsed time are saturated to [`Duration::MAX`].
-    /// Use [`Stopwatch::checked_stop_at`] to explicitly check for overflow.
+    /// Use [`StopwatchImpl::checked_stop_at`] to explicitly check for overflow.
     ///
     /// # Examples
     ///
@@ -452,7 +448,7 @@ impl<I: Instant> Stopwatch<I> {
     ///
     /// # Examples
     ///
-    /// See [`Stopwatch::checked_stop`] for comparable example usage.
+    /// See [`StopwatchImpl::checked_stop`] for comparable example usage.
     pub fn checked_stop_at(&mut self, anchor: I) -> crate::Result<Option<()>> {
         self.start
             .map(|start| {
@@ -509,8 +505,8 @@ impl<I: Instant> Stopwatch<I> {
         }
     }
 
-    /// Starts the `Stopwatch`, returning a [`Guard`] which when dropped, will
-    /// stop the `Stopwatch`.
+    /// Starts the stopwatch, returning a [`Guard`] which when dropped, will
+    /// stop the stopwatch.
     ///
     /// # Errors
     ///
@@ -525,8 +521,8 @@ impl<I: Instant> Stopwatch<I> {
         self.guard_at(I::now())
     }
 
-    /// Starts the `Stopwatch` as if the current time were `anchor`, returning a
-    /// [`Guard`], which when dropped, will stop the `Stopwatch`.
+    /// Starts the stopwatch as if the current time were `anchor`, returning a
+    /// [`Guard`], which when dropped, will stop the stopwatch.
     ///
     /// # Errors
     ///
@@ -815,49 +811,49 @@ impl<I: Instant> Stopwatch<I> {
     }
 }
 
-impl<I: Instant> Default for Stopwatch<I> {
-    /// Returns the default `Stopwatch`. Same as calling [`Stopwatch::new`].
+impl<I: Instant> Default for StopwatchImpl<I> {
+    /// Returns the default stopwatch. Same as calling [`StopwatchImpl::new`].
     #[inline]
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl<I: Instant> ops::Add<Duration> for Stopwatch<I> {
+impl<I: Instant> ops::Add<Duration> for StopwatchImpl<I> {
     type Output = Self;
 
-    /// Alias to [`Stopwatch::saturating_add`].
+    /// Alias to [`StopwatchImpl::saturating_add`].
     #[inline]
     fn add(self, rhs: Duration) -> Self::Output {
         self.saturating_add(rhs)
     }
 }
 
-impl<I: Instant> ops::Sub<Duration> for Stopwatch<I> {
+impl<I: Instant> ops::Sub<Duration> for StopwatchImpl<I> {
     type Output = Self;
 
-    /// Alias to [`Stopwatch::saturating_sub`].
+    /// Alias to [`StopwatchImpl::saturating_sub`].
     #[inline]
     fn sub(self, rhs: Duration) -> Self::Output {
         self.saturating_sub(rhs)
     }
 }
 
-impl<I: Instant> ops::AddAssign<Duration> for Stopwatch<I> {
+impl<I: Instant> ops::AddAssign<Duration> for StopwatchImpl<I> {
     #[inline]
     fn add_assign(&mut self, rhs: Duration) {
         *self = *self + rhs;
     }
 }
 
-impl<I: Instant> ops::SubAssign<Duration> for Stopwatch<I> {
+impl<I: Instant> ops::SubAssign<Duration> for StopwatchImpl<I> {
     #[inline]
     fn sub_assign(&mut self, rhs: Duration) {
         *self = *self - rhs;
     }
 }
 
-impl<I: Instant> PartialEq for Stopwatch<I> {
+impl<I: Instant> PartialEq for StopwatchImpl<I> {
     /// Tests for equality between `self` and `rhs`.
     ///
     /// Stopwatches are equal if whether they are running and their elapsed time
@@ -874,7 +870,7 @@ impl<I: Instant> PartialEq for Stopwatch<I> {
     }
 }
 
-impl<I: Instant> Hash for Stopwatch<I> {
+impl<I: Instant> Hash for StopwatchImpl<I> {
     fn hash<H: Hasher>(&self, state: &mut H) {
         let mut self_ = *self;
         let err = self_.normalize_start();

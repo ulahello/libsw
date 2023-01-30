@@ -18,16 +18,16 @@ guard3:                 ^ created
 - called on drop
 */
 
-use crate::stopwatch::Stopwatch;
+use crate::stopwatch::StopwatchImpl;
 use crate::{Error, Instant};
 
 use core::time::Duration;
 
-/// A running, guarded, [`Stopwatch`]. When dropped, the `Stopwatch` will
-/// automatically stop.
+/// A running, guarded, [stopwatch](StopwatchImpl). When dropped, the stopwatch
+/// will automatically stop.
 ///
-/// `Guard`s are returned by the `Stopwatch` methods [`guard`](Stopwatch::guard)
-/// and [`guard_at`](Stopwatch::guard_at).
+/// `Guard`s are returned by the `StopwatchImpl` methods
+/// [`guard`](StopwatchImpl::guard) and [`guard_at`](StopwatchImpl::guard_at).
 ///
 /// # Examples
 ///
@@ -52,11 +52,11 @@ use core::time::Duration;
 #[derive(Debug, PartialEq, Eq, Hash)]
 pub struct Guard<'a, I: Instant> {
     // invariant: sw must be running
-    inner: &'a mut Stopwatch<I>,
+    inner: &'a mut StopwatchImpl<I>,
 }
 
 impl<'a, I: Instant> Guard<'a, I> {
-    /// Returns a `Guard` to a running [`Stopwatch`].
+    /// Returns a `Guard` to a running [stopwatch](StopwatchImpl).
     ///
     /// # Errors
     ///
@@ -77,13 +77,14 @@ impl<'a, I: Instant> Guard<'a, I> {
     /// # Ok(())
     /// # }
     /// ```
-    pub fn new(sw: &'a mut Stopwatch<I>) -> crate::Result<Self> {
+    pub fn new(sw: &'a mut StopwatchImpl<I>) -> crate::Result<Self> {
         sw.is_running()
             .then(|| Self { inner: sw })
             .ok_or(Error::GuardNew)
     }
 
-    /// Returns the total time elapsed of the guarded [`Stopwatch`].
+    /// Returns the total time elapsed of the guarded
+    /// [stopwatch](StopwatchImpl).
     ///
     /// # Examples
     ///
@@ -106,12 +107,12 @@ impl<'a, I: Instant> Guard<'a, I> {
         self.inner.elapsed()
     }
 
-    /// Returns the total time elapsed of the guarded [`Stopwatch`], measured at
-    /// the given [`Instant`].
+    /// Returns the total time elapsed of the guarded
+    /// [stopwatch](StopwatchImpl), measured at the given [`Instant`].
     ///
     /// # Notes
     ///
-    /// This calls [`Stopwatch::elapsed_at`] on the guarded stopwatch, so you
+    /// This calls [`StopwatchImpl::elapsed_at`] on the guarded stopwatch, so you
     /// can expect the same behavior.
     ///
     /// # Examples
@@ -139,8 +140,8 @@ impl<'a, I: Instant> Guard<'a, I> {
 }
 
 impl<I: Instant> Drop for Guard<'_, I> {
-    /// Releases the guard, calling [`stop`](Stopwatch::stop) on the guarded
-    /// [`Stopwatch`].
+    /// Releases the guard, calling [`stop`](StopwatchImpl::stop) on the guarded
+    /// [stopwatch](StopwatchImpl).
     #[inline]
     fn drop(&mut self) {
         debug_assert!(self.inner.is_running());

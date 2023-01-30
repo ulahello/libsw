@@ -14,7 +14,7 @@ use std::thread;
 // TODO: manually changing these aliases if i want to test all supported
 // `Instant` impls is annoying
 use std::time::Instant;
-type Stopwatch = crate::stopwatch::Stopwatch<Instant>;
+type Stopwatch = crate::stopwatch::StopwatchImpl<Instant>;
 
 const DELAY: Duration = Duration::from_millis(100);
 

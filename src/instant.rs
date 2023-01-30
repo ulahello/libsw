@@ -4,7 +4,8 @@ use core::time::Duration;
 /// A trait outlining the behavior of a timekeeping type.
 ///
 /// This trait allows `libsw` to be agnostic about timekeeping: any type which
-/// implements `Instant` can be used within a [`Stopwatch`](crate::Stopwatch).
+/// implements `Instant` can be used within a
+/// [`StopwatchImpl`](crate::StopwatchImpl).
 ///
 /// # Provided implementations
 ///

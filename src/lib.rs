@@ -7,8 +7,8 @@
 //! # Examples
 //!
 //! The following (contrived) example shows the basic features of the crate. You
-//! are encouraged to read the examples provided for methods of [`Stopwatch`]
-//! and [`Guard`] for more complex use cases.
+//! are encouraged to read the examples provided for methods of
+//! [`StopwatchImpl`] and [`Guard`] for more complex use cases.
 //!
 //! If you want to do benchmarking, please use something like
 //! [Criterion](https://docs.rs/criterion).
@@ -73,14 +73,14 @@
 //!
 //! # Feature flags
 //!
-//! | Name             | Features enabled                | Description                                                                                               |
-//! | ---              | ---                             | ---                                                                                                       |
-//! | `default`        | `std_instant`, `std_systemtime` | Enabled by default.                                                                                       |
-//! | `std`            |                                 | Depends on the standard library. Implements `std::error::Error` for [`Error`].                            |
-//! | `nightly`        |                                 | Implements `core::error::Error` for [`Error`] **if** `std` is not enabled. Requires a nightly compiler.   |
-//! | `std_instant`    | `std`                           | Implements [`Instant`] for `std::time::Instant`. Default `Stopwath` type alias uses `std::time::Instant`. |
-//! | `std_systemtime` | `std`                           | Implements [`Instant`] for `std::time::SystemTime`.                                                       |
-//! | `tokio`          | `std`                           | Implements [`Instant`] for `tokio::time::Instant`.                                                        |
+//! | Name             | Features enabled                | Description                                                                                             |
+//! | ---              | ---                             | ---                                                                                                     |
+//! | `default`        | `std_instant`, `std_systemtime` | Enabled by default.                                                                                     |
+//! | `std`            |                                 | Depends on the standard library. Implements `std::error::Error` for [`Error`].                          |
+//! | `nightly`        |                                 | Implements `core::error::Error` for [`Error`] **if** `std` is not enabled. Requires a nightly compiler. |
+//! | `std_instant`    | `std`                           | Implements [`Instant`] for `std::time::Instant`. Exposes `Stopwatch` type alias.                        |
+//! | `std_systemtime` | `std`                           | Implements [`Instant`] for `std::time::SystemTime`.                                                     |
+//! | `tokio`          | `std`                           | Implements [`Instant`] for `tokio::time::Instant`.                                                      |
 //!
 //! ## Timekeeping support
 //!
@@ -120,23 +120,19 @@ mod error;
 mod guard;
 mod instant;
 mod instant_impls;
-
-pub mod stopwatch;
+mod stopwatch;
 
 pub use error::{Error, Result};
 pub use guard::Guard;
 pub use instant::Instant;
+pub use stopwatch::StopwatchImpl;
 
-/// Alias for a [`Stopwatch`](crate::stopwatch::Stopwatch) using the default
-/// [`Instant`] implementation.
+/// Alias for a [`StopwatchImpl`] using the standard library's
+/// [`Instant`](std::time::Instant) type.
 ///
-/// This type alias exists as a limitation of default type paremeters. See this
-/// [issue](https://github.com/rust-lang/rust/issues/27336).
+/// This is the "default" stopwatch.
 #[cfg(feature = "std_instant")]
-pub type Stopwatch = crate::stopwatch::Stopwatch<std::time::Instant>;
-
-#[cfg(not(feature = "std_instant"))]
-pub use stopwatch::Stopwatch;
+pub type Stopwatch = StopwatchImpl<std::time::Instant>;
 
 #[cfg(test)]
 mod tests;

@@ -32,19 +32,19 @@ pub type Result<T> = core::result::Result<T, Error>;
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, Hash, PartialEq, Eq)]
 pub enum Error {
-    /// Returned by [`Stopwatch::start`](crate::Stopwatch::start) and
-    /// [`Stopwatch::start_at`](crate::Stopwatch::start_at). Expects a stopped
-    /// stopwatch.
+    /// Returned by [`StopwatchImpl::start`](crate::StopwatchImpl::start) and
+    /// [`StopwatchImpl::start_at`](crate::StopwatchImpl::start_at). Expects a
+    /// stopped stopwatch.
     SwStart,
 
-    /// Returned by [`Stopwatch::stop`](crate::Stopwatch::stop) and
-    /// [`Stopwatch::stop_at`](crate::Stopwatch::stop_at). Expects a running
-    /// stopwatch.
+    /// Returned by [`StopwatchImpl::stop`](crate::StopwatchImpl::stop) and
+    /// [`StopwatchImpl::stop_at`](crate::StopwatchImpl::stop_at). Expects a
+    /// running stopwatch.
     SwStop,
 
-    /// Returned by [`Stopwatch::guard`](crate::Stopwatch::guard) or
-    /// [`Stopwatch::guard_at`](crate::Stopwatch::guard_at). Expects a stopped
-    /// stopwatch.
+    /// Returned by [`StopwatchImpl::guard`](crate::StopwatchImpl::guard) or
+    /// [`StopwatchImpl::guard_at`](crate::StopwatchImpl::guard_at). Expects a
+    /// stopped stopwatch.
     SwGuard,
 
     /// Returned by [`Guard::new`](crate::Guard::new). Expects a running
@@ -53,8 +53,8 @@ pub enum Error {
 }
 
 impl Error {
-    /// Returns `true` if the [`Stopwatch`](crate::Stopwatch) was expected to be
-    /// running.
+    /// Returns `true` if the [stopwatch](crate::StopwatchImpl) was expected to
+    /// be running.
     ///
     /// # Examples
     ///
@@ -72,8 +72,8 @@ impl Error {
         }
     }
 
-    /// Returns `true` if the [`Stopwatch`](crate::Stopwatch) was expected to be
-    /// stopped.
+    /// Returns `true` if the [stopwatch](crate::StopwatchImpl) was expected to
+    /// be stopped.
     ///
     /// # Examples
     ///
