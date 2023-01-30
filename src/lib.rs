@@ -80,7 +80,7 @@
 //! | `nightly`        |                                 | Implements `core::error::Error` for [`Error`] **if** `std` is not enabled. Requires a nightly compiler. |
 //! | `std_instant`    | `std`                           | Implements [`Instant`] for `std::time::Instant`. Exposes `Stopwatch` type alias.                        |
 //! | `std_systemtime` | `std`                           | Implements [`Instant`] for `std::time::SystemTime`.                                                     |
-//! | `tokio`          | `std`                           | Implements [`Instant`] for `tokio::time::Instant`.                                                      |
+//! | `tokio`          | `std`                           | Implements [`Instant`] for `tokio::time::Instant`. Exposes `TokioStopwatch` type alias.                 |
 //!
 //! ## Timekeeping support
 //!
@@ -133,6 +133,11 @@ pub use stopwatch::StopwatchImpl;
 /// This is the "default" stopwatch.
 #[cfg(feature = "std_instant")]
 pub type Stopwatch = StopwatchImpl<std::time::Instant>;
+
+/// Alias for a [`StopwatchImpl`] using Tokio's
+/// [`Instant`](tokio::time::Instant) type.
+#[cfg(feature = "tokio")]
+pub type TokioStopwatch = StopwatchImpl<tokio::time::Instant>;
 
 #[cfg(test)]
 mod tests;
