@@ -84,7 +84,8 @@
 //!
 //! ## Timekeeping support
 //!
-//! `libsw` can be used with any timekeeping type that implements [`Instant`].
+//! `libsw` can be used with any timekeeping type that implements [`Instant`],
+//! as long as the appropriate feature flag is enabled.
 //!
 //! See `Instant`'s [documentation](Instant#provided-implementations) for a list
 //! of types supported out of the box.
