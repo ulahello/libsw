@@ -624,6 +624,7 @@ impl Stopwatch {
     /// ```
     #[inline]
     pub fn replace(&mut self, new: Duration) -> Duration {
+        // TODO: should there be a `replace_at` that uses `elapsed_at`?
         let old = self.elapsed();
         self.set(new);
         old
