@@ -221,7 +221,7 @@ fn elapsed_at_saturates() {
 }
 
 #[test]
-fn checked_elapsed_at_overflows() {
+fn checked_elapsed_overflows() {
     assert!(Stopwatch::with_elapsed_started(Duration::MAX)
         .checked_elapsed()
         .is_none());
