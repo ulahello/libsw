@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+
+## [3.0.0] - 2023-01-30
 ### added
 * added `Instant` trait
 * added feature flag `nightly`: Depends on the standard library. Implements `std::error::Error` for `Error`.
