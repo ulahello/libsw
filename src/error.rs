@@ -9,7 +9,13 @@ pub type Result<T> = core::result::Result<T, Error>;
 
 /// Enumeration over possible errors.
 ///
+/// # Feature flags
+///
 /// When the `std` feature is enabled, `Error` implements `std::error::Error`.
+///
+/// When the `nightly` feature is enabled and the `std` feature is **not**
+/// enabled, `Error` implements `core::error::Error`. This requires a nightly
+/// compiler.
 ///
 /// # Examples
 ///
@@ -109,7 +115,10 @@ impl fmt::Display for Error {
     }
 }
 
-// TODO: those willing to use nightly should be able to use this impl without
-// std via error_in_core
 #[cfg(feature = "std")]
 impl std::error::Error for Error {}
+
+#[cfg(all(feature = "nightly", not(feature = "std")))]
+mod no_std_error_impl {
+    impl core::error::Error for super::Error {}
+}

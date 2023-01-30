@@ -2,10 +2,6 @@
 // copyright (C) 2022-2023 Ula Shipman <ula.hello@mailbox.org>
 // licensed under MIT OR Apache-2.0
 
-#![cfg_attr(not(feature = "std"), no_std)]
-#![forbid(unsafe_code)]
-#![warn(missing_docs, clippy::pedantic, clippy::nursery, clippy::cargo)]
-
 //! `libsw` is a comprehensive stopwatch implementation.
 //!
 //! # Examples
@@ -102,6 +98,11 @@
 //! # Safety
 //!
 //! `libsw` contains no unsafe code (`#![forbid(unsafe_code)]`).
+
+#![cfg_attr(not(feature = "std"), no_std)]
+#![cfg_attr(all(feature = "nightly", not(feature = "std")), feature(error_in_core))]
+#![forbid(unsafe_code)]
+#![warn(missing_docs, clippy::pedantic, clippy::nursery, clippy::cargo)]
 
 mod error;
 mod guard;
