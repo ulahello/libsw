@@ -14,7 +14,7 @@
 //! [Criterion](https://docs.rs/criterion).
 //!
 //! ```
-//! use libsw::{Guard, Stopwatch};
+//! use libsw::{Guard, Sw};
 //!
 //! use core::time::Duration;
 //! use std::thread;
@@ -29,7 +29,7 @@
 //! }
 //!
 //! fn try_main() -> libsw::Result<()> {
-//!     let mut sw = Stopwatch::new();
+//!     let mut sw = Sw::new();
 //!
 //!     // time how long `expensive` takes
 //!     sw.start()?;
@@ -78,9 +78,9 @@
 //! | `default`        | `std_instant`, `std_systemtime` | Enabled by default.                                                                                     |
 //! | `std`            |                                 | Depends on the standard library. Implements `std::error::Error` for [`Error`].                          |
 //! | `nightly`        |                                 | Implements `core::error::Error` for [`Error`] **if** `std` is not enabled. Requires a nightly compiler. |
-//! | `std_instant`    | `std`                           | Implements [`Instant`] for `std::time::Instant`. Exposes `Stopwatch` type alias.                        |
+//! | `std_instant`    | `std`                           | Implements [`Instant`] for `std::time::Instant`. Exposes `Sw` type alias.                               |
 //! | `std_systemtime` | `std`                           | Implements [`Instant`] for `std::time::SystemTime`.                                                     |
-//! | `tokio`          | `std`                           | Implements [`Instant`] for `tokio::time::Instant`. Exposes `TokioStopwatch` type alias.                 |
+//! | `tokio`          | `std`                           | Implements [`Instant`] for `tokio::time::Instant`. Exposes `TokioSw` type alias.                 |
 //!
 //! ## Timekeeping support
 //!
@@ -127,19 +127,25 @@ pub use guard::Guard;
 pub use instant::Instant;
 pub use stopwatch::StopwatchImpl;
 
-// TODO: consider `Sw` and `TokioSw` aliases
-
 /// Alias for a [`StopwatchImpl`] using the standard library's
 /// [`Instant`](std::time::Instant) type.
 ///
 /// This is the "default" stopwatch.
 #[cfg(feature = "std_instant")]
-pub type Stopwatch = StopwatchImpl<std::time::Instant>;
+pub type Sw = StopwatchImpl<std::time::Instant>;
+
+/// Deprecated alias for the "default" stopwatch.
+#[cfg(feature = "std_instant")]
+#[deprecated(
+    since = "3.0.0",
+    note = "use `Sw` instead, an alias for `StopwatchImpl<std::time::Instant>`"
+)]
+pub type Stopwatch = Sw;
 
 /// Alias for a [`StopwatchImpl`] using Tokio's
 /// [`Instant`](tokio::time::Instant) type.
 #[cfg(feature = "tokio")]
-pub type TokioStopwatch = StopwatchImpl<tokio::time::Instant>;
+pub type TokioSw = StopwatchImpl<tokio::time::Instant>;
 
 #[cfg(test)]
 mod tests;

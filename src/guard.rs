@@ -29,11 +29,11 @@ use crate::{Error, Instant, StopwatchImpl};
 /// # Examples
 ///
 /// ```
-/// # use libsw::Stopwatch;
+/// # use libsw::Sw;
 /// # use core::time::Duration;
 /// # use std::thread;
 /// # fn main() -> libsw::Result<()> {
-/// let mut sw = Stopwatch::new();
+/// let mut sw = Sw::new();
 /// {
 ///     let _guard = sw.guard()?;
 ///     // stopwatch is now running and guarded!
@@ -45,7 +45,7 @@ use crate::{Error, Instant, StopwatchImpl};
 /// # Ok(())
 /// # }
 /// ```
-#[must_use = "if unused, the inner Stopwatch will immediately stop again"]
+#[must_use = "if unused, the inner stopwatch will immediately stop again"]
 #[derive(Debug, PartialEq, Eq, Hash)]
 pub struct Guard<'a, I: Instant> {
     // invariant: sw must be running
@@ -62,10 +62,10 @@ impl<'a, I: Instant> Guard<'a, I> {
     /// # Examples
     ///
     /// ```
-    /// # use libsw::{Error, Guard, Stopwatch};
+    /// # use libsw::{Error, Guard, Sw};
     /// # fn main() -> libsw::Result<()> {
     /// use std::time::Instant;
-    /// let mut sw = Stopwatch::new();
+    /// let mut sw = Sw::new();
     /// assert_eq!(Guard::new(&mut sw), Err(Error::GuardNew));
     ///
     /// sw.start()?;
@@ -85,11 +85,11 @@ impl<'a, I: Instant> Guard<'a, I> {
     /// # Examples
     ///
     /// ```
-    /// # use libsw::Stopwatch;
+    /// # use libsw::Sw;
     /// # use core::time::Duration;
     /// # use std::thread;
     /// # fn main() -> libsw::Result<()> {
-    /// let mut sw = Stopwatch::new();
+    /// let mut sw = Sw::new();
     /// let guard = sw.guard()?;
     /// thread::sleep(Duration::from_millis(100));
     /// assert!(guard.inner().elapsed() >= Duration::from_millis(100));

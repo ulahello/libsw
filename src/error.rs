@@ -20,9 +20,9 @@ pub type Result<T> = core::result::Result<T, Error>;
 /// # Examples
 ///
 /// ```
-/// # use libsw::{Error, Result, Stopwatch};
+/// # use libsw::{Error, Result, Sw};
 /// # fn main() -> Result<()> {
-/// let mut sw = Stopwatch::new_started();
+/// let mut sw = Sw::new_started();
 /// assert_eq!(sw.start(), Err(Error::SwStart));
 /// sw.stop()?;
 /// assert_eq!(sw.stop(), Err(Error::SwStop));
