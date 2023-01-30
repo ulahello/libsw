@@ -1,5 +1,5 @@
 // libsw: stopwatch library (tests)
-// copyright (C) 2022 Ula Shipman <ula.hello@mailbox.org>
+// copyright (C) 2022-2023 Ula Shipman <ula.hello@mailbox.org>
 // licensed under MIT OR Apache-2.0
 
 use crate::{Error, Stopwatch};
