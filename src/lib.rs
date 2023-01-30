@@ -71,14 +71,25 @@
 //! }
 //! ```
 //!
-//! # Timekeeping support
+//! # Feature flags
+//!
+//! | Name             | Features enabled                | Description                                                                                             |
+//! | ---              | ---                             | ---                                                                                                     |
+//! | `default`        | `std_instant`, `std_systemtime` | Enabled by default.                                                                                     |
+//! | `std`            |                                 | Depends on the standard library. Implements `std::error::Error` for [`Error`].                          |
+//! | `nightly`        |                                 | Implements `core::error::Error` for [`Error`] **if** `std` is not enabled. Requires a nightly compiler. |
+//! | `std_instant`    | `std`                           | Implements [`Instant`] for `std::time::Instant`.                                                        |
+//! | `std_systemtime` | `std`                           | Implements [`Instant`] for `std::time::SystemTime`.                                                     |
+//! | `tokio`          | `std`                           | Implements [`Instant`] for `tokio::time::Instant`.                                                      |
+//!
+//! ## Timekeeping support
 //!
 //! `libsw` can be used with any timekeeping type that implements [`Instant`].
 //!
 //! See `Instant`'s [documentation](Instant#provided-implementations) for a list
 //! of types supported out of the box.
 //!
-//! # `no_std` support
+//! ## `no_std` support
 //!
 //! The `std` feature flag determines whether `#[no_std]` is set. It is enabled
 //! by default, but you can disable it by disabling the default features.
