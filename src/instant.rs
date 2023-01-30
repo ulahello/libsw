@@ -1,0 +1,71 @@
+use core::time::Duration;
+
+// TODO: make sure tests & crate-wide docs are correct before merging. its
+// always funky when u change a fundamental assumption of the crate.
+
+// TODO: consider loosening `Copy` requirement
+/// A trait outlining the behavior of a timekeeping object.
+///
+/// This trait allows `libsw` to be agnostic about timekeeping: any type which
+/// implements `Instant` can be used within a [`Stopwatch`](crate::Stopwatch).
+pub trait Instant: Copy {
+    /// Returns the current instant in time.
+    fn now() -> Self
+    where
+        Self: Sized;
+
+    /// Returns an instant ahead of `self` by the given [`Duration`] of time.
+    ///
+    /// Returns [`None`] if overflow occured, meaning the new instant was not
+    /// representable with the underlying type.
+    fn checked_add(&self, duration: Duration) -> Option<Self>
+    where
+        Self: Sized;
+
+    /// Returns an instant previous to `self` by the given [`Duration`] of time.
+    ///
+    /// Returns [`None`] if overflow occured, meaning the new instant was not
+    /// representable with the underlying type.
+    fn checked_sub(&self, duration: Duration) -> Option<Self>
+    where
+        Self: Sized;
+
+    /// Returns the [`Duration`] that has elapsed since `earlier`, returning
+    /// [`Duration::ZERO`] if `earlier` is ahead of `self`.
+    fn saturating_duration_since(&self, earlier: Self) -> Duration
+    where
+        Self: Sized;
+}
+
+// TODO: gate impls behind feature flags
+
+// TODO: make this default I
+impl Instant for std::time::Instant {
+    fn now() -> Self
+    where
+        Self: Sized,
+    {
+        Self::now()
+    }
+
+    fn checked_add(&self, duration: Duration) -> Option<Self>
+    where
+        Self: Sized,
+    {
+        self.checked_add(duration)
+    }
+
+    fn checked_sub(&self, duration: Duration) -> Option<Self>
+    where
+        Self: Sized,
+    {
+        self.checked_sub(duration)
+    }
+
+    fn saturating_duration_since(&self, earlier: Self) -> Duration
+    where
+        Self: Sized,
+    {
+        self.saturating_duration_since(earlier)
+    }
+}

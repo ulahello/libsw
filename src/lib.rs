@@ -83,10 +83,12 @@
 
 mod error;
 mod guard;
+mod instant;
 mod stopwatch;
 
 pub use error::{Error, Result};
 pub use guard::Guard;
+pub use instant::Instant;
 pub use stopwatch::Stopwatch;
 
 #[cfg(test)]

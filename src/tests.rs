@@ -2,6 +2,8 @@
 // copyright (C) 2022-2023 Ula Shipman <ula.hello@mailbox.org>
 // licensed under MIT OR Apache-2.0
 
+// TODO: i should also be able to painlessly test every supported `Instant` impl
+
 use crate::{Error, Stopwatch};
 
 use core::hash::{Hash, Hasher};

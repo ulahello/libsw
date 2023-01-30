@@ -18,10 +18,9 @@ guard3:                 ^ created
 - called on drop
 */
 
-use crate::{Error, Stopwatch};
+use crate::{Error, Instant, Stopwatch};
 
 use core::time::Duration;
-use std::time::Instant;
 
 /// A running, guarded, [`Stopwatch`]. When dropped, the `Stopwatch` will
 /// automatically stop.
@@ -50,12 +49,12 @@ use std::time::Instant;
 /// ```
 #[must_use = "if unused, the inner Stopwatch will immediately stop again"]
 #[derive(Debug, PartialEq, Eq, Hash)]
-pub struct Guard<'a> {
+pub struct Guard<'a, I: Instant> {
     // invariant: sw must be running
-    inner: &'a mut Stopwatch,
+    inner: &'a mut Stopwatch<I>,
 }
 
-impl<'a> Guard<'a> {
+impl<'a, I: Instant> Guard<'a, I> {
     /// Returns a `Guard` to a running [`Stopwatch`].
     ///
     /// # Errors
@@ -76,7 +75,7 @@ impl<'a> Guard<'a> {
     /// # Ok(())
     /// # }
     /// ```
-    pub fn new(sw: &'a mut Stopwatch) -> crate::Result<Self> {
+    pub fn new(sw: &'a mut Stopwatch<I>) -> crate::Result<Self> {
         sw.is_running()
             .then(|| Self { inner: sw })
             .ok_or(Error::GuardNew)
@@ -131,12 +130,12 @@ impl<'a> Guard<'a> {
     /// ```
     #[inline]
     #[must_use]
-    pub fn elapsed_at(&self, anchor: Instant) -> Duration {
+    pub fn elapsed_at(&self, anchor: I) -> Duration {
         self.inner.elapsed_at(anchor)
     }
 }
 
-impl Drop for Guard<'_> {
+impl<I: Instant> Drop for Guard<'_, I> {
     /// Releases the guard, calling [`stop`](Stopwatch::stop) on the guarded
     /// [`Stopwatch`].
     #[inline]

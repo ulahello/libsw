@@ -4,22 +4,21 @@
 
 // TODO: track caller for better error messages in debug mode?
 
-use crate::{Error, Guard};
+use crate::{Error, Guard, Instant};
 
 use core::hash::{Hash, Hasher};
 use core::ops;
 use core::time::Duration;
-use std::time::Instant;
 
 /// A `Stopwatch` measures and accumulates elapsed time between starts and
 /// stops.
-#[derive(Clone, Copy, Debug)]
-pub struct Stopwatch {
+#[derive(Clone, Copy, Debug, Eq)]
+pub struct Stopwatch<I: Instant> {
     elapsed: Duration,
-    start: Option<Instant>,
+    start: Option<I>,
 }
 
-impl Stopwatch {
+impl<I: Instant> Stopwatch<I> {
     /// Returns a stopped `Stopwatch` with zero elapsed time.
     ///
     /// # Examples
@@ -68,7 +67,7 @@ impl Stopwatch {
     /// ```
     #[inline]
     #[must_use]
-    pub const fn new_started_at(start: Instant) -> Self {
+    pub const fn new_started_at(start: I) -> Self {
         Self::from_raw(Duration::ZERO, Some(start))
     }
 
@@ -103,7 +102,7 @@ impl Stopwatch {
     #[inline]
     #[must_use]
     pub fn with_elapsed_started(elapsed: Duration) -> Self {
-        Self::from_raw(elapsed, Some(Instant::now()))
+        Self::from_raw(elapsed, Some(I::now()))
     }
 
     /// Returns a `Stopwatch` from its raw parts.
@@ -147,7 +146,7 @@ impl Stopwatch {
     /// ```
     #[inline]
     #[must_use]
-    pub const fn from_raw(elapsed: Duration, start: Option<Instant>) -> Self {
+    pub const fn from_raw(elapsed: Duration, start: Option<I>) -> Self {
         Self { elapsed, start }
     }
 
@@ -200,7 +199,7 @@ impl Stopwatch {
     #[inline]
     #[must_use]
     pub fn elapsed(&self) -> Duration {
-        self.elapsed_at(Instant::now())
+        self.elapsed_at(I::now())
     }
 
     /// Returns the total time elapsed, measured as if the current time were
@@ -223,7 +222,7 @@ impl Stopwatch {
     /// ```
     #[inline]
     #[must_use]
-    pub fn elapsed_at(&self, anchor: Instant) -> Duration {
+    pub fn elapsed_at(&self, anchor: I) -> Duration {
         self.checked_elapsed_at(anchor).unwrap_or(Duration::MAX)
     }
 
@@ -247,7 +246,7 @@ impl Stopwatch {
     #[inline]
     #[must_use]
     pub fn checked_elapsed(&self) -> Option<Duration> {
-        self.checked_elapsed_at(Instant::now())
+        self.checked_elapsed_at(I::now())
     }
 
     /// Computes the total time elapsed, measured as if the current time were
@@ -262,7 +261,7 @@ impl Stopwatch {
     /// See the documentation for [`checked_elapsed`](Self::checked_elapsed) for
     /// a related example.
     #[must_use]
-    pub fn checked_elapsed_at(&self, anchor: Instant) -> Option<Duration> {
+    pub fn checked_elapsed_at(&self, anchor: I) -> Option<Duration> {
         self.start.map_or(Some(self.elapsed), |start| {
             self.elapsed
                 .checked_add(anchor.saturating_duration_since(start))
@@ -292,7 +291,7 @@ impl Stopwatch {
     /// ```
     #[inline]
     pub fn start(&mut self) -> crate::Result<()> {
-        self.start_at(Instant::now())
+        self.start_at(I::now())
     }
 
     /// Stops measuring the time elapsed since the last start.
@@ -323,33 +322,7 @@ impl Stopwatch {
     /// ```
     #[inline]
     pub fn stop(&mut self) -> crate::Result<()> {
-        self.stop_at(Instant::now())
-    }
-
-    /// Tries to stop the stopwatch. If the new elapsed time overflows, returns
-    /// [`None`] without mutating the stopwatch.
-    ///
-    /// # Errors
-    ///
-    /// Returns [`SwStop`](Error::SwStop) if the stopwatch is already stopped.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// # use libsw::Stopwatch;
-    /// # use core::time::Duration;
-    /// # fn main() -> libsw::Result<()> {
-    /// let mut sw = Stopwatch::new_started();
-    /// assert!(sw.checked_stop()?.is_some());
-    /// sw.set(Duration::MAX);
-    /// sw.start()?;
-    /// assert!(sw.checked_stop()?.is_none());
-    /// # Ok(())
-    /// # }
-    /// ```
-    #[inline]
-    pub fn checked_stop(&mut self) -> crate::Result<Option<()>> {
-        self.checked_stop_at(Instant::now())
+        self.stop_at(I::now())
     }
 
     /// Starts measuring the time elapsed as if the current time were `anchor`.
@@ -387,7 +360,7 @@ impl Stopwatch {
     /// # Ok(())
     /// # }
     /// ```
-    pub fn start_at(&mut self, anchor: Instant) -> crate::Result<()> {
+    pub fn start_at(&mut self, anchor: I) -> crate::Result<()> {
         self.is_stopped()
             .then(|| self.start = Some(anchor))
             .ok_or(Error::SwStart)
@@ -425,11 +398,37 @@ impl Stopwatch {
     /// # Ok(())
     /// # }
     /// ```
-    pub fn stop_at(&mut self, anchor: Instant) -> crate::Result<()> {
+    pub fn stop_at(&mut self, anchor: I) -> crate::Result<()> {
         self.start
             .take()
             .map(|start| *self += anchor.saturating_duration_since(start))
             .ok_or(Error::SwStop)
+    }
+
+    /// Tries to stop the stopwatch. If the new elapsed time overflows, returns
+    /// [`None`] without mutating the stopwatch.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`SwStop`](Error::SwStop) if the stopwatch is already stopped.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// # use core::time::Duration;
+    /// # fn main() -> libsw::Result<()> {
+    /// let mut sw = Stopwatch::new_started();
+    /// assert!(sw.checked_stop()?.is_some());
+    /// sw.set(Duration::MAX);
+    /// sw.start()?;
+    /// assert!(sw.checked_stop()?.is_none());
+    /// # Ok(())
+    /// # }
+    /// ```
+    #[inline]
+    pub fn checked_stop(&mut self) -> crate::Result<Option<()>> {
+        self.checked_stop_at(I::now())
     }
 
     /// Tries to stop the stopwatch, as if the current time were `anchor`. If
@@ -448,7 +447,7 @@ impl Stopwatch {
     /// # Examples
     ///
     /// See [`Stopwatch::checked_stop`] for comparable example usage.
-    pub fn checked_stop_at(&mut self, anchor: Instant) -> crate::Result<Option<()>> {
+    pub fn checked_stop_at(&mut self, anchor: I) -> crate::Result<Option<()>> {
         self.start
             .map(|start| {
                 self.checked_add(anchor.saturating_duration_since(start))
@@ -471,7 +470,7 @@ impl Stopwatch {
     /// ```
     #[inline]
     pub fn toggle(&mut self) {
-        self.toggle_at(Instant::now());
+        self.toggle_at(I::now());
     }
 
     /// Toggles whether the stopwatch is running or stopped, as if the current
@@ -498,7 +497,7 @@ impl Stopwatch {
     /// assert!(left.is_running());
     /// assert!(right.is_stopped());
     /// ```
-    pub fn toggle_at(&mut self, anchor: Instant) {
+    pub fn toggle_at(&mut self, anchor: I) {
         if self.stop_at(anchor).is_err() {
             let _ = self.start_at(anchor);
         }
@@ -516,8 +515,8 @@ impl Stopwatch {
     /// For examples on how to use `Guard`s, see the [struct
     /// documentation](Guard).
     #[inline]
-    pub fn guard(&mut self) -> crate::Result<Guard<'_>> {
-        self.guard_at(Instant::now())
+    pub fn guard(&mut self) -> crate::Result<Guard<'_, I>> {
+        self.guard_at(I::now())
     }
 
     /// Starts the `Stopwatch` as if the current time were `anchor`, returning a
@@ -529,13 +528,9 @@ impl Stopwatch {
     ///
     /// # Notes
     ///
-    /// For details about `anchor`, see [`start_at`](Self::start_at).
-    ///
-    /// # Examples
-    ///
-    /// For examples on how to use `Guard`s, see the [struct
-    /// documentation](Guard).
-    pub fn guard_at(&mut self, anchor: Instant) -> crate::Result<Guard<'_>> {
+    /// For details about `anchor`, see [`start_at`](Self::start_at). For
+    /// examples on how to use `Guard`s, see the [struct documentation](Guard).
+    pub fn guard_at(&mut self, anchor: I) -> crate::Result<Guard<'_, I>> {
         self.start_at(anchor).map_err(|_| Error::SwGuard)?;
         let guard = Guard::new(self);
         debug_assert!(guard.is_ok());
@@ -638,7 +633,7 @@ impl Stopwatch {
     ///
     /// See the documentation for [`set_in_place`](Self::set_in_place) for
     /// a related example.
-    pub fn set_in_place_at(&mut self, new: Duration, anchor: Instant) {
+    pub fn set_in_place_at(&mut self, new: Duration, anchor: I) {
         let was_running = self.is_running();
         self.set(new);
         if was_running {
@@ -677,7 +672,7 @@ impl Stopwatch {
     ///
     /// See the documentation for [`replace`](Self::replace) for a related
     /// example.
-    pub fn replace_at(&mut self, new: Duration, anchor: Instant) -> Duration {
+    pub fn replace_at(&mut self, new: Duration, anchor: I) -> Duration {
         let old = self.elapsed_at(anchor);
         self.set(new);
         old
@@ -775,7 +770,7 @@ impl Stopwatch {
     #[inline] // fn is private; called in Self::saturating_sub and Self::checked_sub
     fn sync_elapsed(&mut self) {
         if let Some(start) = self.start {
-            let now = Instant::now();
+            let now = I::now();
             *self += now.saturating_duration_since(start);
             self.start = Some(now);
         }
@@ -797,7 +792,7 @@ impl Stopwatch {
     }
 }
 
-impl Default for Stopwatch {
+impl<I: Instant> Default for Stopwatch<I> {
     /// Returns the default `Stopwatch`. Same as calling [`Stopwatch::new`].
     #[inline]
     fn default() -> Self {
@@ -805,7 +800,7 @@ impl Default for Stopwatch {
     }
 }
 
-impl ops::Add<Duration> for Stopwatch {
+impl<I: Instant> ops::Add<Duration> for Stopwatch<I> {
     type Output = Self;
 
     /// Alias to [`Stopwatch::saturating_add`].
@@ -815,7 +810,7 @@ impl ops::Add<Duration> for Stopwatch {
     }
 }
 
-impl ops::Sub<Duration> for Stopwatch {
+impl<I: Instant> ops::Sub<Duration> for Stopwatch<I> {
     type Output = Self;
 
     /// Alias to [`Stopwatch::saturating_sub`].
@@ -825,21 +820,21 @@ impl ops::Sub<Duration> for Stopwatch {
     }
 }
 
-impl ops::AddAssign<Duration> for Stopwatch {
+impl<I: Instant> ops::AddAssign<Duration> for Stopwatch<I> {
     #[inline]
     fn add_assign(&mut self, rhs: Duration) {
         *self = *self + rhs;
     }
 }
 
-impl ops::SubAssign<Duration> for Stopwatch {
+impl<I: Instant> ops::SubAssign<Duration> for Stopwatch<I> {
     #[inline]
     fn sub_assign(&mut self, rhs: Duration) {
         *self = *self - rhs;
     }
 }
 
-impl PartialEq for Stopwatch {
+impl<I: Instant> PartialEq for Stopwatch<I> {
     /// Tests for equality between `self` and `rhs`.
     ///
     /// Stopwatches are equal if whether they are running and their elapsed time
@@ -856,9 +851,7 @@ impl PartialEq for Stopwatch {
     }
 }
 
-impl Eq for Stopwatch {}
-
-impl Hash for Stopwatch {
+impl<I: Instant> Hash for Stopwatch<I> {
     fn hash<H: Hasher>(&self, state: &mut H) {
         let mut self_ = *self;
         let err = self_.normalize_start();
