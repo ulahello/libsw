@@ -4,7 +4,7 @@
 
 use core::fmt;
 
-/// Alias for `Result<T, Error>`.
+/// Alias to `Result<T, Error>`.
 pub type Result<T> = core::result::Result<T, Error>;
 
 /// Enumeration over possible errors.

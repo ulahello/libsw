@@ -127,23 +127,23 @@ pub use guard::Guard;
 pub use instant::Instant;
 pub use stopwatch::StopwatchImpl;
 
-/// Alias for a [`StopwatchImpl`] using the standard library's
+/// Alias to [`StopwatchImpl`] using the standard library's
 /// [`Instant`](std::time::Instant) type.
 ///
 /// This is the "default" stopwatch.
 #[cfg(feature = "std_instant")]
 pub type Sw = StopwatchImpl<std::time::Instant>;
 
-/// Deprecated alias for the "default" stopwatch.
+/// Deprecated alias to the "default" stopwatch.
 #[cfg(feature = "std_instant")]
 #[deprecated(
     since = "3.0.0",
-    note = "use `Sw` instead, an alias for `StopwatchImpl<std::time::Instant>`"
+    note = "use `Sw` instead, an alias to `StopwatchImpl<std::time::Instant>`"
 )]
 pub type Stopwatch = Sw;
 
-/// Alias for a [`StopwatchImpl`] using Tokio's
-/// [`Instant`](tokio::time::Instant) type.
+/// Alias to [`StopwatchImpl`] using Tokio's [`Instant`](tokio::time::Instant)
+/// type.
 #[cfg(feature = "tokio")]
 pub type TokioSw = StopwatchImpl<tokio::time::Instant>;
 
