@@ -92,8 +92,8 @@
 //!
 //! ## `no_std` support
 //!
-//! The `std` feature flag determines whether `#[no_std]` is set. It is enabled
-//! by default, but you can disable it by disabling the default features.
+//! The `std` feature flag unsets `#[no_std]`. It is enabled by default, but you
+//! can disable it by disabling the default features.
 //!
 //! In `Cargo.toml`,
 //!
