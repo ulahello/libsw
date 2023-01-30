@@ -16,6 +16,8 @@ use core::time::Duration;
 
 /// A `Stopwatch` measures and accumulates elapsed time between starts and
 /// stops.
+///
+/// Stopwatches work with any type that implements [`Instant`].
 #[derive(Clone, Copy, Debug, Eq)]
 pub struct Stopwatch<I: Instant> {
     elapsed: Duration,
