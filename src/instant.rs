@@ -11,7 +11,7 @@ use core::time::Duration;
 /// `libsw` provides `Instant` implementations for a number of timekeeping
 /// types.
 ///
-/// | Implementor             | Feature flag     |
+/// | Type                    | Feature flag     |
 /// | ---                     | ---              |
 /// | `std::time::Instant`    | `std_instant`    |
 /// | `std::time::SystemTime` | `std_systemtime` |
