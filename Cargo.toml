@@ -12,6 +12,10 @@ license = "MIT OR Apache-2.0"
 keywords = ["stopwatch"]
 categories = ["date-and-time"]
 
+[dependencies]
+tokio = { version = "1.24.2", features = ["time"], optional = true }
+
 [features]
 default = ["std"]
 std = []
+tokio = ["dep:tokio", "std"]
