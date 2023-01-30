@@ -231,6 +231,8 @@ impl Stopwatch {
     /// Computes the total time elapsed, measured as if the current time were
     /// `anchor`. If overflow occurred, returns [`None`].
     ///
+    /// # Examples
+    ///
     /// See the documentation for [`checked_elapsed`](Self::checked_elapsed) for
     /// a related example.
     #[must_use]
@@ -479,12 +481,14 @@ impl Stopwatch {
     /// Starts the `Stopwatch`, returning a [`Guard`] which when dropped, will
     /// stop the `Stopwatch`.
     ///
-    /// For examples on how to use `Guard`s, see the [struct
-    /// documentation](Guard).
-    ///
     /// # Errors
     ///
     /// Returns [`SwGuard`](Error::SwGuard) if the stopwatch is running.
+    ///
+    /// # Examples
+    ///
+    /// For examples on how to use `Guard`s, see the [struct
+    /// documentation](Guard).
     #[inline]
     pub fn guard(&mut self) -> crate::Result<Guard<'_>> {
         self.guard_at(Instant::now())
@@ -499,8 +503,12 @@ impl Stopwatch {
     ///
     /// # Notes
     ///
-    /// For details about `anchor`, see [`start_at`](Self::start_at). For
-    /// examples on how to use `Guard`s, see the [struct documentation](Guard).
+    /// For details about `anchor`, see [`start_at`](Self::start_at).
+    ///
+    /// # Examples
+    ///
+    /// For examples on how to use `Guard`s, see the [struct
+    /// documentation](Guard).
     pub fn guard_at(&mut self, anchor: Instant) -> crate::Result<Guard<'_>> {
         self.start_at(anchor).map_err(|_| Error::SwGuard)?;
         let guard = Guard::new(self);
