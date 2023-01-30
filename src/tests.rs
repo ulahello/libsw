@@ -11,7 +11,8 @@ use core::time::Duration;
 use std::collections::hash_map::DefaultHasher;
 use std::thread;
 
-// TODO: i should also be able to painlessly test every supported `Instant` impl
+// TODO: manually changing these aliases if i want to test all supported
+// `Instant` impls is annoying
 use std::time::Instant;
 type Stopwatch = crate::stopwatch::Stopwatch<Instant>;
 
