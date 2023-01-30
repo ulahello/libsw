@@ -1,6 +1,7 @@
 use core::fmt::Debug;
 use core::time::Duration;
 
+// TODO: this is infallible however some instants are not (`embedded_time` crate for example)
 /// A trait outlining the behavior of a timekeeping type.
 ///
 /// This trait allows `libsw` to be agnostic about timekeeping: any type which
