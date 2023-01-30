@@ -36,5 +36,3 @@ pub trait Instant: Copy {
     where
         Self: Sized;
 }
-
-// TODO: gate impls behind feature flags
