@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+### added
+* added `Stopwatch::reset_in_place`
 
 ## [2.2.0] - 2023-01-13
 ### added

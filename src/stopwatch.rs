@@ -524,6 +524,32 @@ impl Stopwatch {
         *self = Self::new();
     }
 
+    /// Resets the elapsed time to zero without affecting whether the stopwatch
+    /// is running.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// # use core::time::Duration;
+    /// # fn main() -> libsw::Result<()> {
+    /// let mut sw = Stopwatch::with_elapsed_started(Duration::from_secs(1));
+    /// sw.reset_in_place();
+    /// assert!(sw.is_running());
+    /// // new elapsed time is close to zero
+    /// assert!(sw.elapsed() < Duration::from_millis(1));
+    ///
+    /// sw.stop()?;
+    /// sw.reset_in_place();
+    /// assert_eq!(sw, Stopwatch::new());
+    /// # Ok(())
+    /// # }
+    /// ```
+    #[inline]
+    pub fn reset_in_place(&mut self) {
+        self.set_in_place(Duration::ZERO);
+    }
+
     /// Stops and sets the total elapsed time to `new`.
     ///
     /// # Examples
