@@ -8,6 +8,8 @@
   * added feature flag `std_instant`: Implements `Instant` for `std::time::Instant`.
   * added feature flag `std_systemtime`: Implements `Instant` for `std::time::SystemTime`.
   * added feature flag `tokio`: Implements `Instant` for `tokio::time::Instant`.
+* added module `stopwatch` and moved `libsw::Stopwatch` to it
+* added `libsw::Stopwatch` type alias to `stopwatch::Stopwatch` with default `Instant` implementation
 * added `Stopwatch::new_started_at`
 * added `Stopwatch::set_in_place_at`
 * added `Stopwatch::reset_in_place`
