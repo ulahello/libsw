@@ -52,6 +52,26 @@ impl Stopwatch {
         Self::with_elapsed_started(Duration::ZERO)
     }
 
+    /// Returns a `Stopwatch` initialized with zero elapsed time, started at the
+    /// given instant.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::Stopwatch;
+    /// # use std::time::Instant;
+    /// let now = Instant::now();
+    /// let sw_1 = Stopwatch::new_started_at(now);
+    /// let sw_2 = Stopwatch::new_started_at(now);
+    /// // they've both started at the same time
+    /// assert_eq!(sw_1, sw_2);
+    /// ```
+    #[inline]
+    #[must_use]
+    pub const fn new_started_at(start: Instant) -> Self {
+        Self::from_raw(Duration::ZERO, Some(start))
+    }
+
     /// Returns a stopped `Stopwatch` with the given elapsed time.
     ///
     /// # Examples

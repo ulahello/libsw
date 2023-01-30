@@ -2,6 +2,7 @@
 
 ## [unreleased]
 ### added
+* added `Stopwatch::new_started_at`
 * added `Stopwatch::set_in_place_at`
 * added `Stopwatch::reset_in_place`
 * added `Stopwatch::replace_at`
