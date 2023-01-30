@@ -18,8 +18,7 @@ guard3:                 ^ created
 - called on drop
 */
 
-use crate::stopwatch::StopwatchImpl;
-use crate::{Error, Instant};
+use crate::{Error, Instant, StopwatchImpl};
 
 /// A running, guarded, [stopwatch](StopwatchImpl). When dropped, the stopwatch
 /// will automatically stop.
