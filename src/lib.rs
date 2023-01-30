@@ -122,9 +122,6 @@ mod guard;
 mod instant;
 mod instant_impls;
 
-/// This module contains the `Stopwatch` struct, **not** the type alias.
-///
-/// Use this if you need control over which [`Instant`] implementation is used.
 pub mod stopwatch;
 
 pub use error::{Error, Result};

@@ -2,6 +2,10 @@
 // copyright (C) 2022-2023 Ula Shipman <ula.hello@mailbox.org>
 // licensed under MIT OR Apache-2.0
 
+//! This module contains the `Stopwatch` struct, **not** the type alias.
+//!
+//! Use this if you need control over which [`Instant`] implementation is used.
+
 // TODO: track caller for better error messages in debug mode?
 
 use crate::{Error, Guard, Instant};
