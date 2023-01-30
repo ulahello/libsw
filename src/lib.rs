@@ -127,6 +127,8 @@ pub use guard::Guard;
 pub use instant::Instant;
 pub use stopwatch::StopwatchImpl;
 
+// TODO: consider `Sw` and `TokioSw` aliases
+
 /// Alias for a [`StopwatchImpl`] using the standard library's
 /// [`Instant`](std::time::Instant) type.
 ///
