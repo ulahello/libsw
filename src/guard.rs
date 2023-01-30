@@ -21,8 +21,6 @@ guard3:                 ^ created
 use crate::stopwatch::StopwatchImpl;
 use crate::{Error, Instant};
 
-use core::time::Duration;
-
 /// A running, guarded, [stopwatch](StopwatchImpl). When dropped, the stopwatch
 /// will automatically stop.
 ///
@@ -83,8 +81,7 @@ impl<'a, I: Instant> Guard<'a, I> {
             .ok_or(Error::GuardNew)
     }
 
-    /// Returns the total time elapsed of the guarded
-    /// [stopwatch](StopwatchImpl).
+    /// Returns a reference to the inner [`StopwatchImpl`].
     ///
     /// # Examples
     ///
@@ -93,49 +90,17 @@ impl<'a, I: Instant> Guard<'a, I> {
     /// # use core::time::Duration;
     /// # use std::thread;
     /// # fn main() -> libsw::Result<()> {
-    /// use std::time::Instant;
     /// let mut sw = Stopwatch::new();
     /// let guard = sw.guard()?;
     /// thread::sleep(Duration::from_millis(100));
-    /// assert!(guard.elapsed() >= Duration::from_millis(100));
+    /// assert!(guard.inner().elapsed() >= Duration::from_millis(100));
     /// # Ok(())
     /// # }
     /// ```
     #[inline]
     #[must_use]
-    pub fn elapsed(&self) -> Duration {
-        self.inner.elapsed()
-    }
-
-    /// Returns the total time elapsed of the guarded
-    /// [stopwatch](StopwatchImpl), measured at the given [`Instant`].
-    ///
-    /// # Notes
-    ///
-    /// This calls [`StopwatchImpl::elapsed_at`] on the guarded stopwatch, so you
-    /// can expect the same behavior.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// # use libsw::Stopwatch;
-    /// # use std::time::Instant;
-    /// # fn main() -> libsw::Result<()> {
-    /// let mut sw_1 = Stopwatch::new();
-    /// let mut sw_2 = Stopwatch::new();
-    ///
-    /// let start = Instant::now();
-    /// let guard_1 = sw_1.guard_at(start)?;
-    /// let guard_2 = sw_2.guard_at(start)?;
-    ///
-    /// assert!(guard_1 == guard_2);
-    /// # Ok(())
-    /// # }
-    /// ```
-    #[inline]
-    #[must_use]
-    pub fn elapsed_at(&self, anchor: I) -> Duration {
-        self.inner.elapsed_at(anchor)
+    pub const fn inner(&self) -> &StopwatchImpl<I> {
+        self.inner
     }
 }
 

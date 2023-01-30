@@ -19,6 +19,10 @@
   * `StopwatchImpl::checked_elapsed_at`
   * `StopwatchImpl::set_in_place_at`
   * `StopwatchImpl::replace_place_at`
+* added `Guard::inner`
+
+### removed
+* **BREAKING:** removed `Guard::elapsed` and `Guard::elapsed_at` in favor of `Guard::inner`
 
 ### changed
 * **BREAKING:** bumped MSRV to `1.61.0`
