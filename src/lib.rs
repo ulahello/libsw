@@ -2,8 +2,6 @@
 // copyright (C) 2022-2023 Ula Shipman <ula.hello@mailbox.org>
 // licensed under MIT OR Apache-2.0
 
-// TODO: top level is a little bit crouded.
-
 //! `libsw` is a comprehensive stopwatch implementation.
 //!
 //! # Examples
