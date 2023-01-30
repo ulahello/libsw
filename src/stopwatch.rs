@@ -602,9 +602,13 @@ impl Stopwatch {
         self.set_in_place_at(new, Instant::now());
     }
 
-    // TODO: add example that shows use case
     /// Sets the total elapsed time to `new` as if the current time were
     /// `anchor`, and without affecting whether the stopwatch is running.
+    ///
+    /// # Examples
+    ///
+    /// See the documentation for [`set_in_place`](Self::set_in_place) for
+    /// a related example.
     pub fn set_in_place_at(&mut self, new: Duration, anchor: Instant) {
         let was_running = self.is_running();
         self.set(new);
@@ -634,6 +638,11 @@ impl Stopwatch {
 
     /// Stops and sets the total elapsed time to `new`, returning the previous
     /// elapsed time as if the current time were `anchor`.
+    ///
+    /// # Examples
+    ///
+    /// See the documentation for [`replace`](Self::replace) for a related
+    /// example.
     pub fn replace_at(&mut self, new: Duration, anchor: Instant) -> Duration {
         let old = self.elapsed_at(anchor);
         self.set(new);
