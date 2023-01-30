@@ -2,6 +2,8 @@
 // copyright (C) 2022-2023 Ula Shipman <ula.hello@mailbox.org>
 // licensed under MIT OR Apache-2.0
 
+// TODO: re-organize tests
+
 use crate::Error;
 
 use core::hash::{Hash, Hasher};
