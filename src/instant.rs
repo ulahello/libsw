@@ -4,7 +4,7 @@ use core::time::Duration;
 // always funky when u change a fundamental assumption of the crate.
 
 // TODO: consider loosening `Copy` requirement
-/// A trait outlining the behavior of a timekeeping object.
+/// A trait outlining the behavior of a timekeeping type.
 ///
 /// This trait allows `libsw` to be agnostic about timekeeping: any type which
 /// implements `Instant` can be used within a [`Stopwatch`](crate::Stopwatch).
