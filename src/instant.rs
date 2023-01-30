@@ -23,31 +23,23 @@ use core::time::Duration;
 /// consider [filing an issue](https://github.com/ulahello/libsw/issues) on
 /// GitHub. If you already implemented `Instant` for it, consider sending a PR
 /// upstream.
-pub trait Instant: Copy + Debug {
+pub trait Instant: Copy + Debug + Sized {
     /// Returns the current instant in time.
-    fn now() -> Self
-    where
-        Self: Sized;
+    fn now() -> Self;
 
     /// Returns an instant ahead of `self` by the given [`Duration`] of time.
     ///
     /// Returns [`None`] if overflow occured, meaning the new instant was not
     /// representable with the underlying type.
-    fn checked_add(&self, duration: Duration) -> Option<Self>
-    where
-        Self: Sized;
+    fn checked_add(&self, duration: Duration) -> Option<Self>;
 
     /// Returns an instant previous to `self` by the given [`Duration`] of time.
     ///
     /// Returns [`None`] if overflow occured, meaning the new instant was not
     /// representable with the underlying type.
-    fn checked_sub(&self, duration: Duration) -> Option<Self>
-    where
-        Self: Sized;
+    fn checked_sub(&self, duration: Duration) -> Option<Self>;
 
     /// Returns the [`Duration`] that has elapsed since `earlier`, returning
     /// [`Duration::ZERO`] if `earlier` is ahead of `self`.
-    fn saturating_duration_since(&self, earlier: Self) -> Duration
-    where
-        Self: Sized;
+    fn saturating_duration_since(&self, earlier: Self) -> Duration;
 }
