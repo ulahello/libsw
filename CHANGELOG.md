@@ -2,6 +2,12 @@
 
 ## [unreleased]
 ### added
+* added `Instant` trait
+  * added feature flag `nightly`: Depends on the standard library. Implements `std::error::Error` for `Error`.
+  * added feature flag `std`: Implements `core::error::Error` for `Error` if std is not enabled. Requires a nightly compiler.
+  * added feature flag `std_instant`: Implements `Instant` for `std::time::Instant`.
+  * added feature flag `std_systemtime`: Implements `Instant` for `std::time::SystemTime`.
+  * added feature flag `tokio`: Implements `Instant` for `tokio::time::Instant`.
 * added `Stopwatch::new_started_at`
 * added `Stopwatch::set_in_place_at`
 * added `Stopwatch::reset_in_place`
