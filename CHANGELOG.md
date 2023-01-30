@@ -8,20 +8,21 @@
 * added feature flag `std_instant`: Implements `Instant` for `std::time::Instant`.
 * added feature flag `std_systemtime`: Implements `Instant` for `std::time::SystemTime`.
 * added feature flag `tokio`: Implements `Instant` for `tokio::time::Instant`.
-* added module `stopwatch` and moved `libsw::Stopwatch` to it
-* added `libsw::Stopwatch` type alias to `stopwatch::Stopwatch` with default `Instant` implementation
-* added `Stopwatch::new_started_at`
-* added `Stopwatch::set_in_place_at`
-* added `Stopwatch::reset_in_place`
-* added `Stopwatch::reset_in_place_at`
-* added `Stopwatch::replace_at`
+* added `libsw::Stopwatch` type alias to `StopwatchImpl<std::time::Instant>`
+* added `libsw::TokioStopwatch` type alias to `StopwatchImpl<tokio::time::Instant>`
+* added `StopwatchImpl::new_started_at`
+* added `StopwatchImpl::set_in_place_at`
+* added `StopwatchImpl::reset_in_place`
+* added `StopwatchImpl::reset_in_place_at`
+* added `StopwatchImpl::replace_at`
 * added documentation notes about the chronology of `anchor` to the following methods:
-  * `Stopwatch::checked_elapsed_at`
-  * `Stopwatch::set_in_place_at`
-  * `Stopwatch::replace_place_at`
+  * `StopwatchImpl::checked_elapsed_at`
+  * `StopwatchImpl::set_in_place_at`
+  * `StopwatchImpl::replace_place_at`
 
 ### changed
 * **BREAKING:** bumped MSRV to `1.61.0`
+* renamed `Stopwatch` struct to `StopwatchImpl`
 
 ## [2.2.0] - 2023-01-13
 ### added
