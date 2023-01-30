@@ -20,7 +20,7 @@ use core::time::Duration;
 ///
 /// If a timekeeping type you want to use isn't supported out of the box, please
 /// consider [filing an issue](https://github.com/ulahello/libsw/issues) on
-/// GitHub. If you already implemented `Instant` for it, feel free to send a PR
+/// GitHub. If you already implemented `Instant` for it, consider sending a PR
 /// upstream.
 pub trait Instant: Copy + Debug {
     /// Returns the current instant in time.
