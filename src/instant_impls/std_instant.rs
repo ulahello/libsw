@@ -2,7 +2,6 @@ use crate::Instant;
 
 use core::time::Duration;
 
-// TODO: make this default I
 impl Instant for std::time::Instant {
     fn now() -> Self
     where

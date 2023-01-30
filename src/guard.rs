@@ -18,7 +18,8 @@ guard3:                 ^ created
 - called on drop
 */
 
-use crate::{Error, Instant, Stopwatch};
+use crate::stopwatch::Stopwatch;
+use crate::{Error, Instant};
 
 use core::time::Duration;
 
@@ -35,8 +36,7 @@ use core::time::Duration;
 /// # use core::time::Duration;
 /// # use std::thread;
 /// # fn main() -> libsw::Result<()> {
-/// use std::time::Instant;
-/// let mut sw = Stopwatch::<Instant>::new();
+/// let mut sw = Stopwatch::new();
 /// {
 ///     let _guard = sw.guard()?;
 ///     // stopwatch is now running and guarded!
@@ -68,7 +68,7 @@ impl<'a, I: Instant> Guard<'a, I> {
     /// # use libsw::{Error, Guard, Stopwatch};
     /// # fn main() -> libsw::Result<()> {
     /// use std::time::Instant;
-    /// let mut sw = Stopwatch::<Instant>::new();
+    /// let mut sw = Stopwatch::new();
     /// assert_eq!(Guard::new(&mut sw), Err(Error::GuardNew));
     ///
     /// sw.start()?;
@@ -93,7 +93,7 @@ impl<'a, I: Instant> Guard<'a, I> {
     /// # use std::thread;
     /// # fn main() -> libsw::Result<()> {
     /// use std::time::Instant;
-    /// let mut sw = Stopwatch::<Instant>::new();
+    /// let mut sw = Stopwatch::new();
     /// let guard = sw.guard()?;
     /// thread::sleep(Duration::from_millis(100));
     /// assert!(guard.elapsed() >= Duration::from_millis(100));

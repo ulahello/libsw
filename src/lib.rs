@@ -29,7 +29,7 @@
 //! }
 //!
 //! fn try_main() -> libsw::Result<()> {
-//!     let mut sw = Stopwatch::<Instant>::new();
+//!     let mut sw = Stopwatch::new();
 //!
 //!     // time how long `expensive` takes
 //!     sw.start()?;
@@ -73,14 +73,14 @@
 //!
 //! # Feature flags
 //!
-//! | Name             | Features enabled                | Description                                                                                             |
-//! | ---              | ---                             | ---                                                                                                     |
-//! | `default`        | `std_instant`, `std_systemtime` | Enabled by default.                                                                                     |
-//! | `std`            |                                 | Depends on the standard library. Implements `std::error::Error` for [`Error`].                          |
-//! | `nightly`        |                                 | Implements `core::error::Error` for [`Error`] **if** `std` is not enabled. Requires a nightly compiler. |
-//! | `std_instant`    | `std`                           | Implements [`Instant`] for `std::time::Instant`.                                                        |
-//! | `std_systemtime` | `std`                           | Implements [`Instant`] for `std::time::SystemTime`.                                                     |
-//! | `tokio`          | `std`                           | Implements [`Instant`] for `tokio::time::Instant`.                                                      |
+//! | Name             | Features enabled                | Description                                                                                               |
+//! | ---              | ---                             | ---                                                                                                       |
+//! | `default`        | `std_instant`, `std_systemtime` | Enabled by default.                                                                                       |
+//! | `std`            |                                 | Depends on the standard library. Implements `std::error::Error` for [`Error`].                            |
+//! | `nightly`        |                                 | Implements `core::error::Error` for [`Error`] **if** `std` is not enabled. Requires a nightly compiler.   |
+//! | `std_instant`    | `std`                           | Implements [`Instant`] for `std::time::Instant`. Default `Stopwath` type alias uses `std::time::Instant`. |
+//! | `std_systemtime` | `std`                           | Implements [`Instant`] for `std::time::SystemTime`.                                                       |
+//! | `tokio`          | `std`                           | Implements [`Instant`] for `tokio::time::Instant`.                                                        |
 //!
 //! ## Timekeeping support
 //!
@@ -119,11 +119,23 @@ mod error;
 mod guard;
 mod instant;
 mod instant_impls;
-mod stopwatch;
+
+/// This module contains the `Stopwatch` struct, **not** the type alias.
+pub mod stopwatch;
 
 pub use error::{Error, Result};
 pub use guard::Guard;
 pub use instant::Instant;
+
+/// Alias for the [`Stopwatch`](crate::stopwatch::Stopwatch) with the default
+/// [`Instant`] implementation.
+///
+/// This type alias exists as a limitation of default type paremeters. See this
+/// [issue](https://github.com/rust-lang/rust/issues/27336).
+#[cfg(feature = "std_instant")]
+pub type Stopwatch = crate::stopwatch::Stopwatch<std::time::Instant>;
+
+#[cfg(not(feature = "std_instant"))]
 pub use stopwatch::Stopwatch;
 
 #[cfg(test)]

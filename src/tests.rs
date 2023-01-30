@@ -11,7 +11,7 @@ use std::thread;
 
 // TODO: i should also be able to painlessly test every supported `Instant` impl
 use std::time::Instant;
-type Stopwatch = crate::Stopwatch<Instant>;
+type Stopwatch = crate::stopwatch::Stopwatch<Instant>;
 
 const DELAY: Duration = Duration::from_millis(100);
 

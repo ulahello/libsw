@@ -21,9 +21,8 @@ pub type Result<T> = core::result::Result<T, Error>;
 ///
 /// ```
 /// # use libsw::{Error, Result, Stopwatch};
-/// use std::time::Instant;
 /// # fn main() -> Result<()> {
-/// let mut sw = Stopwatch::<Instant>::new_started();
+/// let mut sw = Stopwatch::new_started();
 /// assert_eq!(sw.start(), Err(Error::SwStart));
 /// sw.stop()?;
 /// assert_eq!(sw.stop(), Err(Error::SwStop));
