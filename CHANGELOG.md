@@ -3,6 +3,7 @@
 ## [unreleased]
 ### added
 * added `Stopwatch::reset_in_place`
+* added `Stopwatch::replace_at`
 
 ## [2.2.0] - 2023-01-13
 ### added

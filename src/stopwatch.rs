@@ -626,8 +626,13 @@ impl Stopwatch {
     /// ```
     #[inline]
     pub fn replace(&mut self, new: Duration) -> Duration {
-        // TODO: should there be a `replace_at` that uses `elapsed_at`?
-        let old = self.elapsed();
+        self.replace_at(new, Instant::now())
+    }
+
+    /// Stops and sets the total elapsed time to `new`, returning the previous
+    /// elapsed time as if the current time were `anchor`.
+    pub fn replace_at(&mut self, new: Duration, anchor: Instant) -> Duration {
+        let old = self.elapsed_at(anchor);
         self.set(new);
         old
     }
