@@ -582,7 +582,24 @@ impl<I: Instant> Stopwatch<I> {
     /// ```
     #[inline]
     pub fn reset_in_place(&mut self) {
-        self.set_in_place(Duration::ZERO);
+        self.reset_in_place_at(Instant::now());
+    }
+
+    /// Resets the elapsed time to zero without affecting whether the stopwatch
+    /// is running.
+    ///
+    /// # Notes
+    ///
+    /// See [`start_at`](Self::start_at) for notes about the chronology of
+    /// `anchor`.
+    ///
+    /// # Examples
+    ///
+    /// See the documentation for [`reset_in_place`](Self::reset_in_place) for a
+    /// related example.
+    #[inline]
+    pub fn reset_in_place_at(&mut self, start: I) {
+        self.set_in_place_at(Duration::ZERO, start);
     }
 
     /// Stops and sets the total elapsed time to `new`.
