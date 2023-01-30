@@ -26,7 +26,8 @@ impl<I: Instant> Stopwatch<I> {
     /// ```
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
-    /// let sw = Stopwatch::new();
+    /// use std::time::Instant;
+    /// let sw = Stopwatch::<Instant>::new();
     /// assert!(sw.is_stopped());
     /// assert_eq!(sw.elapsed(), Duration::ZERO);
     /// ```
@@ -42,7 +43,8 @@ impl<I: Instant> Stopwatch<I> {
     ///
     /// ```
     /// # use libsw::Stopwatch;
-    /// let sw = Stopwatch::new_started();
+    /// use std::time::Instant;
+    /// let sw = Stopwatch::<Instant>::new_started();
     /// assert!(sw.is_running());
     /// ```
     #[inline]
@@ -78,7 +80,8 @@ impl<I: Instant> Stopwatch<I> {
     /// ```
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
-    /// let sw = Stopwatch::with_elapsed(Duration::from_secs(1));
+    /// use std::time::Instant;
+    /// let sw = Stopwatch::<Instant>::with_elapsed(Duration::from_secs(1));
     /// assert!(sw.is_stopped());
     /// assert_eq!(sw.elapsed(), Duration::from_secs(1));
     /// ```
@@ -95,7 +98,8 @@ impl<I: Instant> Stopwatch<I> {
     /// ```
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
-    /// let sw = Stopwatch::with_elapsed_started(Duration::from_secs(1));
+    /// use std::time::Instant;
+    /// let sw = Stopwatch::<Instant>::with_elapsed_started(Duration::from_secs(1));
     /// assert!(sw.is_running());
     /// assert!(sw.elapsed() >= Duration::from_secs(1));
     /// ```
@@ -119,7 +123,8 @@ impl<I: Instant> Stopwatch<I> {
     /// ```
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
-    /// let sw = Stopwatch::from_raw(Duration::from_secs(1), None);
+    /// use std::time::Instant;
+    /// let sw = Stopwatch::<Instant>::from_raw(Duration::from_secs(1), None);
     /// assert!(sw.is_stopped());
     /// assert_eq!(sw.elapsed(), Duration::from_secs(1));
     /// ```
@@ -156,7 +161,8 @@ impl<I: Instant> Stopwatch<I> {
     ///
     /// ```
     /// # use libsw::Stopwatch;
-    /// let sw = Stopwatch::new_started();
+    /// use std::time::Instant;
+    /// let sw = Stopwatch::<Instant>::new_started();
     /// assert!(sw.is_running());
     /// ```
     #[inline]
@@ -171,7 +177,8 @@ impl<I: Instant> Stopwatch<I> {
     ///
     /// ```
     /// # use libsw::Stopwatch;
-    /// let sw = Stopwatch::new();
+    /// use std::time::Instant;
+    /// let sw = Stopwatch::<Instant>::new();
     /// assert!(sw.is_stopped());
     /// ```
     #[inline]
@@ -190,7 +197,8 @@ impl<I: Instant> Stopwatch<I> {
     /// # use core::time::Duration;
     /// # use std::thread;
     /// # fn main() -> libsw::Result<()> {
-    /// let sw = Stopwatch::new_started();
+    /// use std::time::Instant;
+    /// let sw = Stopwatch::<Instant>::new_started();
     /// thread::sleep(Duration::from_millis(100));
     /// assert!(sw.elapsed() >= Duration::from_millis(100));
     /// # Ok(())
@@ -235,7 +243,8 @@ impl<I: Instant> Stopwatch<I> {
     /// # use core::time::Duration;
     /// # use std::thread;
     /// # fn main() -> libsw::Result<()> {
-    /// let mut sw = Stopwatch::new_started();
+    /// use std::time::Instant;
+    /// let mut sw = Stopwatch::<Instant>::new_started();
     /// thread::sleep(Duration::from_millis(100));
     /// assert!(sw.checked_elapsed().unwrap() >= Duration::from_millis(100));
     /// sw += Duration::MAX;
@@ -280,7 +289,8 @@ impl<I: Instant> Stopwatch<I> {
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
     /// # use std::thread;
-    /// let mut sw = Stopwatch::new();
+    /// use std::time::Instant;
+    /// let mut sw = Stopwatch::<Instant>::new();
     /// assert!(sw.start().is_ok());
     /// assert!(sw.start().is_err());
     ///
@@ -311,7 +321,8 @@ impl<I: Instant> Stopwatch<I> {
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
     /// # use std::thread;
-    /// let mut sw = Stopwatch::new_started();
+    /// use std::time::Instant;
+    /// let mut sw = Stopwatch::<Instant>::new_started();
     /// assert!(sw.stop().is_ok());
     /// assert!(sw.stop().is_err());
     ///
@@ -418,7 +429,8 @@ impl<I: Instant> Stopwatch<I> {
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
     /// # fn main() -> libsw::Result<()> {
-    /// let mut sw = Stopwatch::new_started();
+    /// use std::time::Instant;
+    /// let mut sw = Stopwatch::<Instant>::new_started();
     /// assert!(sw.checked_stop()?.is_some());
     /// sw.set(Duration::MAX);
     /// sw.start()?;
@@ -462,7 +474,8 @@ impl<I: Instant> Stopwatch<I> {
     ///
     /// ```
     /// # use libsw::Stopwatch;
-    /// let mut sw = Stopwatch::new();
+    /// use std::time::Instant;
+    /// let mut sw = Stopwatch::<Instant>::new();
     /// sw.toggle();
     /// assert!(sw.is_running());
     /// sw.toggle();
@@ -544,7 +557,8 @@ impl<I: Instant> Stopwatch<I> {
     /// ```
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
-    /// let mut sw = Stopwatch::with_elapsed_started(Duration::from_secs(1));
+    /// use std::time::Instant;
+    /// let mut sw = Stopwatch::<Instant>::with_elapsed_started(Duration::from_secs(1));
     /// sw.reset();
     /// assert_eq!(sw, Stopwatch::new());
     /// ```
@@ -562,7 +576,8 @@ impl<I: Instant> Stopwatch<I> {
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
     /// # fn main() -> libsw::Result<()> {
-    /// let mut sw = Stopwatch::with_elapsed_started(Duration::from_secs(1));
+    /// use std::time::Instant;
+    /// let mut sw = Stopwatch::<Instant>::with_elapsed_started(Duration::from_secs(1));
     /// sw.reset_in_place();
     /// assert!(sw.is_running());
     /// // new elapsed time is close to zero
@@ -586,7 +601,8 @@ impl<I: Instant> Stopwatch<I> {
     /// ```
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
-    /// let mut sw = Stopwatch::new();
+    /// use std::time::Instant;
+    /// let mut sw = Stopwatch::<Instant>::new();
     /// sw.set(Duration::from_secs(1));
     /// assert_eq!(sw.elapsed(), Duration::from_secs(1));
     /// ```
@@ -604,7 +620,8 @@ impl<I: Instant> Stopwatch<I> {
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
     /// # fn main() -> libsw::Result<()> {
-    /// let mut sw = Stopwatch::new();
+    /// use std::time::Instant;
+    /// let mut sw = Stopwatch::<Instant>::new();
     /// sw.set_in_place(Duration::from_secs(1));
     /// assert_eq!(sw.elapsed(), Duration::from_secs(1));
     /// assert!(sw.is_stopped());
@@ -650,7 +667,8 @@ impl<I: Instant> Stopwatch<I> {
     /// ```
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
-    /// let mut sw = Stopwatch::with_elapsed(Duration::from_secs(3));
+    /// use std::time::Instant;
+    /// let mut sw = Stopwatch::<Instant>::with_elapsed(Duration::from_secs(3));
     /// let previous = sw.replace(Duration::from_secs(1));
     /// assert_eq!(previous, Duration::from_secs(3));
     /// assert_eq!(sw.elapsed(), Duration::from_secs(1));
@@ -684,7 +702,8 @@ impl<I: Instant> Stopwatch<I> {
     /// ```
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
-    /// let mut sw = Stopwatch::with_elapsed(Duration::from_secs(1));
+    /// use std::time::Instant;
+    /// let mut sw = Stopwatch::<Instant>::with_elapsed(Duration::from_secs(1));
     /// sw = sw.saturating_add(Duration::from_secs(1));
     /// assert_eq!(sw.elapsed(), Duration::from_secs(2));
     /// sw = sw.saturating_add(Duration::MAX);
@@ -703,7 +722,8 @@ impl<I: Instant> Stopwatch<I> {
     /// ```
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
-    /// let mut sw = Stopwatch::with_elapsed(Duration::from_secs(1));
+    /// use std::time::Instant;
+    /// let mut sw = Stopwatch::<Instant>::with_elapsed(Duration::from_secs(1));
     /// sw = sw.saturating_sub(Duration::from_secs(1));
     /// assert_eq!(sw.elapsed(), Duration::ZERO);
     /// sw = sw.saturating_sub(Duration::from_secs(1));
@@ -724,7 +744,8 @@ impl<I: Instant> Stopwatch<I> {
     /// ```
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
-    /// let mut sw = Stopwatch::new();
+    /// use std::time::Instant;
+    /// let mut sw = Stopwatch::<Instant>::new();
     /// sw = sw.checked_add(Duration::from_secs(1)).unwrap();
     /// assert_eq!(sw.elapsed(), Duration::from_secs(1));
     /// assert_eq!(sw.checked_add(Duration::MAX), None);
@@ -748,7 +769,8 @@ impl<I: Instant> Stopwatch<I> {
     /// ```
     /// # use libsw::Stopwatch;
     /// # use core::time::Duration;
-    /// let mut sw = Stopwatch::new();
+    /// use std::time::Instant;
+    /// let mut sw = Stopwatch::<Instant>::new();
     /// assert_eq!(sw.checked_sub(Duration::from_secs(1)), None);
     /// sw += Duration::from_secs(1);
     /// assert_eq!(

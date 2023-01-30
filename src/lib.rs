@@ -22,6 +22,7 @@
 //!
 //! use core::time::Duration;
 //! use std::thread;
+//! use std::time::Instant;
 //!
 //! fn main() {
 //!     if let Err(err) = try_main() {
@@ -32,7 +33,7 @@
 //! }
 //!
 //! fn try_main() -> libsw::Result<()> {
-//!     let mut sw = Stopwatch::new();
+//!     let mut sw = Stopwatch::<Instant>::new();
 //!
 //!     // time how long `expensive` takes
 //!     sw.start()?;
@@ -66,7 +67,7 @@
 //!     1
 //! }
 //!
-//! fn expensive_timed(_guard: Guard<'_>) -> u32 {
+//! fn expensive_timed<I: libsw::Instant>(_guard: Guard<'_, I>) -> u32 {
 //!     // guard is dropped when the function returns,
 //!     // automatically stopping the guarded
 //!     // stopwatch

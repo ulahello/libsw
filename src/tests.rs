@@ -2,15 +2,16 @@
 // copyright (C) 2022-2023 Ula Shipman <ula.hello@mailbox.org>
 // licensed under MIT OR Apache-2.0
 
-// TODO: i should also be able to painlessly test every supported `Instant` impl
-
-use crate::{Error, Stopwatch};
+use crate::Error;
 
 use core::hash::{Hash, Hasher};
 use core::time::Duration;
 use std::collections::hash_map::DefaultHasher;
 use std::thread;
+
+// TODO: i should also be able to painlessly test every supported `Instant` impl
 use std::time::Instant;
+type Stopwatch = crate::Stopwatch<Instant>;
 
 const DELAY: Duration = Duration::from_millis(100);
 
