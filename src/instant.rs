@@ -8,6 +8,16 @@ use core::time::Duration;
 ///
 /// This trait allows `libsw` to be agnostic about timekeeping: any type which
 /// implements `Instant` can be used within a [`Stopwatch`](crate::Stopwatch).
+///
+/// # Provided implementations
+///
+/// `libsw` provides `Instant` implementations for a number of timekeeping
+/// types.
+///
+/// | Implementor            | Feature flag |
+/// | ---------------------- | ------------ |
+/// | `std::time::Instant`   | `std`        |
+/// | `tokio::time::Instant` | `tokio`      |
 pub trait Instant: Copy {
     /// Returns the current instant in time.
     fn now() -> Self
