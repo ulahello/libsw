@@ -781,7 +781,10 @@ impl<I: Instant> StopwatchImpl<I> {
             self
         })
     }
+}
 
+// private methods
+impl<I: Instant> StopwatchImpl<I> {
     /// Syncs changes in the elapsed time, effectively toggling the stopwatch
     /// twice. If the new elapsed time overflows, it is saturated to
     /// [`Duration::MAX`].
