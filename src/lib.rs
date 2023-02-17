@@ -4,7 +4,7 @@
 
 //! `libsw` is a comprehensive stopwatch implementation.
 //!
-//! # Examples
+//! # Example
 //!
 //! The following (contrived) example shows the basic features of the crate. You
 //! are encouraged to read the examples provided for methods of
@@ -52,8 +52,8 @@
 //!         sw.elapsed()
 //!     );
 //!
-//!     sw.stop()?; // uh-oh, this will fail! the
-//!                 // stopwatch is already stopped.
+//!     // uh-oh, this will fail! the stopwatch is already stopped.
+//!     sw.stop()?;
 //!
 //!     Ok(())
 //! }
@@ -74,13 +74,13 @@
 //! # Feature flags
 //!
 //! | Name             | Features enabled                | Description                                                                                             |
-//! | ---              | ---                             | ---                                                                                                     |
+//! |------------------|---------------------------------|---------------------------------------------------------------------------------------------------------|
 //! | `default`        | `std_instant`, `std_systemtime` | Enabled by default.                                                                                     |
 //! | `std`            |                                 | Depends on the standard library. Implements `std::error::Error` for [`Error`].                          |
 //! | `nightly`        |                                 | Implements `core::error::Error` for [`Error`] **if** `std` is not enabled. Requires a nightly compiler. |
 //! | `std_instant`    | `std`                           | Implements [`Instant`] for `std::time::Instant`. Exposes `Sw` type alias.                               |
 //! | `std_systemtime` | `std`                           | Implements [`Instant`] for `std::time::SystemTime`.                                                     |
-//! | `tokio`          | `std`                           | Implements [`Instant`] for `tokio::time::Instant`. Exposes `TokioSw` type alias.                 |
+//! | `tokio`          | `std`                           | Implements [`Instant`] for `tokio::time::Instant`. Exposes `TokioSw` type alias.                        |
 //!
 //! ## Timekeeping support
 //!

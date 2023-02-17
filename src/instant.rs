@@ -14,7 +14,7 @@ use core::time::Duration;
 /// types.
 ///
 /// | Type                    | Feature flag     |
-/// | ---                     | ---              |
+/// |-------------------------|------------------|
 /// | `std::time::Instant`    | `std_instant`    |
 /// | `std::time::SystemTime` | `std_systemtime` |
 /// | `tokio::time::Instant`  | `tokio`          |
