@@ -401,7 +401,7 @@ impl<I: Instant> StopwatchImpl<I> {
     pub fn stop_at(&mut self, anchor: I) -> crate::Result<()> {
         self.start
             .take()
-            .map(|start| *self += anchor.saturating_duration_since(start))
+            .map(|start| *self = self.saturating_add(anchor.saturating_duration_since(start)))
             .ok_or(Error::SwStop)
     }
 
