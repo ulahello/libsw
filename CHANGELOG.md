@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+
+## [3.0.1] - 2023-02-17
 ### fixed
 * fixed `StopwatchImpl::checked_sub` not detecting overflow when subtracting from an overflowing elapsed time
 
