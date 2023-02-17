@@ -728,7 +728,7 @@ impl<I: Instant> StopwatchImpl<I> {
     /// ```
     #[must_use]
     pub fn saturating_sub(mut self, dur: Duration) -> Self {
-        self.sync_elapsed();
+        self.saturating_sync_elapsed();
         self.elapsed = self.elapsed.saturating_sub(dur);
         self
     }
@@ -775,7 +775,7 @@ impl<I: Instant> StopwatchImpl<I> {
     /// ```
     #[must_use]
     pub fn checked_sub(mut self, dur: Duration) -> Option<Self> {
-        self.sync_elapsed();
+        self.checked_sync_elapsed()?;
         self.elapsed.checked_sub(dur).map(|new| {
             self.elapsed = new;
             self
@@ -783,14 +783,29 @@ impl<I: Instant> StopwatchImpl<I> {
     }
 
     /// Syncs changes in the elapsed time, effectively toggling the stopwatch
-    /// twice.
-    #[inline] // fn is private; called in Self::saturating_sub and Self::checked_sub
-    fn sync_elapsed(&mut self) {
+    /// twice. If the new elapsed time overflows, it is saturated to
+    /// [`Duration::MAX`].
+    #[inline] // fn is private; called in Self::saturating_sub
+    fn saturating_sync_elapsed(&mut self) {
         if let Some(start) = self.start {
             let now = I::now();
-            *self += now.saturating_duration_since(start);
+            *self = self.saturating_add(now.saturating_duration_since(start));
             self.start = Some(now);
         }
+    }
+
+    /// Syncs changes in the elapsed time, effectively toggling the stopwatch
+    /// twice. If the new elapsed time overflows, returns [`None`] without
+    /// mutating the stopwatch.
+    #[inline] // fn is private; called in Self::checked_sub
+    #[must_use]
+    fn checked_sync_elapsed(&mut self) -> Option<()> {
+        if let Some(start) = self.start {
+            let now = I::now();
+            *self = self.checked_add(now.saturating_duration_since(start))?;
+            self.start = Some(now);
+        }
+        Some(())
     }
 
     /// "Transfers" `elapsed` to `start`, such that [`Self::elapsed`] is

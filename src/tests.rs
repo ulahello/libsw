@@ -221,6 +221,13 @@ fn sync_before_sub_checked() {
 }
 
 #[test]
+fn sync_before_sub_checked_overflow() {
+    let sw = Stopwatch::with_elapsed_started(Duration::MAX);
+    thread::sleep(DELAY);
+    assert_eq!(sw.checked_sub(DELAY * 2), None);
+}
+
+#[test]
 fn elapsed_at_saturates() {
     let sw = Stopwatch::with_elapsed_started(DELAY);
     assert_eq!(sw.elapsed_at(Instant::now() - (DELAY * 2)), DELAY);
