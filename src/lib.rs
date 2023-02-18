@@ -82,7 +82,7 @@
 //! | `std_systemtime` | `std`                           | Implements [`Instant`] for `std::time::SystemTime`. Exposes `SystemSw` type alias.                      |
 //! | `tokio`          | `std`                           | Implements [`Instant`] for `tokio::time::Instant`. Exposes `TokioSw` type alias.                        |
 //! | `time`           | `std`                           | Implements [`Instant`] for `time::Instant`. Exposes `TimeSw` type alias.                                |
-//! | `coarsetime`     | `std`                           | Implements [`Instant`] for `coarsetimetime::Instant`. Exposes `CoarseSw` type alias.                    |
+//! | `coarsetime`     | `std`                           | Implements [`Instant`] for `coarsetime::Instant`. Exposes `CoarseSw` type alias.                        |
 //!
 //! ## Timekeeping support
 //!
