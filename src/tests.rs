@@ -25,27 +25,31 @@ fn default() {
 }
 
 #[test]
-fn is_running() {
+fn is_running() -> crate::Result<()> {
     let mut sw = Stopwatch::new();
     assert!(!sw.is_running());
 
-    sw.start().unwrap();
+    sw.start()?;
     assert!(sw.is_running());
 
-    sw.stop().unwrap();
+    sw.stop()?;
     assert!(!sw.is_running());
+
+    Ok(())
 }
 
 #[test]
-fn is_stopped() {
+fn is_stopped() -> crate::Result<()> {
     let mut sw = Stopwatch::new();
     assert!(sw.is_stopped());
 
-    sw.start().unwrap();
+    sw.start()?;
     assert!(!sw.is_stopped());
 
-    sw.stop().unwrap();
+    sw.stop()?;
     assert!(sw.is_stopped());
+
+    Ok(())
 }
 
 #[test]
@@ -61,13 +65,16 @@ fn toggle() {
 }
 
 #[test]
-fn reset() {
+fn reset() -> crate::Result<()> {
     let mut sw = Stopwatch::new_started();
     thread::sleep(DELAY);
-    sw.stop().unwrap();
-    sw.start().unwrap();
+
+    sw.stop()?;
+    sw.start()?;
     sw.reset();
-    assert_eq!(sw, Stopwatch::new())
+
+    assert_eq!(sw, Stopwatch::new());
+    Ok(())
 }
 
 #[test]
@@ -104,16 +111,17 @@ fn replace() {
 }
 
 #[test]
-fn add() {
+fn add() -> crate::Result<()> {
     let mut sw = Stopwatch::new();
 
     sw += DELAY;
-    sw.start().unwrap();
+    sw.start()?;
     sw += DELAY;
-    sw.stop().unwrap();
+    sw.stop()?;
     sw += DELAY;
 
     assert!(sw.elapsed() >= DELAY * 3);
+    Ok(())
 }
 
 #[test]
@@ -125,16 +133,17 @@ fn sub() {
 }
 
 #[test]
-fn checked_add() {
+fn checked_add() -> crate::Result<()> {
     let mut sw = Stopwatch::new();
 
     sw = sw.checked_add(DELAY).unwrap();
-    sw.start().unwrap();
+    sw.start()?;
     sw = sw.checked_add(DELAY).unwrap();
-    sw.stop().unwrap();
+    sw.stop()?;
     sw = sw.checked_add(DELAY).unwrap();
 
     assert!(sw.elapsed() >= DELAY * 3);
+    Ok(())
 }
 
 #[test]
@@ -182,12 +191,13 @@ fn double_starts_stops_errs() {
 }
 
 #[test]
-fn sane_elapsed_while_stopped() {
+fn sane_elapsed_while_stopped() -> crate::Result<()> {
     let mut sw = Stopwatch::new_started();
     thread::sleep(DELAY);
-    sw.stop().unwrap();
+    sw.stop()?;
 
     assert!(sw.elapsed() >= DELAY);
+    Ok(())
 }
 
 #[test]
@@ -241,41 +251,47 @@ fn checked_elapsed_overflows() {
 }
 
 #[test]
-fn start_in_future() {
+fn start_in_future() -> crate::Result<()> {
     let mut sw = Stopwatch::new();
-    sw.start_at(Instant::now() + (DELAY * 2)).unwrap();
+    sw.start_at(Instant::now() + (DELAY * 2))?;
 
     thread::sleep(DELAY);
-    sw.stop().unwrap();
+    sw.stop()?;
     assert_eq!(sw.elapsed(), Duration::ZERO);
+    Ok(())
 }
 
 #[test]
-fn stop_before_last_start() {
+fn stop_before_last_start() -> crate::Result<()> {
     let mut sw = Stopwatch::with_elapsed(DELAY);
     let start = Instant::now();
     let old_elapsed = sw.elapsed();
-    sw.start_at(start).unwrap();
+
+    sw.start_at(start)?;
     thread::sleep(DELAY);
-    sw.stop_at(start - DELAY).unwrap();
+    sw.stop_at(start - DELAY)?;
+
     assert_eq!(old_elapsed, sw.elapsed());
+    Ok(())
 }
 
 #[test]
-fn checked_stop_overflows() {
+fn checked_stop_overflows() -> crate::Result<()> {
     let mut sw = Stopwatch::with_elapsed_started(Duration::MAX);
     thread::sleep(DELAY);
     assert!(sw.checked_elapsed().is_none());
-    assert!(sw.checked_stop().unwrap().is_none());
+    assert!(sw.checked_stop()?.is_none());
     assert!(sw.is_running());
+    Ok(())
 }
 
 #[test]
-fn checked_stop_stops() {
+fn checked_stop_stops() -> crate::Result<()> {
     let mut sw = Stopwatch::new_started();
     assert!(sw.is_running());
-    sw.checked_stop().unwrap().unwrap();
+    sw.checked_stop()?.unwrap();
     assert!(sw.is_stopped());
+    Ok(())
 }
 
 #[test]
