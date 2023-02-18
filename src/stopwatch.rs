@@ -910,14 +910,14 @@ impl<I: Instant> ops::Sub<Duration> for StopwatchImpl<I> {
 }
 
 impl<I: Instant> ops::AddAssign<Duration> for StopwatchImpl<I> {
-    #[inline]
+    #[track_caller]
     fn add_assign(&mut self, rhs: Duration) {
         *self = *self + rhs;
     }
 }
 
 impl<I: Instant> ops::SubAssign<Duration> for StopwatchImpl<I> {
-    #[inline]
+    #[track_caller]
     fn sub_assign(&mut self, rhs: Duration) {
         *self = *self - rhs;
     }
