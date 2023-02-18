@@ -2,8 +2,9 @@
 // copyright (C) 2022-2023 Ula Shipman <ula.hello@mailbox.org>
 // licensed under MIT OR Apache-2.0
 
-// TODO: re-organize tests
-// TODO: Instant::checked_add is not covered at all by tests and is not used in crate
+/* TODO: re-organize tests */
+/* TODO: Instant::checked_add is not covered at all by tests and is not used in
+ * crate */
 
 use crate::Error;
 
@@ -12,8 +13,8 @@ use core::time::Duration;
 use std::collections::hash_map::DefaultHasher;
 use std::thread;
 
-// TODO: manually changing these aliases if i want to test all supported
-// `Instant` impls is annoying
+/* TODO: manually changing these aliases if i want to test all supported
+ * `Instant` impls is annoying */
 type Instant = std::time::Instant;
 type Stopwatch = crate::stopwatch::StopwatchImpl<Instant>;
 
