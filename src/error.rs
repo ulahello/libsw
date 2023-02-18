@@ -32,23 +32,19 @@ pub type Result<T> = core::result::Result<T, Error>;
 #[non_exhaustive]
 #[derive(Clone, Copy, Debug, Hash, PartialEq, Eq)]
 pub enum Error {
-    /// Returned by [`StopwatchImpl::start`](crate::StopwatchImpl::start) and
-    /// [`StopwatchImpl::start_at`](crate::StopwatchImpl::start_at). Expects a
-    /// stopped stopwatch.
+    /// Returned by methods that [start](crate::StopwatchImpl::start) the
+    /// stopwatch. Expects that it's stopped.
     SwStart,
 
-    /// Returned by [`StopwatchImpl::stop`](crate::StopwatchImpl::stop) and
-    /// [`StopwatchImpl::stop_at`](crate::StopwatchImpl::stop_at). Expects a
-    /// running stopwatch.
+    /// Returned by methods that [stop](crate::StopwatchImpl::stop) the
+    /// stopwatch. Expects that it's running.
     SwStop,
 
-    /// Returned by [`StopwatchImpl::guard`](crate::StopwatchImpl::guard) or
-    /// [`StopwatchImpl::guard_at`](crate::StopwatchImpl::guard_at). Expects a
-    /// stopped stopwatch.
+    /// Returned by methods that [guard](crate::StopwatchImpl::guard) the
+    /// stopwatch. Expects that it's stopped.
     SwGuard,
 
-    /// Returned by [`Guard::new`](crate::Guard::new). Expects a running
-    /// stopwatch.
+    /// Returned by [`Guard::new`](crate::Guard::new). Expects that it's running.
     GuardNew,
 }
 
