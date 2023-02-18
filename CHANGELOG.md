@@ -3,7 +3,9 @@
 ## [unreleased]
 ### added
 * added feature flag `time`: Implements `Instant` for `time::Instant`.
+* added feature flag `coarsetime`: Implements `Instant` for `coarsetime::Instant`.
 * added `TimeSw` type alias to `StopwatchImpl<time::Instant>`
+* added `CoarseSw` type alias to `StopwatchImpl<coarsetime::Instant>`
 * added `SystemSw` type alias to `StopwatchImpl<std::time::SystemTime>`
 * added `StopwatchImpl::checked_toggle`
 * added `StopwatchImpl::checked_toggle_at`
