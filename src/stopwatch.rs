@@ -882,14 +882,19 @@ impl<I: Instant> Default for StopwatchImpl<I> {
 impl<I: Instant> ops::Add<Duration> for StopwatchImpl<I> {
     type Output = Self;
 
-    /// Alias to [`StopwatchImpl::checked_add`].
+    /// Add `dur` to `self`.
+    ///
+    /// Currently this is an alias to [`StopwatchImpl::checked_add`], but that
+    /// is not a stable guarentee. If you need a guarentee on the
+    /// implementation, use the [checked](Self::checked_add) or
+    /// [saturating](Self::checked_add) methods explicitly.
     ///
     /// # Panics
     ///
     /// Panics if overflow occurs.
     #[track_caller]
-    fn add(self, rhs: Duration) -> Self::Output {
-        self.checked_add(rhs)
+    fn add(self, dur: Duration) -> Self::Output {
+        self.checked_add(dur)
             .expect("attempt to add stopwatch with overflow")
     }
 }
@@ -897,29 +902,34 @@ impl<I: Instant> ops::Add<Duration> for StopwatchImpl<I> {
 impl<I: Instant> ops::Sub<Duration> for StopwatchImpl<I> {
     type Output = Self;
 
-    /// Alias to [`StopwatchImpl::checked_sub`].
+    /// Subtract `dur` from `self`.
+    ///
+    /// Currently this is an alias to [`StopwatchImpl::checked_sub`], but that
+    /// is not a stable guarentee. If you need a guarentee on the
+    /// implementation, use the [checked](Self::checked_sub) or
+    /// [saturating](Self::checked_sub) methods explicitly.
     ///
     /// # Panics
     ///
     /// Panics if overflow occurs.
     #[track_caller]
-    fn sub(self, rhs: Duration) -> Self::Output {
-        self.checked_sub(rhs)
+    fn sub(self, dur: Duration) -> Self::Output {
+        self.checked_sub(dur)
             .expect("attempt to subtract stopwatch with overflow")
     }
 }
 
 impl<I: Instant> ops::AddAssign<Duration> for StopwatchImpl<I> {
     #[track_caller]
-    fn add_assign(&mut self, rhs: Duration) {
-        *self = *self + rhs;
+    fn add_assign(&mut self, dur: Duration) {
+        *self = *self + dur;
     }
 }
 
 impl<I: Instant> ops::SubAssign<Duration> for StopwatchImpl<I> {
     #[track_caller]
-    fn sub_assign(&mut self, rhs: Duration) {
-        *self = *self - rhs;
+    fn sub_assign(&mut self, dur: Duration) {
+        *self = *self - dur;
     }
 }
 
