@@ -66,6 +66,18 @@ fn toggle() {
 }
 
 #[test]
+fn checked_toggle() {
+    let mut sw = Stopwatch::new();
+    assert!(sw.is_stopped());
+
+    sw.checked_toggle().unwrap();
+    assert!(sw.is_running());
+
+    sw.checked_toggle().unwrap();
+    assert!(sw.is_stopped());
+}
+
+#[test]
 fn reset() -> crate::Result<()> {
     let mut sw = Stopwatch::new_started();
     thread::sleep(DELAY);

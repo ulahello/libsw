@@ -1,6 +1,9 @@
 # changelog
 
 ## [unreleased]
+### added
+* added `StopwatchImpl::checked_toggle`
+* added `StopwatchImpl::checked_toggle_at`
 
 ## [3.0.1] - 2023-02-17
 ### fixed

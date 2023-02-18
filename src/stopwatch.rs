@@ -503,6 +503,42 @@ impl<I: Instant> StopwatchImpl<I> {
         }
     }
 
+    /// Tries to toggle whether the stopwatch is running or stopped. If the new
+    /// elapsed time overflows, returns [`None`] without mutating the stopwatch.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::Sw;
+    /// # use core::time::Duration;
+    /// # use std::thread;
+    /// let mut sw = Sw::with_elapsed_started(Duration::MAX);
+    /// thread::sleep(Duration::from_millis(100));
+    /// // whoops, new elapsed time can't be Duration::MAX + 100ms
+    /// assert!(sw.checked_toggle().is_none());
+    /// ```
+    pub fn checked_toggle(&mut self) -> Option<()> {
+        self.checked_toggle_at(I::now())
+    }
+
+    /// Tries to toggle whether the stopwatch is running or stopped, as if the
+    /// current time were `anchor`. If the new elapsed time overflows, returns
+    /// [`None`] without mutating the stopwatch.
+    ///
+    /// # Examples
+    ///
+    /// See the documentation for [`checked_toggle`](Self::checked_toggle) for a
+    /// related example.
+    pub fn checked_toggle_at(&mut self, anchor: I) -> Option<()> {
+        if let Ok(checked) = self.checked_stop_at(anchor) {
+            checked?;
+        } else {
+            let result = self.start_at(anchor);
+            debug_assert!(result.is_ok());
+        }
+        Some(())
+    }
+
     /// Starts the stopwatch, returning a [`Guard`] which when dropped, will
     /// stop the stopwatch.
     ///
