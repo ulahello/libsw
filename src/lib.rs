@@ -79,7 +79,7 @@
 //! | `std`            |                                 | Depends on the standard library. Implements `std::error::Error` for [`Error`].                          |
 //! | `nightly`        |                                 | Implements `core::error::Error` for [`Error`] **if** `std` is not enabled. Requires a nightly compiler. |
 //! | `std_instant`    | `std`                           | Implements [`Instant`] for `std::time::Instant`. Exposes `Sw` type alias.                               |
-//! | `std_systemtime` | `std`                           | Implements [`Instant`] for `std::time::SystemTime`.                                                     |
+//! | `std_systemtime` | `std`                           | Implements [`Instant`] for `std::time::SystemTime`. Exposes `SystemSw` type alias.                      |
 //! | `tokio`          | `std`                           | Implements [`Instant`] for `tokio::time::Instant`. Exposes `TokioSw` type alias.                        |
 //! | `time`           | `std`                           | Implements [`Instant`] for `time::Instant`. Exposes `TimeSw` type alias.                                |
 //!
@@ -142,6 +142,11 @@ pub type Sw = StopwatchImpl<std::time::Instant>;
     note = "use `Sw` instead, an alias to `StopwatchImpl<std::time::Instant>`"
 )]
 pub type Stopwatch = Sw;
+
+/// Alias to [`StopwatchImpl`] using the standard library's
+/// [`SystemTime`](std::time::SystemTime) type.
+#[cfg(feature = "std_systemtime")]
+pub type SystemSw = StopwatchImpl<std::time::SystemTime>;
 
 /// Alias to [`StopwatchImpl`] using Tokio's [`Instant`](tokio::time::Instant)
 /// type.

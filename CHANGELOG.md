@@ -4,6 +4,7 @@
 ### added
 * added feature flag `time`: Implements `Instant` for `time::Instant`.
 * added `TimeSw` type alias to `StopwatchImpl<time::Instant>`
+* added `SystemSw` type alias to `StopwatchImpl<std::time::SystemTime>`
 * added `StopwatchImpl::checked_toggle`
 * added `StopwatchImpl::checked_toggle_at`
 * added documentation notes about overflow to `StopwatchImpl::toggle` and `StopwatchImpl::toggle_at`
