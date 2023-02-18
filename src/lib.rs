@@ -82,6 +82,7 @@
 //! | `std_systemtime` | `std`                           | Implements [`Instant`] for `std::time::SystemTime`. Exposes `SystemSw` type alias.                      |
 //! | `tokio`          | `std`                           | Implements [`Instant`] for `tokio::time::Instant`. Exposes `TokioSw` type alias.                        |
 //! | `time`           | `std`                           | Implements [`Instant`] for `time::Instant`. Exposes `TimeSw` type alias.                                |
+//! | `coarsetime`     | `std`                           | Implements [`Instant`] for `coarsetimetime::Instant`. Exposes `CoarseSw` type alias.                    |
 //!
 //! ## Timekeeping support
 //!
@@ -157,6 +158,11 @@ pub type TokioSw = StopwatchImpl<tokio::time::Instant>;
 /// [`Instant`](time::Instant) type.
 #[cfg(feature = "time")]
 pub type TimeSw = StopwatchImpl<time::Instant>;
+
+/// Alias to [`StopwatchImpl`] using the `coarsetime` crate's
+/// [`Instant`](coarsetime::Instant) type.
+#[cfg(feature = "coarsetime")]
+pub type CoarseSw = StopwatchImpl<coarsetime::Instant>;
 
 #[cfg(test)]
 mod tests;

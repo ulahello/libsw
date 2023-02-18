@@ -271,9 +271,9 @@ fn elapsed_at_saturates() {
 
 #[test]
 fn checked_elapsed_overflows() {
-    assert!(Stopwatch::with_elapsed_started(Duration::MAX)
-        .checked_elapsed()
-        .is_none());
+    let sw = Stopwatch::with_elapsed_started(Duration::MAX);
+    thread::sleep(DELAY);
+    assert_eq!(sw.checked_elapsed(), None);
 }
 
 #[test]

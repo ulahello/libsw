@@ -9,3 +9,6 @@ mod tokio;
 
 #[cfg(feature = "time")]
 mod time;
+
+#[cfg(feature = "coarsetime")]
+mod coarsetime;

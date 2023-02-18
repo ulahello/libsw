@@ -13,6 +13,7 @@ keywords = ["stopwatch"]
 categories = ["date-and-time"]
 
 [dependencies]
+coarsetime = { version = "0.1.22", optional = true }
 tokio = { version = "1.25.0", features = ["time"], optional = true }
 time = { version = "0.3.19", features = ["std"], optional = true }
 
@@ -24,3 +25,4 @@ std_instant = ["std"]
 std_systemtime = ["std"]
 tokio = ["dep:tokio", "std"]
 time = ["dep:time", "std"]
+coarsetime = ["dep:coarsetime", "std"]

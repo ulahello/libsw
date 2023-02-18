@@ -19,6 +19,7 @@ use core::time::Duration;
 /// | `std::time::SystemTime` | `std_systemtime` |
 /// | `tokio::time::Instant`  | `tokio`          |
 /// | `time::Instant`         | `time`           |
+/// | `coarsetime::Instant`   | `coarsetime`     |
 ///
 /// If a timekeeping type you want to use isn't supported out of the box, please
 /// consider [filing an issue](https://github.com/ulahello/libsw/issues) on
