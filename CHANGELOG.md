@@ -6,6 +6,9 @@
 * added `StopwatchImpl::checked_toggle_at`
 * added documentation notes about overflow to `StopwatchImpl::toggle` and `StopwatchImpl::toggle_at`
 
+### changed
+* changed overloaded `StopwatchImpl` addition and subtraction to panic on overflow
+
 ## [3.0.1] - 2023-02-17
 ### fixed
 * fixed `StopwatchImpl::checked_sub` not detecting overflow when subtracting from an overflowing elapsed time

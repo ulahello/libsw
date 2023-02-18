@@ -882,20 +882,30 @@ impl<I: Instant> Default for StopwatchImpl<I> {
 impl<I: Instant> ops::Add<Duration> for StopwatchImpl<I> {
     type Output = Self;
 
-    /// Alias to [`StopwatchImpl::saturating_add`].
-    #[inline]
+    /// Alias to [`StopwatchImpl::checked_add`].
+    ///
+    /// # Panics
+    ///
+    /// Panics if overflow occurs.
+    #[track_caller]
     fn add(self, rhs: Duration) -> Self::Output {
-        self.saturating_add(rhs)
+        self.checked_add(rhs)
+            .expect("attempt to add stopwatch with overflow")
     }
 }
 
 impl<I: Instant> ops::Sub<Duration> for StopwatchImpl<I> {
     type Output = Self;
 
-    /// Alias to [`StopwatchImpl::saturating_sub`].
-    #[inline]
+    /// Alias to [`StopwatchImpl::checked_sub`].
+    ///
+    /// # Panics
+    ///
+    /// Panics if overflow occurs.
+    #[track_caller]
     fn sub(self, rhs: Duration) -> Self::Output {
-        self.saturating_sub(rhs)
+        self.checked_sub(rhs)
+            .expect("attempt to subtract stopwatch with overflow")
     }
 }
 

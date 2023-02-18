@@ -146,6 +146,18 @@ fn sub() {
 }
 
 #[test]
+#[should_panic]
+fn add_overloaded_overflow() {
+    _ = Stopwatch::with_elapsed(Duration::MAX) + DELAY;
+}
+
+#[test]
+#[should_panic]
+fn sub_overloaded_overflow() {
+    _ = Stopwatch::new() - DELAY;
+}
+
+#[test]
 fn checked_add() -> crate::Result<()> {
     let mut sw = Stopwatch::new();
 
