@@ -4,6 +4,7 @@
 ### added
 * added `StopwatchImpl::checked_toggle`
 * added `StopwatchImpl::checked_toggle_at`
+* added documentation notes about overflow to `StopwatchImpl::toggle` and `StopwatchImpl::toggle_at`
 
 ## [3.0.1] - 2023-02-17
 ### fixed

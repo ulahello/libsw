@@ -458,6 +458,10 @@ impl<I: Instant> StopwatchImpl<I> {
 
     /// Toggles whether the stopwatch is running or stopped.
     ///
+    /// # Notes
+    ///
+    /// See [`stop`](Self::stop) for details about how overflow is handled.
+    ///
     /// # Examples
     ///
     /// ```
@@ -479,7 +483,8 @@ impl<I: Instant> StopwatchImpl<I> {
     /// # Notes
     ///
     /// See [`start_at`](Self::start_at) and [`stop_at`](Self::stop_at) for
-    /// notes about the chronology of `anchor`.
+    /// notes about the chronology of `anchor`, as well as what happens if
+    /// overflow occurs.
     ///
     /// # Examples
     ///
