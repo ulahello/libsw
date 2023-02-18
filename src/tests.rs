@@ -14,7 +14,7 @@ use std::thread;
 
 // TODO: manually changing these aliases if i want to test all supported
 // `Instant` impls is annoying
-use std::time::Instant;
+type Instant = std::time::Instant;
 type Stopwatch = crate::stopwatch::StopwatchImpl<Instant>;
 
 const DELAY: Duration = Duration::from_millis(100);
@@ -410,7 +410,7 @@ fn mixed_stopwatches() -> [[Stopwatch; 3]; 8] {
         crafted_1 = Stopwatch::from_raw(elapsed, Some(start));
 
         elapsed -= Duration::from_secs(1);
-        start = start.checked_sub(Duration::from_secs(1)).unwrap();
+        start = <Instant as crate::Instant>::checked_sub(&start, Duration::from_secs(1)).unwrap();
         crafted_2 = Stopwatch::from_raw(elapsed, Some(start));
     }
     assert_eq!(crafted_1, crafted_2);

@@ -6,3 +6,6 @@ mod std_systemtime;
 
 #[cfg(feature = "tokio")]
 mod tokio;
+
+#[cfg(feature = "time")]
+mod time;
