@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+
+## [3.1.0] - 2023-02-18
 ### added
 * added feature flag `time`: Implements `Instant` for `time::Instant`.
 * added feature flag `coarsetime`: Implements `Instant` for `coarsetime::Instant`.
