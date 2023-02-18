@@ -517,6 +517,7 @@ impl<I: Instant> StopwatchImpl<I> {
     /// // whoops, new elapsed time can't be Duration::MAX + 100ms
     /// assert!(sw.checked_toggle().is_none());
     /// ```
+    #[inline]
     #[must_use]
     pub fn checked_toggle(&mut self) -> Option<()> {
         self.checked_toggle_at(I::now())
