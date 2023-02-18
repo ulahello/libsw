@@ -13,13 +13,13 @@ use core::time::Duration;
 /// `libsw` provides `Instant` implementations for a number of timekeeping
 /// types.
 ///
-/// | Type                    | Feature flag     |
-/// |-------------------------|------------------|
-/// | `std::time::Instant`    | `std_instant`    |
-/// | `std::time::SystemTime` | `std_systemtime` |
-/// | `tokio::time::Instant`  | `tokio`          |
-/// | `time::Instant`         | `time`           |
-/// | `coarsetime::Instant`   | `coarsetime`     |
+/// | Type                    | Feature flag     | Notes                   |
+/// |-------------------------|------------------|-------------------------|
+/// | `std::time::Instant`    | `std_instant`    |                         |
+/// | `std::time::SystemTime` | `std_systemtime` |                         |
+/// | `tokio::time::Instant`  | `tokio`          |                         |
+/// | `time::Instant`         | `time`           | Bumps MSRV to `1.62.1`. |
+/// | `coarsetime::Instant`   | `coarsetime`     |                         |
 ///
 /// If a timekeeping type you want to use isn't supported out of the box, please
 /// consider [filing an issue](https://github.com/ulahello/libsw/issues) on
