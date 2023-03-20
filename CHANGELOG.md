@@ -2,6 +2,7 @@
 
 ## [unreleased]
 ### added
+* added overview of features to documentation
 * added feature gate annotations to documentation
 
 ## [3.1.0] - 2023-02-18

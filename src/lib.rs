@@ -4,6 +4,9 @@
 
 //! `libsw` is a comprehensive stopwatch implementation.
 //!
+//! It offers checked stopping and arithmetic, precise control over when
+//! operations occur, and supports arbitrary timekeeping types.
+//!
 //! # Example
 //!
 //! The following (contrived) example shows the basic features of the crate. You
