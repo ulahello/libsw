@@ -74,7 +74,7 @@
 //! }
 //! ```
 //!
-//! # Feature flags
+//! # Features
 //!
 //! | Name             | Features enabled                | Description                                                                                             |
 //! |------------------|---------------------------------|---------------------------------------------------------------------------------------------------------|
@@ -108,19 +108,19 @@
 //! libsw = { version = ..., default-features = false }
 //! ```
 //!
-//! # Compiler support
+//! ## Compiler support
 //!
 //! The minimum supported version of Rust is `1.61.0`.
 //!
-//! # Safety
+//! ## Safety
 //!
 //! `libsw` contains no unsafe code (`#![forbid(unsafe_code)]`).
 
 #![cfg_attr(not(feature = "std"), no_std)]
 #![cfg_attr(all(feature = "nightly", not(feature = "std")), feature(error_in_core))]
+#![cfg_attr(doc_cfg, feature(doc_cfg))]
 #![forbid(unsafe_code)]
 #![warn(missing_docs, clippy::pedantic, clippy::nursery, clippy::cargo)]
-#![cfg_attr(doc_cfg, feature(doc_cfg))]
 
 mod error;
 mod guard;
