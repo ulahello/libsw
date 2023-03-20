@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+
+## [3.2.0] - 2023-03-20
 ### added
 * added feature flag `quanta`: Implements `Instant` for `quanta::Instant`.
 * added `QuantaSw` type alias to `StopwatchImpl<quanta::Instant>`
