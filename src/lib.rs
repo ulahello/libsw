@@ -4,8 +4,10 @@
 
 //! `libsw` is a comprehensive stopwatch implementation.
 //!
-//! It offers checked stopping and arithmetic, precise control over when
-//! operations occur, and supports arbitrary timekeeping types.
+//! It offers [checked stopping](StopwatchImpl::checked_stop) and
+//! [arithmetic](StopwatchImpl::checked_add), [precise
+//! control](StopwatchImpl::start_at) over when operations occur, and supports
+//! [arbitrary timekeeping types](Instant).
 //!
 //! # Example
 //!
