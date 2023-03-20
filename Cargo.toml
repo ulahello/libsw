@@ -15,6 +15,7 @@ categories = ["date-and-time", "no-std", "no-std::no-alloc"]
 [dependencies]
 coarsetime = { version = "0.1.22", optional = true }
 tokio = { version = "1.25.0", features = ["time"], optional = true }
+quanta = { version = "0.10.1", optional = true }
 time = { version = "0.3.19", features = ["std"], optional = true }
 
 [features]
@@ -26,6 +27,7 @@ std_systemtime = ["std"]
 tokio = ["dep:tokio", "std"]
 time = ["dep:time", "std"]
 coarsetime = ["dep:coarsetime", "std"]
+quanta = ["dep:quanta", "std"]
 
 [package.metadata.docs.rs]
 # build locally with:

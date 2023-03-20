@@ -24,6 +24,7 @@ use core::time::Duration;
 /// | `tokio::time::Instant`  | `tokio`          |                         |
 /// | `time::Instant`         | `time`           | Bumps MSRV to `1.62.1`. |
 /// | `coarsetime::Instant`   | `coarsetime`     |                         |
+/// | `quanta::Instant`       | `quanta`         |                         |
 ///
 /// If a timekeeping type you want to use isn't supported out of the box, please
 /// consider [filing an issue](https://github.com/ulahello/libsw/issues) on

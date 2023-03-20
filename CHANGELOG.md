@@ -2,6 +2,8 @@
 
 ## [unreleased]
 ### added
+* added feature flag `quanta`: Implements `Instant` for `quanta::Instant`.
+* added `QuantaSw` type alias to `StopwatchImpl<quanta::Instant>`
 * added overview of features to documentation
 * added feature gate annotations to documentation
 

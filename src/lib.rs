@@ -88,6 +88,7 @@
 //! | `tokio`          | `std`                           | Implements [`Instant`] for `tokio::time::Instant`. Exposes `TokioSw` type alias.                        |
 //! | `time`           | `std`                           | Implements [`Instant`] for `time::Instant`. Exposes `TimeSw` type alias. Bumps MSRV to `1.62.1`.        |
 //! | `coarsetime`     | `std`                           | Implements [`Instant`] for `coarsetime::Instant`. Exposes `CoarseSw` type alias.                        |
+//! | `quanta`         | `std`                           | Implements [`Instant`] for `quanta::Instant`. Exposes `QuantaSw` type alias.                            |
 //!
 //! ## Timekeeping support
 //!
@@ -175,6 +176,12 @@ pub type TimeSw = StopwatchImpl<time::Instant>;
 #[cfg(feature = "coarsetime")]
 #[cfg_attr(doc_cfg, doc(cfg(feature = "coarsetime")))]
 pub type CoarseSw = StopwatchImpl<coarsetime::Instant>;
+
+/// Alias to [`StopwatchImpl`] using the `quanta` crate's
+/// [`Instant`](quanta::Instant) type.
+#[cfg(feature = "quanta")]
+#[cfg_attr(doc_cfg, doc(cfg(feature = "quanta")))]
+pub type QuantaSw = StopwatchImpl<quanta::Instant>;
 
 #[cfg(test)]
 mod tests;
