@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+### added
+* added feature gate annotations to documentation
 
 ## [3.1.0] - 2023-02-18
 ### added

@@ -117,6 +117,7 @@
 #![cfg_attr(all(feature = "nightly", not(feature = "std")), feature(error_in_core))]
 #![forbid(unsafe_code)]
 #![warn(missing_docs, clippy::pedantic, clippy::nursery, clippy::cargo)]
+#![cfg_attr(doc_cfg, feature(doc_cfg))]
 
 mod error;
 mod guard;
@@ -134,10 +135,12 @@ pub use stopwatch::StopwatchImpl;
 ///
 /// This is the "default" stopwatch.
 #[cfg(feature = "std_instant")]
+#[cfg_attr(doc_cfg, doc(cfg(feature = "std_instant")))]
 pub type Sw = StopwatchImpl<std::time::Instant>;
 
 /// Deprecated alias to the "default" stopwatch.
 #[cfg(feature = "std_instant")]
+#[cfg_attr(doc_cfg, doc(cfg(feature = "std_instant")))]
 #[deprecated(
     since = "3.0.0",
     note = "use `Sw` instead, an alias to `StopwatchImpl<std::time::Instant>`"
@@ -147,21 +150,25 @@ pub type Stopwatch = Sw;
 /// Alias to [`StopwatchImpl`] using the standard library's
 /// [`SystemTime`](std::time::SystemTime) type.
 #[cfg(feature = "std_systemtime")]
+#[cfg_attr(doc_cfg, doc(cfg(feature = "std_systemtime")))]
 pub type SystemSw = StopwatchImpl<std::time::SystemTime>;
 
 /// Alias to [`StopwatchImpl`] using Tokio's [`Instant`](tokio::time::Instant)
 /// type.
 #[cfg(feature = "tokio")]
+#[cfg_attr(doc_cfg, doc(cfg(feature = "tokio")))]
 pub type TokioSw = StopwatchImpl<tokio::time::Instant>;
 
 /// Alias to [`StopwatchImpl`] using the `time` crate's
 /// [`Instant`](time::Instant) type.
 #[cfg(feature = "time")]
+#[cfg_attr(doc_cfg, doc(cfg(feature = "time")))]
 pub type TimeSw = StopwatchImpl<time::Instant>;
 
 /// Alias to [`StopwatchImpl`] using the `coarsetime` crate's
 /// [`Instant`](coarsetime::Instant) type.
 #[cfg(feature = "coarsetime")]
+#[cfg_attr(doc_cfg, doc(cfg(feature = "coarsetime")))]
 pub type CoarseSw = StopwatchImpl<coarsetime::Instant>;
 
 #[cfg(test)]

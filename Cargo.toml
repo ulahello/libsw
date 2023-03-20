@@ -26,3 +26,9 @@ std_systemtime = ["std"]
 tokio = ["dep:tokio", "std"]
 time = ["dep:time", "std"]
 coarsetime = ["dep:coarsetime", "std"]
+
+[package.metadata.docs.rs]
+# build locally with:
+# RUSTDOCFLAGS="--cfg doc_cfg" cargo +nightly d --all-features --no-deps --open
+all-features = true
+rustdoc-args = ["--cfg", "doc_cfg"]
