@@ -14,8 +14,13 @@ guard3:                 ^ created
                          ^ dropped
 ```
 
-## users could configure callbacks
-- called on drop
+## you could give it a closure to run on the stopwatch when dropped
+struct GuardFn { inner: &mut Stopwatch, callback: FnOnce(&mut Stopwatch) }
+impl Drop for GuardFn {
+    fn drop(&mut self) {
+        (self.callback)(self.inner);
+    }
+}
 */
 
 use crate::{Error, Instant, StopwatchImpl};
