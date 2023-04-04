@@ -52,12 +52,12 @@ use crate::{Error, Instant, StopwatchImpl};
 /// ```
 #[must_use = "if unused, the inner stopwatch will immediately stop again"]
 #[derive(Debug, PartialEq, Eq, Hash)]
-pub struct Guard<'a, I: Instant> {
+pub struct Guard<'sw, I: Instant> {
     // invariant: sw must be running
-    inner: &'a mut StopwatchImpl<I>,
+    inner: &'sw mut StopwatchImpl<I>,
 }
 
-impl<'a, I: Instant> Guard<'a, I> {
+impl<'sw, I: Instant> Guard<'sw, I> {
     /// Returns a `Guard` to a running [stopwatch](StopwatchImpl).
     ///
     /// # Errors
@@ -79,7 +79,7 @@ impl<'a, I: Instant> Guard<'a, I> {
     /// # Ok(())
     /// # }
     /// ```
-    pub fn new(sw: &'a mut StopwatchImpl<I>) -> crate::Result<Self> {
+    pub fn new(sw: &'sw mut StopwatchImpl<I>) -> crate::Result<Self> {
         sw.is_running()
             .then(|| Self { inner: sw })
             .ok_or(Error::GuardNew)
