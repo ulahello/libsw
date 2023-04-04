@@ -2,7 +2,7 @@
 
 ## [unreleased]
 ### changed
-* updated optional dependencies
+* specify dependencies more loosely
 
 ## [3.2.0] - 2023-03-20
 ### added
