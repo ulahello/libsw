@@ -25,8 +25,8 @@ impl Drop for GuardFn {
 
 use crate::{Error, Instant, StopwatchImpl};
 
-/// A running, guarded, [stopwatch](StopwatchImpl). When dropped, the stopwatch
-/// will automatically stop.
+/// A running, guarded, [stopwatch](StopwatchImpl). When [dropped](Guard::drop),
+/// the stopwatch will automatically stop.
 ///
 /// `Guard`s are returned by the `StopwatchImpl` methods
 /// [`guard`](StopwatchImpl::guard) and [`guard_at`](StopwatchImpl::guard_at).
