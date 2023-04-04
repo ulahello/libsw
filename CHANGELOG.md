@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+### changed
+* updated optional dependencies
 
 ## [3.2.0] - 2023-03-20
 ### added
