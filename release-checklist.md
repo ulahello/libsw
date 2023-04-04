@@ -2,6 +2,6 @@
 - [ ] `cargo test --all-features`
 - [ ] `cargo clippy --all-features`
 - [ ] `cargo doc --all-features`
-- [ ] `cargo semver-checks check-release`
 - [ ] bump version in `Cargo.toml`
 - [ ] bump version in `CHANGELOG.md`
+- [ ] `cargo semver-checks check-release`
