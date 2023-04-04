@@ -2,9 +2,9 @@
 // copyright (C) 2022-2023 Ula Shipman <ula.hello@mailbox.org>
 // licensed under MIT OR Apache-2.0
 
-use crate::Instant;
-
 use core::time::Duration;
+
+use crate::Instant;
 
 impl Instant for std::time::SystemTime {
     #[inline]

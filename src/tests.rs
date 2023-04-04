@@ -6,12 +6,12 @@
 /* TODO: Instant::checked_add is not covered at all by tests and is not used in
  * crate */
 
-use crate::Error;
-
 use core::hash::{Hash, Hasher};
 use core::time::Duration;
 use std::collections::hash_map::DefaultHasher;
 use std::thread;
+
+use crate::Error;
 
 /* TODO: manually changing these aliases if i want to test all supported
  * `Instant` impls is annoying */
