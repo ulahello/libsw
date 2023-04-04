@@ -6,6 +6,9 @@ use core::time::Duration;
 
 use crate::Instant;
 
+/* TODO: coarsetime::Instant uses coarsetime::Duration but this lib uses
+ * core::time::Duration. this may create friction in the api. */
+
 impl Instant for coarsetime::Instant {
     #[inline]
     fn now() -> Self {
