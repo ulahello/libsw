@@ -504,7 +504,8 @@ impl<I: Instant> StopwatchImpl<I> {
     /// ```
     pub fn toggle_at(&mut self, anchor: I) {
         if self.stop_at(anchor).is_err() {
-            let _ = self.start_at(anchor);
+            let result = self.start_at(anchor);
+            debug_assert!(result.is_ok());
         }
     }
 
