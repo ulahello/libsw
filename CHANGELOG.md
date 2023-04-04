@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+
+## [3.2.1] - 2023-04-04
 ### changed
 * specify dependencies more loosely
 
