@@ -773,7 +773,7 @@ impl<I: Instant> StopwatchImpl<I> {
     /// ```
     #[must_use]
     pub fn saturating_sub(mut self, dur: Duration) -> Self {
-        self.saturating_sync_elapsed();
+        self.saturating_sync_elapsed_at(|| I::now());
         self.elapsed = self.elapsed.saturating_sub(dur);
         self
     }
@@ -820,7 +820,7 @@ impl<I: Instant> StopwatchImpl<I> {
     /// ```
     #[must_use]
     pub fn checked_sub(mut self, dur: Duration) -> Option<Self> {
-        self.checked_sync_elapsed()?;
+        self.checked_sync_elapsed_at(|| I::now())?;
         self.elapsed.checked_sub(dur).map(|new| {
             self.elapsed = new;
             self
@@ -834,9 +834,9 @@ impl<I: Instant> StopwatchImpl<I> {
     /// twice. If the new elapsed time overflows, it is saturated to
     /// [`Duration::MAX`].
     #[inline] // fn is private; called in Self::saturating_sub
-    fn saturating_sync_elapsed(&mut self) {
+    fn saturating_sync_elapsed_at(&mut self, anchor: impl FnOnce() -> I) {
         if let Some(start) = self.start {
-            let now = I::now();
+            let now = anchor();
             *self = self.saturating_add(now.saturating_duration_since(start));
             self.start = Some(now);
         }
@@ -847,9 +847,9 @@ impl<I: Instant> StopwatchImpl<I> {
     /// mutating the stopwatch.
     #[inline] // fn is private; called in Self::checked_sub
     #[must_use]
-    fn checked_sync_elapsed(&mut self) -> Option<()> {
+    fn checked_sync_elapsed_at(&mut self, anchor: impl FnOnce() -> I) -> Option<()> {
         if let Some(start) = self.start {
-            let now = I::now();
+            let now = anchor();
             *self = self.checked_add(now.saturating_duration_since(start))?;
             self.start = Some(now);
         }
@@ -940,24 +940,46 @@ impl<I: Instant> PartialEq for StopwatchImpl<I> {
     /// Stopwatches are equal if whether they are running and their elapsed time
     /// are equal.
     fn eq(&self, rhs: &Self) -> bool {
-        let mut self_ = *self;
-        let mut rhs_ = *rhs;
-        let self_err = self_.normalize_start();
-        let rhs_err = rhs_.normalize_start();
-
-        self_.is_running() == rhs_.is_running()
-            && self_.elapsed == rhs_.elapsed
-            && self_err == rhs_err
+        if self.is_running() != rhs.is_running() {
+            // they have different states, definitely not equal
+            false
+        } else if self.is_stopped() {
+            // they're both stopped, we can simply compare `elapsed` without worrying about time
+            debug_assert!(rhs.is_stopped());
+            self.elapsed == rhs.elapsed
+        } else {
+            // they're both running, we need to worry about time
+            let mut self_ = *self;
+            let mut rhs_ = *rhs;
+            let self_err = self_.normalize_start();
+            let rhs_err = rhs_.normalize_start();
+            let self_start = self_.start.unwrap();
+            let rhs_start = rhs_.start.unwrap();
+            /* TODO: if normalize_start fails for either, their start times
+             * can't be trusted to be accurate. however we expect them to be by
+             * comparing saturating_duration_since for one another. */
+            self_start.saturating_duration_since(rhs_start)
+                == rhs_start.saturating_duration_since(self_start)
+                && self_err == rhs_err
+        }
     }
 }
 
-impl<I: Instant> Hash for StopwatchImpl<I> {
+impl<I: Instant + Hash> Hash for StopwatchImpl<I> {
+    /// Hashes `self` and `rhs`. These hashes are not dependant on the time of
+    /// measurement, so they can be used to test equality.
+    ///
+    /// # Support
+    ///
+    /// `I` (the [`Instant`] type used by the stopwatch) must implement
+    /// [`Hash`].
     fn hash<H: Hasher>(&self, state: &mut H) {
         let mut self_ = *self;
         let err = self_.normalize_start();
 
-        self_.is_running().hash(state);
         self_.elapsed.hash(state);
+        self_.start.hash(state);
+        // TODO: see `eq` todo about comparing normalize_start results & start instant
         err.hash(state);
     }
 }

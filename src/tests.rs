@@ -342,9 +342,12 @@ fn eq_properties() {
 #[test]
 fn eq_running() {
     // whatever is compared shouldn't depend on the time of observation
-    let sw_1 = Stopwatch::new_started();
-    let sw_2 = sw_1.clone();
+    let now = Instant::now();
+    let sw_1 = Stopwatch::new_started_at(now);
+    let sw_2 = Stopwatch::new_started_at(now);
+    let sw_3 = Stopwatch::from_raw(DELAY, Some(now));
     assert_eq!(sw_1, sw_2);
+    assert_ne!(sw_1, sw_3);
 }
 
 #[test]
@@ -374,35 +377,44 @@ fn partial_eq() {
 
 #[test]
 fn hash_and_eq() {
-    for [sw_1, sw_2, _] in mixed_stopwatches() {
+    for [sw_1, sw_2, sw_3] in mixed_stopwatches() {
         let mut hasher_1 = DefaultHasher::new();
         let mut hasher_2 = DefaultHasher::new();
+        let mut hasher_3 = DefaultHasher::new();
 
         sw_1.hash(&mut hasher_1);
         sw_2.hash(&mut hasher_2);
+        sw_3.hash(&mut hasher_3);
 
         // > When implementing both Hash and Eq, it is important that the following property holds:
         // > k1 == k2 -> hash(k1) == hash(k2)
         assert_eq!(sw_1 == sw_2, hasher_1.finish() == hasher_2.finish());
+        assert_eq!(sw_1 == sw_3, hasher_1.finish() == hasher_3.finish());
+        assert_eq!(sw_2 == sw_3, hasher_2.finish() == hasher_3.finish());
     }
 }
 
 #[test]
 fn hash_running() {
-    let sw_1 = Stopwatch::new_started();
-    let sw_2 = sw_1.clone();
+    let now = Instant::now();
+    let sw_1 = Stopwatch::new_started_at(now);
+    let sw_2 = Stopwatch::new_started_at(now);
+    let sw_3 = Stopwatch::from_raw(DELAY, Some(now));
 
     let mut hasher_1 = DefaultHasher::new();
     let mut hasher_2 = DefaultHasher::new();
+    let mut hasher_3 = DefaultHasher::new();
 
     sw_1.hash(&mut hasher_1);
     sw_2.hash(&mut hasher_2);
+    sw_3.hash(&mut hasher_3);
 
     // whatever is hashed shouldn't depend on the time of observation
     assert_eq!(hasher_1.finish(), hasher_2.finish());
+    assert_ne!(hasher_1.finish(), hasher_3.finish());
 }
 
-fn mixed_stopwatches() -> [[Stopwatch; 3]; 8] {
+fn mixed_stopwatches() -> [[Stopwatch; 3]; 11] {
     let crafted_1;
     let crafted_2;
     {
@@ -417,7 +429,18 @@ fn mixed_stopwatches() -> [[Stopwatch; 3]; 8] {
     assert_eq!(crafted_1, crafted_2);
 
     let started = Stopwatch::new_started();
-    let started_elapsed = Stopwatch::with_elapsed_started(Duration::from_secs(1));
+    let started_elapsed_1 = Stopwatch::with_elapsed_started(Duration::from_secs(1));
+    let started_elapsed_2 = Stopwatch::with_elapsed_started(Duration::from_secs(2));
+
+    let overflowing_1;
+    let overflowing_2;
+    {
+        let start_1 = Instant::now();
+        let start_2 = <Instant as crate::Instant>::checked_sub(&start_1, DELAY).unwrap();
+        overflowing_1 = Stopwatch::from_raw(Duration::MAX, Some(start_1));
+        overflowing_2 = Stopwatch::from_raw(Duration::MAX, Some(start_2));
+    }
+
     [
         [Stopwatch::new(), Stopwatch::new(), Stopwatch::new()],
         [started, started, started],
@@ -427,9 +450,16 @@ fn mixed_stopwatches() -> [[Stopwatch; 3]; 8] {
             Stopwatch::with_elapsed(Duration::from_secs(1)),
             Stopwatch::with_elapsed(Duration::from_secs(1)),
         ],
-        [started_elapsed, started_elapsed, started_elapsed],
+        [started_elapsed_1, started_elapsed_1, started_elapsed_1],
+        [started_elapsed_1, started_elapsed_2, started_elapsed_1],
+        [overflowing_1, overflowing_2, started],
         [
-            started_elapsed,
+            started_elapsed_1,
+            Stopwatch::with_elapsed(Duration::from_secs(1)),
+            Stopwatch::with_elapsed(Duration::from_secs(1)),
+        ],
+        [
+            started_elapsed_2,
             Stopwatch::with_elapsed(Duration::from_secs(1)),
             Stopwatch::with_elapsed(Duration::from_secs(1)),
         ],

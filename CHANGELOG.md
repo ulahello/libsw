@@ -6,6 +6,13 @@
 ### changed
 * specify dependencies more loosely
 
+### fixed
+* fixed incorrect `PartialEq` implementation for `StopwatchImpl`
+  * two running stopwatches with different elapsed times compared equal
+* fixed incorrect `Hash` implementation for `StopwatchImpl`
+  * two running stopwatches with different elapsed times hashed equally
+  * **BREAKING (though warranted for patch):** for `StopwatchImpl<I>` to implement `Hash`, `I` must implement `Hash`
+
 ## [3.2.0] - 2023-03-20
 ### added
 * added feature flag `quanta`: Implements `Instant` for `quanta::Instant`.
