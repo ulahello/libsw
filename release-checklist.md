@@ -5,3 +5,4 @@
 - [ ] bump version in `Cargo.toml`
 - [ ] bump version in `CHANGELOG.md`
 - [ ] `cargo semver-checks check-release`
+- [ ] `cargo msrv verify`
