@@ -978,10 +978,10 @@ impl<I: Instant + Hash> Hash for StopwatchImpl<I> {
         let mut self_ = *self;
         let err = self_.normalize_start();
 
-        self_.elapsed.hash(state);
         err.hash(state);
         if err.is_ok() {
-            // we can only trust the start time if normalizing succeeded.
+            // we can only trust `elapsed` and `start` if normalizing succeeded.
+            self_.elapsed.hash(state);
             self_.start.hash(state);
         }
     }

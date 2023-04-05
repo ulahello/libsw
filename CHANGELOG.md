@@ -2,6 +2,8 @@
 
 ## [unreleased]
 ### fixed
+* fixed incorrect hashing of `StopwatchImpl`s in specific circumstances
+  * this issue only occurred when the desired `Instant` type was unrepresentable
 * fixed typo in `Hash` for `StopwatchImpl` docs
 
 ## [3.2.2] - 2023-04-05
