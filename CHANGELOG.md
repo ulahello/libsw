@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+
+## [3.2.3] - 2023-04-05
 ### fixed
 * fixed incorrect hashing of `StopwatchImpl`s in specific circumstances
   * this issue only occurred when the desired `Instant` type was unrepresentable
