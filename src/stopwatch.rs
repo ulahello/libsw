@@ -967,7 +967,7 @@ impl<I: Instant> PartialEq for StopwatchImpl<I> {
 }
 
 impl<I: Instant + Hash> Hash for StopwatchImpl<I> {
-    /// Hashes `self` and `rhs`. These hashes are not dependant on the time of
+    /// Hashes `self` and `rhs`. These hashes are not dependent on the time of
     /// measurement, so they can be used to test equality.
     ///
     /// # Support

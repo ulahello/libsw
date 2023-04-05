@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+### fixed
+* fixed typo in `Hash` for `StopwatchImpl` docs
 
 ## [3.2.2] - 2023-04-05
 ### fixed
