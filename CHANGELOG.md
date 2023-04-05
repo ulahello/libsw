@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+
+## [3.2.2] - 2023-04-05
 ### fixed
 * fixed incorrect `PartialEq` implementation for `StopwatchImpl`
   * two running stopwatches with different elapsed times compared equal
