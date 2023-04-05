@@ -953,14 +953,15 @@ impl<I: Instant> PartialEq for StopwatchImpl<I> {
             let mut rhs_ = *rhs;
             let self_err = self_.normalize_start();
             let rhs_err = rhs_.normalize_start();
-            let self_start = self_.start.unwrap();
-            let rhs_start = rhs_.start.unwrap();
-            /* TODO: if normalize_start fails for either, their start times
-             * can't be trusted to be accurate. however we expect them to be by
-             * comparing saturating_duration_since for one another. */
-            self_start.saturating_duration_since(rhs_start)
-                == rhs_start.saturating_duration_since(self_start)
-                && self_err == rhs_err
+            if self_err.is_err() | rhs_err.is_err() {
+                // start times can't be trusted since normalizing failed! we cannot compare them.
+                self_err == rhs_err
+            } else {
+                let self_start = self_.start.unwrap();
+                let rhs_start = rhs_.start.unwrap();
+                self_start.saturating_duration_since(rhs_start)
+                    == rhs_start.saturating_duration_since(self_start)
+            }
         }
     }
 }
@@ -978,8 +979,10 @@ impl<I: Instant + Hash> Hash for StopwatchImpl<I> {
         let err = self_.normalize_start();
 
         self_.elapsed.hash(state);
-        self_.start.hash(state);
-        // TODO: see `eq` todo about comparing normalize_start results & start instant
         err.hash(state);
+        if err.is_ok() {
+            // we can only trust the start time if normalizing succeeded.
+            self_.start.hash(state);
+        }
     }
 }
