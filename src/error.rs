@@ -114,4 +114,4 @@ impl fmt::Display for Error {
 impl std::error::Error for Error {}
 
 #[cfg(all(feature = "nightly", not(feature = "std")))]
-impl core::error::Error for super::Error {}
+impl core::error::Error for Error {}
