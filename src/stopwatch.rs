@@ -818,7 +818,7 @@ impl<I: Instant> StopwatchImpl<I> {
     #[must_use]
     pub fn saturating_sub_at(mut self, dur: Duration, mut anchor: I) -> Self {
         self.saturate_anchor_to_start(&mut anchor);
-        self.saturating_sync_elapsed_at(|| anchor);
+        self.saturating_sync_elapsed_at(anchor);
         self.elapsed = self.elapsed.saturating_sub(dur);
         self
     }
@@ -904,7 +904,7 @@ impl<I: Instant> StopwatchImpl<I> {
     #[must_use]
     pub fn checked_sub_at(mut self, dur: Duration, mut anchor: I) -> Option<Self> {
         self.saturate_anchor_to_start(&mut anchor);
-        self.checked_sync_elapsed_at(|| anchor)?;
+        self.checked_sync_elapsed_at(anchor)?;
         self.elapsed.checked_sub(dur).map(|new| {
             self.elapsed = new;
             self
@@ -927,11 +927,10 @@ impl<I: Instant> StopwatchImpl<I> {
     /// twice. If the new elapsed time overflows, it is saturated to
     /// [`Duration::MAX`].
     #[inline] // fn is private; called in Self::saturating_sub
-    fn saturating_sync_elapsed_at(&mut self, now: impl FnOnce() -> I) {
+    fn saturating_sync_elapsed_at(&mut self, anchor: I) {
         if let Some(start) = self.start {
-            let now = now();
-            *self = self.saturating_add(now.saturating_duration_since(start));
-            self.start = Some(now);
+            *self = self.saturating_add(anchor.saturating_duration_since(start));
+            self.start = Some(anchor);
         }
     }
 
@@ -940,11 +939,10 @@ impl<I: Instant> StopwatchImpl<I> {
     /// mutating the stopwatch.
     #[inline] // fn is private; called in Self::checked_sub
     #[must_use]
-    fn checked_sync_elapsed_at(&mut self, now: impl FnOnce() -> I) -> Option<()> {
+    fn checked_sync_elapsed_at(&mut self, anchor: I) -> Option<()> {
         if let Some(start) = self.start {
-            let now = now();
-            *self = self.checked_add(now.saturating_duration_since(start))?;
-            self.start = Some(now);
+            *self = self.checked_add(anchor.saturating_duration_since(start))?;
+            self.start = Some(anchor);
         }
         Some(())
     }
