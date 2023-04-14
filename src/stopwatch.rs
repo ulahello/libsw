@@ -792,8 +792,6 @@ impl<I: Instant> StopwatchImpl<I> {
         self.saturating_sub_at_inner(dur, || I::now())
     }
 
-    // TODO: add examples
-    // TODO: add more tests
     /// Subtracts `dur` from the total elapsed time, as if the current time were
     /// `anchor`. If underflow occurred, the total elapsed time is set to
     /// [`Duration::ZERO`].
@@ -803,6 +801,20 @@ impl<I: Instant> StopwatchImpl<I> {
     /// If the elapsed time is overflowing (as in, would exceed
     /// [`Duration::MAX`]), the elapsed time is clamped to [`Duration::MAX`] and
     /// `dur` is subtracted from that.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// # use libsw::Sw;
+    /// # use core::time::Duration;
+    /// # use std::time::Instant;
+    /// # use std::thread;
+    /// let mut sw = Sw::new_started();
+    /// thread::sleep(Duration::from_millis(100));
+    /// let mut now = Instant::now();
+    /// sw = sw.saturating_sub_at(Duration::from_secs(1), now);
+    /// assert_eq!(sw.elapsed_at(now), Duration::ZERO);
+    /// ```
     #[inline]
     #[must_use]
     pub fn saturating_sub_at(self, dur: Duration, anchor: I) -> Self {
