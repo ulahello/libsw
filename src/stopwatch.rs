@@ -804,7 +804,7 @@ impl<I: Instant> StopwatchImpl<I> {
     ///
     /// # Examples
     ///
-    /// ```rust
+    /// ```
     /// # use libsw::Sw;
     /// # use core::time::Duration;
     /// # use std::time::Instant;
@@ -872,8 +872,6 @@ impl<I: Instant> StopwatchImpl<I> {
         self.checked_sub_at_inner(dur, I::now)
     }
 
-    // TODO: add examples
-    // TODO: add tests
     /// Subtracts `dur` from the total elapsed time, as if the current time were
     /// `anchor`. If overflow occurred, returns [`None`].
     ///
@@ -881,6 +879,24 @@ impl<I: Instant> StopwatchImpl<I> {
     ///
     /// Overflow can also occur if the elapsed time is overflowing (as in, would
     /// exceed [`Duration::MAX`]).
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use libsw::Sw;
+    /// # use core::time::Duration;
+    /// # use std::time::Instant;
+    /// # use std::thread;
+    /// let mut sw = Sw::new_started();
+    /// thread::sleep(Duration::from_millis(100));
+    /// let now = Instant::now();
+    /// // underflow yields `None`
+    /// assert_eq!(sw.checked_sub_at(Duration::from_secs(1), now), None);
+    ///
+    /// // positive overflow yields `None`
+    /// sw.set_in_place(Duration::MAX);
+    /// assert_eq!(sw.checked_sub(Duration::ZERO), None);
+    /// ```
     #[inline]
     #[must_use]
     pub fn checked_sub_at(self, dur: Duration, anchor: I) -> Option<Self> {
