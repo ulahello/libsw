@@ -789,7 +789,7 @@ impl<I: Instant> StopwatchImpl<I> {
     #[inline]
     #[must_use]
     pub fn saturating_sub(self, dur: Duration) -> Self {
-        self.saturating_sub_at_inner(dur, || I::now())
+        self.saturating_sub_at_inner(dur, I::now)
     }
 
     /// Subtracts `dur` from the total elapsed time, as if the current time were
@@ -869,7 +869,7 @@ impl<I: Instant> StopwatchImpl<I> {
     #[inline]
     #[must_use]
     pub fn checked_sub(self, dur: Duration) -> Option<Self> {
-        self.checked_sub_at_inner(dur, || I::now())
+        self.checked_sub_at_inner(dur, I::now)
     }
 
     // TODO: add examples
