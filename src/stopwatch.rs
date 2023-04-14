@@ -770,8 +770,9 @@ impl<I: Instant> StopwatchImpl<I> {
     ///
     /// # Notes
     ///
-    /// See the documentation for [`saturating_sub_at`](Self::saturating_sub_at)
-    /// for notes about positive overflow.
+    /// If the elapsed time is overflowing (as in, would exceed
+    /// [`Duration::MAX`]), the elapsed time is clamped to [`Duration::MAX`] and
+    /// `dur` is subtracted from that.
     ///
     /// # Examples
     ///
@@ -788,39 +789,6 @@ impl<I: Instant> StopwatchImpl<I> {
     #[must_use]
     pub fn saturating_sub(self, dur: Duration) -> Self {
         self.saturating_sub_at(dur, I::now())
-    }
-
-    /// Subtracts `dur` from the total elapsed time, as if the current time were
-    /// `anchor`. If underflow occurred, the total elapsed time is set to
-    /// [`Duration::ZERO`].
-    ///
-    /// # Notes
-    ///
-    /// - If the elapsed time is overflowing (as in, would exceed
-    /// [`Duration::MAX`]), the elapsed time is clamped to [`Duration::MAX`] and
-    /// `dur` is subtracted from that.
-    ///
-    /// - `anchor` saturates to the last instant the stopwatch was started.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// # use libsw::Sw;
-    /// # use core::time::Duration;
-    /// # use std::time::Instant;
-    /// # use std::thread;
-    /// let mut sw = Sw::new_started();
-    /// thread::sleep(Duration::from_millis(100));
-    /// let mut now = Instant::now();
-    /// sw = sw.saturating_sub_at(Duration::from_secs(1), now);
-    /// assert_eq!(sw.elapsed_at(now), Duration::ZERO);
-    /// ```
-    #[must_use]
-    pub fn saturating_sub_at(mut self, dur: Duration, mut anchor: I) -> Self {
-        self.saturate_anchor_to_start(&mut anchor);
-        self.saturating_sync_elapsed_at(anchor);
-        self.elapsed = self.elapsed.saturating_sub(dur);
-        self
     }
 
     /// Adds `dur` to the total elapsed time. If overflow occurred, returns
@@ -852,8 +820,8 @@ impl<I: Instant> StopwatchImpl<I> {
     ///
     /// # Notes
     ///
-    /// See the documentation for [`checked_sub_at`](Self::checked_sub_at) for
-    /// notes about positive overflow.
+    /// Overflow can also occur if the elapsed time is overflowing (as in, would
+    /// exceed [`Duration::MAX`]).
     ///
     /// # Examples
     ///
@@ -873,6 +841,41 @@ impl<I: Instant> StopwatchImpl<I> {
     pub fn checked_sub(self, dur: Duration) -> Option<Self> {
         self.checked_sub_at(dur, I::now())
     }
+}
+
+impl<I: Instant> StopwatchImpl<I> {
+    /// Subtracts `dur` from the total elapsed time, as if the current time were
+    /// `anchor`. If underflow occurred, the total elapsed time is set to
+    /// [`Duration::ZERO`].
+    ///
+    /// # Notes
+    ///
+    /// - If the elapsed time is overflowing (as in, would exceed
+    /// [`Duration::MAX`]), the elapsed time is clamped to [`Duration::MAX`] and
+    /// `dur` is subtracted from that.
+    ///
+    /// - `anchor` saturates to the last instant the stopwatch was started.
+    ///
+    /// # Examples
+    ///
+    /// ```skip
+    /// # use libsw::Sw;
+    /// # use core::time::Duration;
+    /// # use std::time::Instant;
+    /// # use std::thread;
+    /// let mut sw = Sw::new_started();
+    /// thread::sleep(Duration::from_millis(100));
+    /// let mut now = Instant::now();
+    /// sw = sw.saturating_sub_at(Duration::from_secs(1), now);
+    /// assert_eq!(sw.elapsed_at(now), Duration::ZERO);
+    /// ```
+    #[must_use]
+    pub(crate) fn saturating_sub_at(mut self, dur: Duration, mut anchor: I) -> Self {
+        self.saturate_anchor_to_start(&mut anchor);
+        self.saturating_sync_elapsed_at(anchor);
+        self.elapsed = self.elapsed.saturating_sub(dur);
+        self
+    }
 
     /// Subtracts `dur` from the total elapsed time, as if the current time were
     /// `anchor`. If overflow occurred, returns [`None`].
@@ -886,7 +889,7 @@ impl<I: Instant> StopwatchImpl<I> {
     ///
     /// # Examples
     ///
-    /// ```
+    /// ```skip
     /// # use libsw::Sw;
     /// # use core::time::Duration;
     /// # use std::time::Instant;
@@ -902,7 +905,7 @@ impl<I: Instant> StopwatchImpl<I> {
     /// assert_eq!(sw.checked_sub(Duration::ZERO), None);
     /// ```
     #[must_use]
-    pub fn checked_sub_at(mut self, dur: Duration, mut anchor: I) -> Option<Self> {
+    pub(crate) fn checked_sub_at(mut self, dur: Duration, mut anchor: I) -> Option<Self> {
         self.saturate_anchor_to_start(&mut anchor);
         self.checked_sync_elapsed_at(anchor)?;
         self.elapsed.checked_sub(dur).map(|new| {

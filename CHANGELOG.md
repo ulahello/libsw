@@ -1,8 +1,8 @@
 # changelog
 
 ## [unreleased]
-### added
-* added `StopwatchImpl::saturating_sub_at` and `StopwatchImpl::checked_sub_at`
+### changed
+* clarified documentation about overflow for `StopwatchImpl::checked_sub` and `StopwatchImpl::saturating_sub`
 
 ### fixed
 * fixed `Eq` implementation for `StopwatchImpl<I>` (derived) restricting `I` to implement `Eq`
