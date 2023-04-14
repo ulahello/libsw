@@ -12,7 +12,7 @@ use crate::{Error, Guard, Instant};
 ///
 /// Stopwatches work with any type that implements [`Instant`].
 #[allow(clippy::module_name_repetitions)]
-#[derive(Clone, Copy, Debug, Eq)]
+#[derive(Clone, Copy, Debug)]
 pub struct StopwatchImpl<I: Instant> {
     elapsed: Duration,
     start: Option<I>,
@@ -965,6 +965,8 @@ impl<I: Instant> PartialEq for StopwatchImpl<I> {
         }
     }
 }
+
+impl<I: Instant> Eq for StopwatchImpl<I> {}
 
 impl<I: Instant + Hash> Hash for StopwatchImpl<I> {
     /// Hashes `self` and `rhs`. These hashes are not dependent on the time of

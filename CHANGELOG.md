@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+### fixed
+* fixed `Eq` implementation for `StopwatchImpl<I>` (derived) restricting `I` to implement `Eq`
 
 ## [3.2.3] - 2023-04-05
 ### fixed
