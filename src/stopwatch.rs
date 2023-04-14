@@ -14,8 +14,6 @@ use crate::{Error, Guard, Instant};
  * the stopwatch. it may be desirable to add functions that take a closure that
  * returns an instant so we can only call Instant::now when necessary. */
 
-/* TODO: what happens for sub_at methods if anchor is earlier than last start? */
-
 /// A stopwatch measures and accumulates elapsed time between starts and stops.
 ///
 /// Stopwatches work with any type that implements [`Instant`].
@@ -789,7 +787,7 @@ impl<I: Instant> StopwatchImpl<I> {
     #[inline]
     #[must_use]
     pub fn saturating_sub(self, dur: Duration) -> Self {
-        self.saturating_sub_at_inner(dur, I::now)
+        self.saturating_sub_at(dur, I::now())
     }
 
     /// Subtracts `dur` from the total elapsed time, as if the current time were
@@ -798,9 +796,11 @@ impl<I: Instant> StopwatchImpl<I> {
     ///
     /// # Notes
     ///
-    /// If the elapsed time is overflowing (as in, would exceed
+    /// - If the elapsed time is overflowing (as in, would exceed
     /// [`Duration::MAX`]), the elapsed time is clamped to [`Duration::MAX`] and
     /// `dur` is subtracted from that.
+    ///
+    /// - `anchor` saturates to the last instant the stopwatch was started.
     ///
     /// # Examples
     ///
@@ -817,8 +817,11 @@ impl<I: Instant> StopwatchImpl<I> {
     /// ```
     #[inline]
     #[must_use]
-    pub fn saturating_sub_at(self, dur: Duration, anchor: I) -> Self {
-        self.saturating_sub_at_inner(dur, || anchor)
+    pub fn saturating_sub_at(mut self, dur: Duration, mut anchor: I) -> Self {
+        self.saturate_anchor_to_start(&mut anchor);
+        self.saturating_sync_elapsed_at(|| anchor);
+        self.elapsed = self.elapsed.saturating_sub(dur);
+        self
     }
 
     /// Adds `dur` to the total elapsed time. If overflow occurred, returns
@@ -869,7 +872,7 @@ impl<I: Instant> StopwatchImpl<I> {
     #[inline]
     #[must_use]
     pub fn checked_sub(self, dur: Duration) -> Option<Self> {
-        self.checked_sub_at_inner(dur, I::now)
+        self.checked_sub_at(dur, I::now())
     }
 
     /// Subtracts `dur` from the total elapsed time, as if the current time were
@@ -877,8 +880,10 @@ impl<I: Instant> StopwatchImpl<I> {
     ///
     /// # Notes
     ///
-    /// Overflow can also occur if the elapsed time is overflowing (as in, would
+    /// - Overflow can also occur if the elapsed time is overflowing (as in, would
     /// exceed [`Duration::MAX`]).
+    ///
+    /// - `anchor` saturates to the last instant the stopwatch was started.
     ///
     /// # Examples
     ///
@@ -899,13 +904,27 @@ impl<I: Instant> StopwatchImpl<I> {
     /// ```
     #[inline]
     #[must_use]
-    pub fn checked_sub_at(self, dur: Duration, anchor: I) -> Option<Self> {
-        self.checked_sub_at_inner(dur, || anchor)
+    pub fn checked_sub_at(mut self, dur: Duration, mut anchor: I) -> Option<Self> {
+        self.saturate_anchor_to_start(&mut anchor);
+        self.checked_sync_elapsed_at(|| anchor)?;
+        self.elapsed.checked_sub(dur).map(|new| {
+            self.elapsed = new;
+            self
+        })
     }
 }
 
 // private methods
 impl<I: Instant> StopwatchImpl<I> {
+    #[inline] // fn is private; called in Self::checked_sub_at and Self::saturating_sub_at
+    fn saturate_anchor_to_start(&self, anchor: &mut I) {
+        if let Some(start) = self.start {
+            if anchor.saturating_duration_since(start) < start.saturating_duration_since(*anchor) {
+                *anchor = start;
+            }
+        }
+    }
+
     /// Syncs changes in the elapsed time, effectively toggling the stopwatch
     /// twice. If the new elapsed time overflows, it is saturated to
     /// [`Duration::MAX`].
@@ -930,22 +949,6 @@ impl<I: Instant> StopwatchImpl<I> {
             self.start = Some(now);
         }
         Some(())
-    }
-
-    #[must_use]
-    fn saturating_sub_at_inner(mut self, dur: Duration, anchor: impl FnOnce() -> I) -> Self {
-        self.saturating_sync_elapsed_at(anchor);
-        self.elapsed = self.elapsed.saturating_sub(dur);
-        self
-    }
-
-    #[must_use]
-    fn checked_sub_at_inner(mut self, dur: Duration, anchor: impl FnOnce() -> I) -> Option<Self> {
-        self.checked_sync_elapsed_at(anchor)?;
-        self.elapsed.checked_sub(dur).map(|new| {
-            self.elapsed = new;
-            self
-        })
     }
 
     /// "Transfers" `elapsed` to `start`, such that [`Self::elapsed`] is

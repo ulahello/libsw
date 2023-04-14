@@ -276,6 +276,31 @@ fn sync_before_sub_checked_overflow() {
 }
 
 #[test]
+fn sub_at_earlier_anchor_behavior() -> crate::Result<()> {
+    let mut sw = Stopwatch::new();
+
+    let earlier = Instant::now();
+    thread::sleep(DELAY);
+    let later = Instant::now();
+    thread::sleep(DELAY);
+
+    sw.start_at(later)?;
+
+    for dur in (0..10).map(Duration::from_secs) {
+        assert_eq!(
+            sw.checked_sub_at(dur, earlier),
+            sw.checked_sub_at(dur, later)
+        );
+        assert_eq!(
+            sw.saturating_sub_at(dur, earlier),
+            sw.saturating_sub_at(dur, later)
+        );
+    }
+
+    Ok(())
+}
+
+#[test]
 fn elapsed_at_saturates() {
     let sw = Stopwatch::with_elapsed_started(DELAY);
     assert_eq!(sw.elapsed_at(Instant::now() - (DELAY * 2)), DELAY);
