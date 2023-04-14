@@ -1,6 +1,9 @@
 # changelog
 
 ## [unreleased]
+### added
+* added `StopwatchImpl::saturating_sub_at` and `StopwatchImpl::checked_sub_at`
+
 ### fixed
 * fixed `Eq` implementation for `StopwatchImpl<I>` (derived) restricting `I` to implement `Eq`
 * fixed `Eq` and `PartialEq` implementation for `Guard<'_, I>` (derived) restricting `I` to implement `Eq` and `PartialEq`, respectively

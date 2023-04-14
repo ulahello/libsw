@@ -147,6 +147,18 @@ fn sub() {
 }
 
 #[test]
+fn sub_at() -> crate::Result<()> {
+    let mut sw = Stopwatch::with_elapsed_started(DELAY * 3);
+    thread::sleep(DELAY);
+    let now = Instant::now();
+    let old_elapsed = sw.elapsed_at(now);
+    sw = sw.saturating_sub_at(DELAY * 3, now);
+    thread::sleep(DELAY);
+    assert_eq!(sw.elapsed_at(now), old_elapsed - DELAY * 3);
+    Ok(())
+}
+
+#[test]
 #[should_panic]
 fn add_overloaded_overflow() {
     _ = Stopwatch::with_elapsed(Duration::MAX) + DELAY;
