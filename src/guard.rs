@@ -51,7 +51,7 @@ use crate::{Error, Instant, StopwatchImpl};
 /// # }
 /// ```
 #[must_use = "if unused, the inner stopwatch will immediately stop again"]
-#[derive(Debug, PartialEq, Eq, Hash)]
+#[derive(Debug, Hash)]
 pub struct Guard<'sw, I: Instant> {
     // invariant: sw must be running
     inner: &'sw mut StopwatchImpl<I>,
@@ -117,3 +117,11 @@ impl<I: Instant> Drop for Guard<'_, I> {
         let _ = self.inner.stop();
     }
 }
+
+impl<I: Instant> PartialEq for Guard<'_, I> {
+    fn eq(&self, rhs: &Self) -> bool {
+        self.inner() == rhs.inner()
+    }
+}
+
+impl<I: Instant> Eq for Guard<'_, I> {}

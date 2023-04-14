@@ -3,6 +3,7 @@
 ## [unreleased]
 ### fixed
 * fixed `Eq` implementation for `StopwatchImpl<I>` (derived) restricting `I` to implement `Eq`
+* fixed `Eq` and `PartialEq` implementation for `Guard<'_, I>` (derived) restricting `I` to implement `Eq` and `PartialEq`, respectively
 
 ## [3.2.3] - 2023-04-05
 ### fixed
