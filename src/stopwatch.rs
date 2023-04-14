@@ -815,7 +815,6 @@ impl<I: Instant> StopwatchImpl<I> {
     /// sw = sw.saturating_sub_at(Duration::from_secs(1), now);
     /// assert_eq!(sw.elapsed_at(now), Duration::ZERO);
     /// ```
-    #[inline]
     #[must_use]
     pub fn saturating_sub_at(mut self, dur: Duration, mut anchor: I) -> Self {
         self.saturate_anchor_to_start(&mut anchor);
@@ -902,7 +901,6 @@ impl<I: Instant> StopwatchImpl<I> {
     /// sw.set_in_place(Duration::MAX);
     /// assert_eq!(sw.checked_sub(Duration::ZERO), None);
     /// ```
-    #[inline]
     #[must_use]
     pub fn checked_sub_at(mut self, dur: Duration, mut anchor: I) -> Option<Self> {
         self.saturate_anchor_to_start(&mut anchor);
