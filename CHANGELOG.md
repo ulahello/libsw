@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+
+## [3.2.4] - 2023-04-14
 ### changed
 * clarified documentation about overflow for `StopwatchImpl::checked_sub` and `StopwatchImpl::saturating_sub`
 
