@@ -9,72 +9,20 @@
 //! control](StopwatchImpl::start_at) over when operations occur, and supports
 //! [arbitrary timekeeping types](Instant).
 //!
-//! # Example
-//!
-//! The following (contrived) example shows the basic features of the crate. You
-//! are encouraged to read the examples provided for methods of
-//! [`StopwatchImpl`] and [`Guard`] for more complex use cases.
-//!
 //! If you want to do benchmarking, please use something like
 //! [Criterion](https://docs.rs/criterion).
 //!
-//! ```
-//! use libsw::{Guard, Sw};
+//! # Introduction
 //!
-//! use core::time::Duration;
-//! use std::thread;
-//! use std::time::Instant;
+//! `libsw` provides the [`StopwatchImpl`] type as a stopwatch.
 //!
-//! fn main() {
-//!     if let Err(err) = try_main() {
-//!         // libsw::Error implements display, this
-//!         // will explain the error
-//!         eprintln!("error: {err}");
-//!     }
-//! }
+//! This implementation is agnostic to the timekeeping type used, by virtue of
+//! being generic. Any type `I` that implements the [`Instant`] trait (as in
+//! `StopwatchImpl<I>`) can be used for timekeeping.
 //!
-//! fn try_main() -> libsw::Result<()> {
-//!     let mut sw = Sw::new();
-//!
-//!     // time how long `expensive` takes
-//!     sw.start()?;
-//!     let x = expensive();
-//!     sw.stop()?;
-//!
-//!     println!(
-//!         "expensive function returned {x} after {:?}",
-//!         sw.elapsed()
-//!     );
-//!
-//!     sw.reset();
-//!
-//!     // another way to do this is with guards. the
-//!     // guard will keep `sw` running until it's
-//!     // dropped.
-//!     let y = expensive_timed(sw.guard()?);
-//!     println!(
-//!         "same function returned {y} after {:?}",
-//!         sw.elapsed()
-//!     );
-//!
-//!     // uh-oh, this will fail! the stopwatch is already stopped.
-//!     sw.stop()?;
-//!
-//!     Ok(())
-//! }
-//!
-//! fn expensive() -> u32 {
-//!     thread::sleep(Duration::from_millis(100));
-//!     1
-//! }
-//!
-//! fn expensive_timed<I: libsw::Instant>(_guard: Guard<'_, I>) -> u32 {
-//!     // guard is dropped when the function returns,
-//!     // automatically stopping the guarded
-//!     // stopwatch
-//!     expensive()
-//! }
-//! ```
+//! `Instant` is implemented for several timekeeping types out of the box (see
+//! [timekeeping support](#timekeeping-support)). If present, these
+//! implementations are exposed as type aliases.
 //!
 //! # Features
 //!
@@ -111,11 +59,11 @@
 //! libsw = { version = ..., default-features = false }
 //! ```
 //!
-//! ## Compiler support
+//! # Compiler support
 //!
 //! The minimum supported version of Rust is `1.61.0`.
 //!
-//! ## Safety
+//! # Safety
 //!
 //! `libsw` contains no unsafe code (`#![forbid(unsafe_code)]`).
 
