@@ -13,10 +13,10 @@ keywords = ["stopwatch"]
 categories = ["date-and-time", "no-std", "no-std::no-alloc"]
 
 [dependencies]
-coarsetime = { version = "0.1", default-features = false, optional = true }
-quanta = { version = "0.11", default-features = false, optional = true }
-time = { version = "0.3", features = ["std"], default-features = false, optional = true }
-tokio = { version = "1", features = ["time"], default-features = false, optional = true }
+coarsetime = { version = "~0.1", default-features = false, optional = true }
+quanta = { version = "~0.11", default-features = false, optional = true }
+time = { version = "~0.3", features = ["std"], default-features = false, optional = true }
+tokio = { version = "~1", features = ["time"], default-features = false, optional = true }
 
 [features]
 default = ["std_instant", "std_systemtime"]
