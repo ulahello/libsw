@@ -11,10 +11,10 @@ pub type Result<T> = core::result::Result<T, Error>;
 ///
 /// # Feature flags
 ///
-/// When the `std` feature is enabled, `Error` implements `std::error::Error`.
+/// When the `std` feature is enabled, `Error` implements [`std::error::Error`].
 ///
 /// When the `nightly` feature is enabled and the `std` feature is **not**
-/// enabled, `Error` implements `core::error::Error`. This requires a nightly
+/// enabled, `Error` implements [`core::error::Error`]. This requires a nightly
 /// compiler.
 ///
 /// # Examples
