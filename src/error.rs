@@ -2,10 +2,10 @@
 // copyright (C) 2022-2023 Ula Shipman <ula.hello@mailbox.org>
 // licensed under MIT OR Apache-2.0
 
-use core::fmt;
+use ::core::fmt;
 
 /// Alias to `Result<T, Error>`.
-pub type Result<T> = core::result::Result<T, Error>;
+pub type Result<T> = ::core::result::Result<T, Error>;
 
 /// Enumeration over possible errors.
 ///
@@ -128,7 +128,7 @@ impl fmt::Display for Error {
 }
 
 #[cfg(feature = "std")]
-impl std::error::Error for Error {}
+impl ::std::error::Error for Error {}
 
 #[cfg(all(feature = "nightly", not(feature = "std")))]
-impl core::error::Error for Error {}
+impl ::core::error::Error for Error {}

@@ -2,6 +2,8 @@
 // copyright (C) 2022-2023 Ula Shipman <ula.hello@mailbox.org>
 // licensed under MIT OR Apache-2.0
 
+extern crate coarsetime;
+
 use core::time::Duration;
 
 use crate::Instant;

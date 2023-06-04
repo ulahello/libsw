@@ -6,10 +6,10 @@
 /* TODO: Instant::checked_add is not covered at all by tests and is not used in
  * crate */
 
-use core::hash::{Hash, Hasher};
-use core::time::Duration;
-use std::collections::hash_map::DefaultHasher;
-use std::thread;
+use ::core::hash::{Hash, Hasher};
+use ::core::time::Duration;
+use ::std::collections::hash_map::DefaultHasher;
+use ::std::thread;
 
 use crate::Error;
 

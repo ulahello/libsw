@@ -73,16 +73,18 @@
 #![forbid(unsafe_code)]
 #![warn(missing_docs, clippy::pedantic, clippy::nursery, clippy::cargo)]
 
+extern crate core;
+
 mod error;
 mod guard;
 mod instant;
 mod instant_impls;
 mod stopwatch;
 
-pub use error::{Error, Result};
-pub use guard::Guard;
-pub use instant::Instant;
-pub use stopwatch::StopwatchImpl;
+pub use crate::error::{Error, Result};
+pub use crate::guard::Guard;
+pub use crate::instant::Instant;
+pub use crate::stopwatch::StopwatchImpl;
 
 /// Alias to [`StopwatchImpl`] using the standard library's
 /// [`Instant`](std::time::Instant) type.
@@ -90,7 +92,7 @@ pub use stopwatch::StopwatchImpl;
 /// This is the "default" stopwatch.
 #[cfg(feature = "std_instant")]
 #[cfg_attr(doc_cfg, doc(cfg(feature = "std_instant")))]
-pub type Sw = StopwatchImpl<std::time::Instant>;
+pub type Sw = StopwatchImpl<::std::time::Instant>;
 
 /// Deprecated alias to the "default" stopwatch.
 #[cfg(feature = "std_instant")]
@@ -105,31 +107,31 @@ pub type Stopwatch = Sw;
 /// [`SystemTime`](std::time::SystemTime) type.
 #[cfg(feature = "std_systemtime")]
 #[cfg_attr(doc_cfg, doc(cfg(feature = "std_systemtime")))]
-pub type SystemSw = StopwatchImpl<std::time::SystemTime>;
+pub type SystemSw = StopwatchImpl<::std::time::SystemTime>;
 
 /// Alias to [`StopwatchImpl`] using Tokio's [`Instant`](tokio::time::Instant)
 /// type.
 #[cfg(feature = "tokio")]
 #[cfg_attr(doc_cfg, doc(cfg(feature = "tokio")))]
-pub type TokioSw = StopwatchImpl<tokio::time::Instant>;
+pub type TokioSw = StopwatchImpl<::tokio::time::Instant>;
 
 /// Alias to [`StopwatchImpl`] using the `time` crate's
 /// [`Instant`](time::Instant) type.
 #[cfg(feature = "time")]
 #[cfg_attr(doc_cfg, doc(cfg(feature = "time")))]
-pub type TimeSw = StopwatchImpl<time::Instant>;
+pub type TimeSw = StopwatchImpl<::time::Instant>;
 
 /// Alias to [`StopwatchImpl`] using the `coarsetime` crate's
 /// [`Instant`](coarsetime::Instant) type.
 #[cfg(feature = "coarsetime")]
 #[cfg_attr(doc_cfg, doc(cfg(feature = "coarsetime")))]
-pub type CoarseSw = StopwatchImpl<coarsetime::Instant>;
+pub type CoarseSw = StopwatchImpl<::coarsetime::Instant>;
 
 /// Alias to [`StopwatchImpl`] using the `quanta` crate's
 /// [`Instant`](quanta::Instant) type.
 #[cfg(feature = "quanta")]
 #[cfg_attr(doc_cfg, doc(cfg(feature = "quanta")))]
-pub type QuantaSw = StopwatchImpl<quanta::Instant>;
+pub type QuantaSw = StopwatchImpl<::quanta::Instant>;
 
 #[cfg(test)]
 mod tests;

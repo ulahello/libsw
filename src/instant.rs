@@ -2,8 +2,8 @@
 // copyright (C) 2022-2023 Ula Shipman <ula.hello@mailbox.org>
 // licensed under MIT OR Apache-2.0
 
-use core::fmt::Debug;
-use core::time::Duration;
+use ::core::fmt::Debug;
+use ::core::time::Duration;
 
 // TODO: this is infallible however some instants are not (`embedded_time` crate for example)
 /// A trait outlining the behavior of a timekeeping type.
