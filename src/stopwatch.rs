@@ -954,19 +954,14 @@ impl<I: Instant> StopwatchImpl<I> {
         if let Some(ref mut start) = self.start {
             Self::normalize_start_inner(start, self.elapsed)?;
             self.elapsed = Duration::ZERO;
-            Ok(())
-        } else {
-            Ok(())
         }
+        Ok(())
     }
 
     fn normalize_start_inner(start: &mut I, elapsed: Duration) -> Result<(), ()> {
-        if let Some(new) = start.checked_sub(elapsed) {
-            *start = new;
-            Ok(())
-        } else {
-            Err(())
-        }
+        let new = start.checked_sub(elapsed).ok_or(())?;
+        *start = new;
+        Ok(())
     }
 }
 
