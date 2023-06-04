@@ -6,7 +6,10 @@
 * added written introduction to front-page documentation
 * added explanation for the `Error` type's `Display` implementation to its documentation
 
-### remove
+### changed
+* rewrote `Stopwatch` `PartialEq` impl without (unreachable) panicking branches
+
+### removed
 * removed example from front-page documentation
 
 ## [3.2.4] - 2023-04-14
