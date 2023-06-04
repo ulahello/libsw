@@ -9,6 +9,23 @@ pub type Result<T> = core::result::Result<T, Error>;
 
 /// Enumeration over possible errors.
 ///
+/// # `Display` implementation
+///
+/// `Error` implements [`Display`](core::fmt::Display) by explaining what
+/// happened and what was expected instead.
+///
+/// The exact text of these explanations is not stable and should not be relied
+/// upon.
+///
+/// ```
+/// # use libsw::Error;
+/// let error = Error::SwStart;
+/// assert_eq!(
+///     error.to_string(),
+///     "started stopwatch while running, but expected stopped"
+/// );
+/// ```
+///
 /// # Feature flags
 ///
 /// When the `std` feature is enabled, `Error` implements [`std::error::Error`].
