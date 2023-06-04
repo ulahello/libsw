@@ -6,3 +6,4 @@
 - [ ] bump version in `CHANGELOG.md`
 - [ ] `cargo semver-checks check-release`
 - [ ] `cargo msrv verify`
+- [ ] tag new version
