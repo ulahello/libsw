@@ -114,7 +114,7 @@ impl<I: Instant> Drop for Guard<'_, I> {
     #[inline]
     fn drop(&mut self) {
         debug_assert!(self.inner.is_running());
-        let _ = self.inner.stop();
+        _ = self.inner.stop();
     }
 }
 
