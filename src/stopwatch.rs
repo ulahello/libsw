@@ -951,15 +951,22 @@ impl<I: Instant> StopwatchImpl<I> {
     /// unchanged, and the new `elapsed` is zero. Returns an error if the new
     /// start time cannot be represented.
     fn normalize_start(&mut self) -> Result<(), ()> {
-        if let Some(ref mut instant) = self.start {
-            if let Some(new) = instant.checked_sub(self.elapsed) {
-                self.start = Some(new);
-                self.elapsed = Duration::ZERO;
-            } else {
-                return Err(());
-            }
+        if let Some(ref mut start) = self.start {
+            Self::normalize_start_inner(start, self.elapsed)?;
+            self.elapsed = Duration::ZERO;
+            Ok(())
+        } else {
+            Ok(())
         }
-        Ok(())
+    }
+
+    fn normalize_start_inner(start: &mut I, elapsed: Duration) -> Result<(), ()> {
+        if let Some(new) = start.checked_sub(elapsed) {
+            *start = new;
+            Ok(())
+        } else {
+            Err(())
+        }
     }
 }
 
@@ -1031,27 +1038,33 @@ impl<I: Instant> PartialEq for StopwatchImpl<I> {
     /// Stopwatches are equal if whether they are running and their elapsed time
     /// are equal.
     fn eq(&self, rhs: &Self) -> bool {
-        if self.is_running() != rhs.is_running() {
-            // they have different states, definitely not equal
-            false
-        } else if self.is_stopped() {
-            // they're both stopped, we can simply compare `elapsed` without worrying about time
-            debug_assert!(rhs.is_stopped());
-            self.elapsed == rhs.elapsed
-        } else {
-            // they're both running, we need to worry about time
-            let mut self_ = *self;
-            let mut rhs_ = *rhs;
-            let self_err = self_.normalize_start();
-            let rhs_err = rhs_.normalize_start();
-            if self_err.is_err() | rhs_err.is_err() {
-                // start times can't be trusted since normalizing failed! we cannot compare them.
-                self_err == rhs_err
-            } else {
-                let self_start = self_.start.unwrap();
-                let rhs_start = rhs_.start.unwrap();
-                self_start.saturating_duration_since(rhs_start)
-                    == rhs_start.saturating_duration_since(self_start)
+        match (self.start, rhs.start) {
+            (Some(_), None) | (None, Some(_)) => {
+                // they have different states, definitely not equal
+                debug_assert_ne!(self.is_running(), rhs.is_running());
+                false
+            }
+
+            (None, None) => {
+                /* they're both stopped, we can simply compare `elapsed` without
+                 * worrying about time */
+                debug_assert!(self.is_stopped() && rhs.is_stopped());
+                self.elapsed == rhs.elapsed
+            }
+
+            (Some(mut self_start), Some(mut rhs_start)) => {
+                // they're both running, we need to worry about time
+                debug_assert!(self.is_running() && rhs.is_running());
+                let self_err = Self::normalize_start_inner(&mut self_start, self.elapsed);
+                let rhs_err = Self::normalize_start_inner(&mut rhs_start, rhs.elapsed);
+                if self_err.is_err() | rhs_err.is_err() {
+                    /* start times can't be trusted since normalizing failed! we
+                     * cannot compare them. */
+                    self_err == rhs_err
+                } else {
+                    self_start.saturating_duration_since(rhs_start)
+                        == rhs_start.saturating_duration_since(self_start)
+                }
             }
         }
     }
