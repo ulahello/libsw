@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+### added
+* added `StopwatchImpl::saturating_sub_at` and `StopwatchImpl::checked_sub_at`
 
 ## [3.2.4] - 2023-04-14
 ### changed
