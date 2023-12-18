@@ -267,11 +267,15 @@ impl<I: Instant> StopwatchImpl<I> {
     /// See the documentation for [`checked_elapsed`](Self::checked_elapsed) for
     /// a related example.
     #[must_use]
+    #[allow(clippy::option_if_let_else)]
     pub fn checked_elapsed_at(&self, anchor: I) -> Option<Duration> {
-        self.start.map_or(Some(self.elapsed), |start| {
-            self.elapsed
-                .checked_add(anchor.saturating_duration_since(start))
-        })
+        let before_start = self.elapsed;
+        if let Some(start) = self.start {
+            let after_start = anchor.saturating_duration_since(start);
+            before_start.checked_add(after_start)
+        } else {
+            Some(before_start)
+        }
     }
 
     /// Starts measuring the time elapsed.
@@ -453,13 +457,18 @@ impl<I: Instant> StopwatchImpl<I> {
     /// # Examples
     ///
     /// See [`StopwatchImpl::checked_stop`] for comparable example usage.
+    #[allow(clippy::option_if_let_else)]
     pub fn checked_stop_at(&mut self, anchor: I) -> crate::Result<Option<()>> {
-        self.start
-            .map(|start| {
-                self.checked_add(anchor.saturating_duration_since(start))
-                    .map(|new| self.set(new.elapsed))
-            })
-            .ok_or(Error::SwStop)
+        if let Some(start) = self.start {
+            if let Some(new) = self.checked_add(anchor.saturating_duration_since(start)) {
+                self.set(new.elapsed);
+                Ok(Some(()))
+            } else {
+                Ok(None)
+            }
+        } else {
+            Err(Error::SwStop)
+        }
     }
 
     /// Toggles whether the stopwatch is running or stopped.
@@ -544,14 +553,15 @@ impl<I: Instant> StopwatchImpl<I> {
     /// See the documentation for [`checked_toggle`](Self::checked_toggle) for a
     /// related example.
     #[must_use]
+    #[allow(clippy::option_if_let_else)]
     pub fn checked_toggle_at(&mut self, anchor: I) -> Option<()> {
         if let Ok(checked) = self.checked_stop_at(anchor) {
-            checked?;
+            checked
         } else {
             let result = self.start_at(anchor);
             debug_assert!(result.is_ok());
+            Some(())
         }
-        Some(())
     }
 
     /// Starts the stopwatch, returning a [`Guard`] which when dropped, will
