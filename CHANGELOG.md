@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+
+## [3.3.1] - 2023-12-18
 ### changed
 * bumped `quanta` support to ~0.12
 * added test coverage for `StopwatchImpl::new_started_at`
