@@ -19,6 +19,9 @@ impl Instant for coarsetime::Instant {
 
     fn checked_add(&self, duration: Duration) -> Option<Self> {
         let coarse_dur = coarsetime::Duration::from(duration);
+        /* HACK: no coarsetime::Instant::checked_add or
+         * coarsetime::Instant::from_ticks, so checking overflow before using the
+         * fallible Add impl */
         self.as_ticks()
             .checked_add(coarse_dur.as_ticks())
             .is_some()

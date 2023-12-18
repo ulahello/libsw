@@ -444,6 +444,7 @@ impl<I: Instant> StopwatchImpl<I> {
         self.checked_stop_at(I::now())
     }
 
+    /* TODO: these checked fallible type signatures are silly yet consistent */
     /// Tries to stop the stopwatch, as if the current time were `anchor`. If
     /// the new elapsed time overflows, returns [`None`] without mutating the
     /// stopwatch.
