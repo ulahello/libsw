@@ -1,6 +1,8 @@
 # changelog
 
 ## [unreleased]
+### changed
+* added test coverage for `StopwatchImpl::new_started_at`
 
 ## [3.3.0] - 2023-06-03
 ### added

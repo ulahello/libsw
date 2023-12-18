@@ -21,9 +21,17 @@ type Stopwatch = crate::stopwatch::StopwatchImpl<Instant>;
 const DELAY: Duration = Duration::from_millis(100);
 
 #[test]
-fn default() {
-    let sw = Stopwatch::default();
-    assert_eq!(sw, Stopwatch::new());
+fn default() {}
+
+#[test]
+fn new() {
+    let now = Instant::now();
+    assert_eq!(Stopwatch::new().elapsed(), Duration::ZERO);
+    assert_eq!(Stopwatch::new_started().elapsed, Duration::ZERO);
+    assert_eq!(
+        Stopwatch::new_started_at(now).elapsed_at(now),
+        Duration::ZERO
+    );
 }
 
 #[test]

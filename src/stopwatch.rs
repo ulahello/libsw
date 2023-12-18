@@ -20,8 +20,8 @@ use crate::{Error, Guard, Instant};
 #[allow(clippy::module_name_repetitions)]
 #[derive(Clone, Copy, Debug)]
 pub struct StopwatchImpl<I: Instant> {
-    elapsed: Duration,
-    start: Option<I>,
+    pub(crate) elapsed: Duration,
+    pub(crate) start: Option<I>,
 }
 
 impl<I: Instant> StopwatchImpl<I> {
@@ -64,12 +64,15 @@ impl<I: Instant> StopwatchImpl<I> {
     ///
     /// ```
     /// # use libsw::Sw;
+    /// # use core::time::Duration;
     /// # use std::time::Instant;
     /// let now = Instant::now();
     /// let sw_1 = Sw::new_started_at(now);
     /// let sw_2 = Sw::new_started_at(now);
     /// // they've both started at the same time
     /// assert_eq!(sw_1, sw_2);
+    /// // (and had zero elapsed time when they started)
+    /// assert_eq!(sw_1.elapsed_at(now), Duration::ZERO);
     /// ```
     #[inline]
     #[must_use]
