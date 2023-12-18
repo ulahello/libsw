@@ -80,9 +80,11 @@ impl<'sw, I: Instant> Guard<'sw, I> {
     /// # }
     /// ```
     pub fn new(sw: &'sw mut StopwatchImpl<I>) -> crate::Result<Self> {
-        sw.is_running()
-            .then(|| Self { inner: sw })
-            .ok_or(Error::GuardNew)
+        if sw.is_running() {
+            Ok(Self { inner: sw })
+        } else {
+            Err(Error::GuardNew)
+        }
     }
 
     /// Returns a reference to the inner [`StopwatchImpl`].
