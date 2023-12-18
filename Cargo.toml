@@ -12,6 +12,9 @@ license = "MIT OR Apache-2.0"
 keywords = ["stopwatch"]
 categories = ["date-and-time", "no-std", "no-std::no-alloc"]
 
+[badges.maintenance]
+status = "passively-maintained"
+
 [dependencies]
 coarsetime = { version = "~0.1", default-features = false, optional = true }
 quanta = { version = "~0.11", default-features = false, optional = true }
