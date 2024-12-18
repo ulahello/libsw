@@ -32,6 +32,9 @@ time = ["dep:time", "std"]
 coarsetime = ["dep:coarsetime", "std"]
 quanta = ["dep:quanta", "std"]
 
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(doc_cfg)'] }
+
 [package.metadata.docs.rs]
 # build locally with:
 # RUSTDOCFLAGS="--cfg doc_cfg" cargo +nightly d --all-features --no-deps --open
