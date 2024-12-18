@@ -7,7 +7,7 @@
 * added `StopwatchImpl::from_core` and `StopwatchImpl::to_core` for conversion between `libsw_core::Stopwatch`
 
 ### changed
-- moved core stopwatch logic to a new crate [`libsw-core`](https://crates.io/crates/libsw-core/).
+* moved core stopwatch logic to a new crate [`libsw-core`](https://crates.io/crates/libsw-core/).
 
 ## [3.3.1] - 2023-12-18
 ### changed
