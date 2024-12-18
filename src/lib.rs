@@ -26,17 +26,17 @@
 //!
 //! # Features
 //!
-//! | Name             | Features enabled                | Description                                                                                                  |
-//! |------------------|---------------------------------|--------------------------------------------------------------------------------------------------------------|
-//! | `default`        | `std_instant`, `std_systemtime` | Enabled by default.                                                                                          |
-//! | `std`            |                                 | Depends on the standard library. Implements `std::error::Error` for [`Error`].                               |
-//! | `nightly`        |                                 | Implements `core::error::Error` for [`Error`] **if** `std` is not enabled. Requires a nightly compiler.      |
-//! | `std_instant`    | `std`                           | Implements [`Instant`] for `std::time::Instant`. Exposes `Sw` type alias.                                    |
-//! | `std_systemtime` | `std`                           | Implements [`Instant`] for `std::time::SystemTime`. Exposes `SystemSw` type alias.                           |
-//! | `tokio`          | `std`                           | Implements [`Instant`] for `tokio::time::Instant`. Exposes `TokioSw` type alias.                             |
-//! | `coarsetime`     | `std`                           | Implements [`Instant`] for `coarsetime::Instant`. Exposes `CoarseSw` type alias.                             |
-//! | `quanta`         | `std`                           | Implements [`Instant`] for `quanta::Instant`. Exposes `QuantaSw` type alias.                                 |
-//! | `time`           | `std`                           | Deprecated. Implements [`Instant`] for `time::Instant`. Exposes `TimeSw` type alias. Bumps MSRV to `1.62.1`. |
+//! | Name             | Features enabled                | Description                                                                                             |
+//! |------------------|---------------------------------|---------------------------------------------------------------------------------------------------------|
+//! | `default`        | `std_instant`, `std_systemtime` | Enabled by default.                                                                                     |
+//! | `std`            |                                 | Depends on the standard library. Implements `std::error::Error` for [`Error`].                          |
+//! | `nightly`        |                                 | Implements `core::error::Error` for [`Error`] **if** `std` is not enabled. Requires a nightly compiler. |
+//! | `std_instant`    | `std`                           | Implements [`Instant`] for `std::time::Instant`. Exposes `Sw` type alias.                               |
+//! | `std_systemtime` | `std`                           | Implements [`Instant`] for `std::time::SystemTime`. Exposes `SystemSw` type alias.                      |
+//! | `tokio`          | `std`                           | Implements [`Instant`] for `tokio::time::Instant`. Exposes `TokioSw` type alias.                        |
+//! | `coarsetime`     | `std`                           | Implements [`Instant`] for `coarsetime::Instant`. Exposes `CoarseSw` type alias.                        |
+//! | `quanta`         | `std`                           | Implements [`Instant`] for `quanta::Instant`. Exposes `QuantaSw` type alias.                            |
+//! | `time`           | `std`                           | Deprecated. Implements [`Instant`] for `time::Instant`. Exposes `TimeSw` type alias.                    |
 //!
 //! ## Timekeeping support
 //!
@@ -61,7 +61,8 @@
 //!
 //! # Compiler support
 //!
-//! The minimum supported version of Rust is `1.61.0`.
+//! Standalone, the minimum supported version of Rust is `1.61.0`.
+//! Adding dependencies may bump this.
 //!
 //! # Safety
 //!
