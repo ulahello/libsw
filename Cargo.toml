@@ -16,6 +16,7 @@ categories = ["date-and-time", "no-std", "no-std::no-alloc"]
 status = "passively-maintained"
 
 [dependencies]
+libsw-core = { version = "~0.3", default-features = false, features = [] }
 coarsetime = { version = "~0.1", default-features = false, optional = true }
 quanta = { version = "~0.12", default-features = false, optional = true }
 time = { version = "~0.3", features = ["std"], default-features = false, optional = true }
@@ -25,12 +26,12 @@ tokio = { version = "~1", features = ["time"], default-features = false, optiona
 default = ["std_instant", "std_systemtime"]
 nightly = []
 std = []
-std_instant = ["std"]
-std_systemtime = ["std"]
-tokio = ["dep:tokio", "std"]
-time = ["dep:time", "std"]
-coarsetime = ["dep:coarsetime", "std"]
-quanta = ["dep:quanta", "std"]
+std_instant = ["std", "libsw-core/std"]
+std_systemtime = ["std", "libsw-core/std"]
+tokio = ["std", "dep:tokio", "libsw-core/tokio"]
+coarsetime = ["std", "dep:coarsetime", "libsw-core/coarsetime"]
+quanta = ["std", "dep:quanta", "libsw-core/quanta"]
+time = ["std", "dep:time", "libsw-core/time"]
 
 [lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(doc_cfg)'] }

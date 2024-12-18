@@ -26,17 +26,17 @@
 //!
 //! # Features
 //!
-//! | Name             | Features enabled                | Description                                                                                             |
-//! |------------------|---------------------------------|---------------------------------------------------------------------------------------------------------|
-//! | `default`        | `std_instant`, `std_systemtime` | Enabled by default.                                                                                     |
-//! | `std`            |                                 | Depends on the standard library. Implements `std::error::Error` for [`Error`].                          |
-//! | `nightly`        |                                 | Implements `core::error::Error` for [`Error`] **if** `std` is not enabled. Requires a nightly compiler. |
-//! | `std_instant`    | `std`                           | Implements [`Instant`] for `std::time::Instant`. Exposes `Sw` type alias.                               |
-//! | `std_systemtime` | `std`                           | Implements [`Instant`] for `std::time::SystemTime`. Exposes `SystemSw` type alias.                      |
-//! | `tokio`          | `std`                           | Implements [`Instant`] for `tokio::time::Instant`. Exposes `TokioSw` type alias.                        |
-//! | `time`           | `std`                           | Implements [`Instant`] for `time::Instant`. Exposes `TimeSw` type alias. Bumps MSRV to `1.62.1`.        |
-//! | `coarsetime`     | `std`                           | Implements [`Instant`] for `coarsetime::Instant`. Exposes `CoarseSw` type alias.                        |
-//! | `quanta`         | `std`                           | Implements [`Instant`] for `quanta::Instant`. Exposes `QuantaSw` type alias.                            |
+//! | Name             | Features enabled                | Description                                                                                                  |
+//! |------------------|---------------------------------|--------------------------------------------------------------------------------------------------------------|
+//! | `default`        | `std_instant`, `std_systemtime` | Enabled by default.                                                                                          |
+//! | `std`            |                                 | Depends on the standard library. Implements `std::error::Error` for [`Error`].                               |
+//! | `nightly`        |                                 | Implements `core::error::Error` for [`Error`] **if** `std` is not enabled. Requires a nightly compiler.      |
+//! | `std_instant`    | `std`                           | Implements [`Instant`] for `std::time::Instant`. Exposes `Sw` type alias.                                    |
+//! | `std_systemtime` | `std`                           | Implements [`Instant`] for `std::time::SystemTime`. Exposes `SystemSw` type alias.                           |
+//! | `tokio`          | `std`                           | Implements [`Instant`] for `tokio::time::Instant`. Exposes `TokioSw` type alias.                             |
+//! | `coarsetime`     | `std`                           | Implements [`Instant`] for `coarsetime::Instant`. Exposes `CoarseSw` type alias.                             |
+//! | `quanta`         | `std`                           | Implements [`Instant`] for `quanta::Instant`. Exposes `QuantaSw` type alias.                                 |
+//! | `time`           | `std`                           | Deprecated. Implements [`Instant`] for `time::Instant`. Exposes `TimeSw` type alias. Bumps MSRV to `1.62.1`. |
 //!
 //! ## Timekeeping support
 //!
@@ -71,20 +71,18 @@
 #![cfg_attr(all(feature = "nightly", not(feature = "std")), feature(error_in_core))]
 #![cfg_attr(doc_cfg, feature(doc_cfg))]
 #![forbid(unsafe_code)]
-#![warn(missing_docs, clippy::pedantic, clippy::nursery, clippy::cargo)]
+#![warn(missing_docs, clippy::pedantic, clippy::cargo)]
 
 extern crate core;
 
 mod error;
 mod guard;
-mod instant;
-mod instant_impls;
 mod stopwatch;
 
 pub use crate::error::{Error, Result};
 pub use crate::guard::Guard;
-pub use crate::instant::Instant;
 pub use crate::stopwatch::StopwatchImpl;
+pub use ::libsw_core::Instant;
 
 /// Alias to [`StopwatchImpl`] using the standard library's
 /// [`Instant`](std::time::Instant) type.
@@ -115,12 +113,6 @@ pub type SystemSw = StopwatchImpl<::std::time::SystemTime>;
 #[cfg_attr(doc_cfg, doc(cfg(feature = "tokio")))]
 pub type TokioSw = StopwatchImpl<::tokio::time::Instant>;
 
-/// Alias to [`StopwatchImpl`] using the `time` crate's
-/// [`Instant`](time::Instant) type.
-#[cfg(feature = "time")]
-#[cfg_attr(doc_cfg, doc(cfg(feature = "time")))]
-pub type TimeSw = StopwatchImpl<::time::Instant>;
-
 /// Alias to [`StopwatchImpl`] using the `coarsetime` crate's
 /// [`Instant`](coarsetime::Instant) type.
 #[cfg(feature = "coarsetime")]
@@ -132,6 +124,16 @@ pub type CoarseSw = StopwatchImpl<::coarsetime::Instant>;
 #[cfg(feature = "quanta")]
 #[cfg_attr(doc_cfg, doc(cfg(feature = "quanta")))]
 pub type QuantaSw = StopwatchImpl<::quanta::Instant>;
+
+/// Alias to [`StopwatchImpl`] using the `time` crate's
+/// [`Instant`](time::Instant) type.
+#[allow(deprecated)]
+#[cfg(feature = "time")]
+#[cfg_attr(doc_cfg, doc(cfg(feature = "time")))]
+#[deprecated(
+    note = "the `time` crate has deprecated `time::Instant` in favor of the `time::ext::InstantExt` trait used with `std::time::Instant`"
+)]
+pub type TimeSw = StopwatchImpl<::time::Instant>;
 
 #[cfg(test)]
 mod tests;

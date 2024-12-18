@@ -27,7 +27,7 @@ fn default() {}
 fn new() {
     let now = Instant::now();
     assert_eq!(Stopwatch::new().elapsed(), Duration::ZERO);
-    assert_eq!(Stopwatch::new_started().elapsed, Duration::ZERO);
+    assert_eq!(Stopwatch::new_started().inner.elapsed, Duration::ZERO);
     assert_eq!(
         Stopwatch::new_started_at(now).elapsed_at(now),
         Duration::ZERO
