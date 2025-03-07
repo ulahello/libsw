@@ -2,6 +2,10 @@
 
 ## [unreleased]
 
+## [3.5.0] - 2025-03-07
+* repository moved to my new account (no library changes)
+  * see https://gitlab.com/nissaofthesea/new-account-proof for proof of authenticity
+
 ## [3.4.0] - 2024-12-17
 ### added
 * added `StopwatchImpl::from_core` and `StopwatchImpl::to_core` for conversion between `libsw_core::Stopwatch`
