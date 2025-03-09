@@ -2,8 +2,7 @@
 // copyright (C) 2022-2023 Ula Shipman <ula.hello@mailbox.org>
 // licensed under MIT OR Apache-2.0
 
-/* TODO: this feels like a flawed way to model stopwatch errors, yet it works
- * fine */
+/* TODO: weird to have stopwatch errors */
 
 use core::fmt;
 

@@ -11,12 +11,6 @@ use core::time::Duration;
 
 use crate::{Error, Guard, Instant};
 
-/* TODO: methods that take an anchor could be changed to minimize calls to
- * Instant::now. currently we force the caller to evaluate it and pass it to
- * such methods, even if the value is used *conditionally* based on the state of
- * the stopwatch. it may be desirable to add functions that take a closure that
- * returns an instant so we can only call Instant::now when necessary. */
-
 /// A stopwatch measures and accumulates elapsed time between starts and stops.
 ///
 /// Stopwatches work with any type that implements [`Instant`].

@@ -3,8 +3,6 @@
 // licensed under MIT OR Apache-2.0
 
 /* TODO: re-organize tests */
-/* TODO: Instant::checked_add is not covered at all by tests and is not used in
- * crate */
 
 use core::hash::{Hash, Hasher};
 use core::time::Duration;
