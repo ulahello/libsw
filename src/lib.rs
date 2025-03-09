@@ -83,7 +83,7 @@ mod stopwatch;
 pub use crate::error::{Error, Result};
 pub use crate::guard::Guard;
 pub use crate::stopwatch::StopwatchImpl;
-pub use ::libsw_core::Instant;
+pub use libsw_core::Instant;
 
 /// Alias to [`StopwatchImpl`] using the standard library's
 /// [`Instant`](std::time::Instant) type.

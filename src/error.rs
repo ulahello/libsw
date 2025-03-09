@@ -5,7 +5,7 @@
 /* TODO: this feels like a flawed way to model stopwatch errors, yet it works
  * fine */
 
-use ::core::fmt;
+use core::fmt;
 
 /// Alias to `Result<T, Error>`.
 pub type Result<T> = ::core::result::Result<T, Error>;
